@@ -14,7 +14,7 @@ setup(
     install_requires = [
         'setuptools',
         'zeit.connector',
-        'zeit.care',
+        'zeit.content.article',
     ],
 )
 
