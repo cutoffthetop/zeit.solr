@@ -20,4 +20,6 @@
   <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />
 
+  <include package="zeit.solr" />
+
 </configure>

@@ -14,9 +14,18 @@ We need to set the site since we're a functional test:
 Get article for adapter tests:
 
 >>> import zeit.cms.interfaces
->>> zeit.cms.interfaces.ICMSContent(
+>>> article = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
-<zeit.content.article.article.Article object at 0xb4895ec>
+
+
+Build a converter:
+
+>>> import zeit.solr.interfaces
+>>> converter = zeit.solr.interfaces.ISolrConverter(article)
+>>> converter
+<zeit.solr.converter.SolrConverter object at 0xc5f02ac>
+
+>>> converter.prepare_dav_props()
 
 
 Clean up:

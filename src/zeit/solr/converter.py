@@ -1,3 +1,5 @@
+import zeit.connector.interfaces
+import zeit.content.article
 import zeit.solr.interfaces
 import zope.component
 import zope.interface
@@ -9,5 +11,12 @@ class SolrConverter(object):
 
     """
 
-    zope.component.adapts(zope.interface.Interface)
+    def __init__(self, context):
+        self.context = context
+
+    def prepare_dav_props(self):
+        properties = zeit.connector.interfaces.IWebDAVProperties(self.context)
+
+
+    zope.component.adapts(zeit.content.article.interfaces.IArticle)
     zope.interface.implements(zeit.solr.interfaces.ISolrConverter)
