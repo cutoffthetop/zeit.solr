@@ -13,6 +13,9 @@ class SolrConverter(object):
 
     """
 
+    zope.component.adapts(zeit.content.article.interfaces.IArticle)
+    zope.interface.implements(zeit.solr.interfaces.ISolrConverter)
+
     def __init__(self, context):
         self.context = context
 
@@ -31,6 +34,3 @@ class SolrConverter(object):
             doc_node.append(field_node)
 
         return root_node
-
-    zope.component.adapts(zeit.content.article.interfaces.IArticle)
-    zope.interface.implements(zeit.solr.interfaces.ISolrConverter)
