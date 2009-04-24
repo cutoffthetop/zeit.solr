@@ -21,53 +21,54 @@ Get article for adapter tests:
 Build a converter:
 
 >>> import zeit.solr.interfaces
->>> converter = zeit.solr.interfaces.ISolrConverter(article)
->>> converter
+>>> article_converter = zeit.solr.interfaces.ISolrConverter(article)
+>>> article_converter
 <zeit.solr.converter.SolrConverter object at 0xc5f02ac>
 
 
-Convert the article and check resultset:
+Convert an article and check resultset:
 
 >>> import lxml.etree
->>> root_node = converter.prepare_dav_props()
+>>> root_node = article_converter.prepare_dav_props()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doc>
-    <field name="copyrights" py:pytype="str">ZEIT online</field>
-    <field name="year" py:pytype="str">2006</field>
-    <field name="page" py:pytype="str">-</field>
-    <field name="volume" py:pytype="str">01</field>
-    <field name="DailyNL" py:pytype="str">no</field>
     <field name="ressort" py:pytype="str">International</field>
-    <field name="volume" py:pytype="str">04</field>
-    <field name="ressort" py:pytype="str">Online</field>
-    <field name="text-length" py:pytype="str">1036</field>
-    <field name="type" py:pytype="str">article</field>
     <field name="title" py:pytype="str">R&#252;ckkehr der Warlords</field>
-    <field name="new_comments" py:pytype="str">1</field>
-    <field name="revision" py:pytype="str">11</field>
-    <field name="keywords" xsi:nil="true"/>
-    <field name="type" py:pytype="str">article</field>
-    <field name="imagecount" py:pytype="str">0</field>
-    <field name="erscheint" xsi:nil="true"/>
-    <field name="paragraphsperpage" py:pytype="str">6</field>
-    <field name="topic" py:pytype="str">Politik</field>
-    <field name="pagelabel" py:pytype="str">Online</field>
-    <field name="date-last-modified" py:pytype="str">3.1.2007 - 11:55</field>
-    <field name="supertitle" py:pytype="str">Spitzmarke hierher</field>
-    <field name="comments" py:pytype="str">1</field>
-    <field name="author" py:pytype="str">Hans Meiser</field>
-    <field name="mostread" py:pytype="str">yes</field>
-    <field name="last-modified-by" py:pytype="str">hegenscheidt</field>
-    <field name="getlastmodified" py:pytype="str">Fri, 07 Mar 2008 12:47:16 GMT</field>
-    <field name="banner" py:pytype="str">yes</field>
-    <field name="year" py:pytype="str">2007</field>
-    <field name="page" py:pytype="str">-</field>
-    <field name="serie" py:pytype="str">-</field>
-    <field name="status" py:pytype="str">OK</field>
+    <field name="subtitle" py:pytype="str">Im Zuge des &#228;thiopischen Vormarsches auf Mogadischu kriechen in Somalia auch die alten Miliz-Chefs wieder hervor.</field>
+    <field name="volume" py:pytype="str">1</field>
   </doc>
 </add>
 <BLANKLINE>
+
+
+Convert an image and check resultset:
+(TODO: Use image with dav properties!)
+
+>>> image = zeit.cms.interfaces.ICMSContent(
+... 'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> image_converter = zeit.solr.interfaces.ISolrConverter(image)
+>>> root_node = image_converter.prepare_dav_props()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doc/>
+</add>
+<BLANKLINE>
+
+
+Convert a centerpage and check resultset:
+(TODO: Use centerpage with dav properties!)
+
+>>> cp = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/index')
+>>> cp_converter = zeit.solr.interfaces.ISolrConverter(cp)
+>>> root_node = cp_converter.prepare_dav_props()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doc/>
+</add>
+<BLANKLINE>
+
 
 
 Clean up:

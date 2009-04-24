@@ -13,24 +13,38 @@ class SolrConverter(object):
 
     """
 
-    zope.component.adapts(zeit.content.article.interfaces.IArticle)
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(zeit.solr.interfaces.ISolrConverter)
 
     def __init__(self, context):
         self.context = context
 
     def prepare_dav_props(self):
-        properties = zeit.connector.interfaces.IWebDAVProperties(self.context)
-
+        # This map contains three types:
+        # interface, attribute, solr
+        # TODO currently contains only a short preview list of types.
+        solr_map = {
+            (zeit.cms.content.interfaces.ICommonMetadata, "ressort")
+                : "ressort",
+            (zeit.cms.content.interfaces.ICommonMetadata, "sub_ressort")
+                : "sub_ressort",
+            (zeit.cms.content.interfaces.ICommonMetadata, "volume")
+                : "volume",
+            (zeit.cms.content.interfaces.ICommonMetadata, "title")
+                : "title",
+            (zeit.cms.content.interfaces.ICommonMetadata, "subtitle")
+                : "subtitle",
+            (zeit.content.image.interfaces.IImageMetadata, "caption")
+                : "subtitle",
+        }
         root_node = lxml.objectify.E.add()
         doc_node = lxml.objectify.E.doc()
         root_node.append(doc_node)
-
-        for prop_name, prop_ns in dict(properties):
-            field_node = lxml.objectify.E.field(
-                properties[prop_name, prop_ns],
-                name=prop_name
-            )
+        for interface, att_name in solr_map:
+            adapter = interface(self.context, None)
+            attr = getattr(adapter, att_name, None)
+            if attr is None:
+                continue
+            field_node = lxml.objectify.E.field(unicode(attr), name=att_name)
             doc_node.append(field_node)
-
         return root_node
