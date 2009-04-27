@@ -256,12 +256,27 @@
 
    <!-- My fields -->
    <field name="author" type="string" indexed="true" stored="true" />
-   <field name="supertitle" type="string" indexed="true" stored="true" />
+   <field name="byline" type="string" indexed="true" stored="true" />
+   <field name="date-last-modified" type="date" indexed="true" stored="true" />
+   <field name="indexteaser" type="string" indexed="true" stored="true" />
+   <field name="keywordset" type="string" indexed="true" stored="true" />
+   <field name="last_modified_by" type="string" indexed="true" stored="true" />
+   <field name="last-semantic-change" type="date" indexed="true" stored="true" />
+   <field name="mostread" type="boolean" indexed="true" stored="true" />
+   <field name="page" type="integer" indexed="true" stored="true" />
+   <field name="published" type="boolean" indexed="true" stored="true" />
+   <field name="refined" type="boolean" indexed="true" stored="true" />
+   <field name="ressort" type="string" indexed="true" stored="true" />
+   <field name="serie" type="string" indexed="true" stored="true" />
+   <field name="sub_ressort" type="string" indexed="true" stored="true" />
    <field name="subtitle" type="string" indexed="true" stored="true" />
+   <field name="supertitle" type="string" indexed="true" stored="true" />
+   <field name="teaser" type="string" indexed="true" stored="true" />
    <field name="title" type="string" indexed="true" stored="true" />
-   <field name="p" type="string" indexed="true" stored="true" />
+   <field name="type" type="string" indexed="true" stored="true" />
+   <field name="uuid" type="string" indexed="true" stored="true" />
+   <field name="volume" type="integer" indexed="true" stored="true" />
 
-   
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
         will be used if the name matches any of the patterns.
@@ -305,42 +320,16 @@
    <copyField source="name" dest="text"/>
    <copyField source="name" dest="nameSort"/>
    <copyField source="name" dest="alphaNameSort"/>
-   <copyField source="DailyNL" dest="text"/>
-   <copyField source="artbox_thema" dest="text"/>
-   <copyField source="author" dest="text"/>
-   <copyField source="banner" dest="text"/>
-   <copyField source="comments" dest="text"/>
-   <copyField source="copyrights" dest="text"/>
-   <copyField source="corrected" dest="text"/>
-   <copyField source="date-last-modified" dest="text"/>
-   <copyField source="date_first_released" dest="text"/>
-   <copyField source="date_last_published" dest="text"/>
-   <copyField source="edited" dest="text"/>
-   <copyField source="executable" dest="text"/>
-   <copyField source="has_recensions" dest="text"/>
-   <copyField source="images_added" dest="text"/>
-   <copyField source="last-semantic-change" dest="text"/>
-   <copyField source="last_modified_by" dest="text"/>
-   <copyField source="mostread" dest="text"/>
-   <copyField source="paragraphsperpage" dest="text"/>
-   <copyField source="published" dest="text"/>
-   <copyField source="refined" dest="text"/>
-   <copyField source="ressort" dest="text"/>
-   <copyField source="status" dest="text"/>
-   <copyField source="sub_ressort" dest="text"/>
-   <copyField source="text-length" dest="text"/>
-   <copyField source="type" dest="text"/>
-   <copyField source="urgent" dest="text"/>
-   <copyField source="volume" dest="text"/>
-   <copyField source="year" dest="text"/>
-   <copyField source="supertitle" dest="text"/>
-   <copyField source="subtitle" dest="text"/>
-   <copyField source="title" dest="text"/>
-   <copyField source="p" dest="text"/>
-   <copyField source="teaser_title" dest="text"/>
-   <copyField source="teaser_text" dest="text"/>
-   <copyField source="indexteaser_title" dest="text"/>
-   <copyField source="indexteaser_text" dest="text"/>
+
+   <copyField source="uuid" dest="id" />
+   <copyField source="byline" dest="text" />
+   <copyField source="keywordset" dest="text" />
+   <copyField source="ressort" dest="text" />
+   <copyField source="serie" dest="text" />
+   <copyField source="sub_ressort" dest="text" />
+   <copyField source="subtitle" dest="text" />
+   <copyField source="supertitle" dest="text" />
+   <copyField source="title" dest="text" />
 
 
  <!-- Similarity is the scoring routine for each document vs. a query.
