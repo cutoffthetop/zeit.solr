@@ -33,10 +33,7 @@ Convert an article and check resultset:
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doc>
-    <field name="ressort" py:pytype="str">International</field>
-    <field name="title" py:pytype="str">R&#252;ckkehr der Warlords</field>
-    <field name="subtitle" py:pytype="str">Im Zuge des &#228;thiopischen Vormarsches auf Mogadischu kriechen in Somalia auch die alten Miliz-Chefs wieder hervor.</field>
-    <field name="volume" py:pytype="str">1</field>
+    <field ...
   </doc>
 </add>
 <BLANKLINE>
@@ -51,7 +48,9 @@ Convert an image and check resultset:
 >>> root_node = image_converter.prepare_dav_props()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <doc/>
+  <doc>
+    <field ...
+  </doc>
 </add>
 <BLANKLINE>
 
@@ -65,7 +64,9 @@ Convert a centerpage and check resultset:
 >>> root_node = cp_converter.prepare_dav_props()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <doc/>
+  <doc>
+    <field ...
+  </doc>
 </add>
 <BLANKLINE>
 

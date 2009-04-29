@@ -1,0 +1,27 @@
+===================
+Grab text via xpath
+===================
+
+
+
+We need to set the site since we're a functional test:
+
+>>> import zope.app.component.hooks
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+
+
+Get article for adapter tests:
+
+>>> import zeit.cms.interfaces
+>>> article = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> adapter = zeit.solr.interfaces.ISearchableText(article)
+>>> adapter
+<zeit.solr.searchable.SearchableText object at 0xac607ec>
+
+
+Clean up:
+
+>>> zope.app.component.hooks.setSite(old_site)
+

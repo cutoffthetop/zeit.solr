@@ -3,4 +3,5 @@
    >
 
   <adapter factory=".converter.SolrConverter" />
+  <adapter factory=".searchable.SearchableText" />
 </configure>
