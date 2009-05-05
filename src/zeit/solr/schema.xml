@@ -279,7 +279,6 @@
    <field name="type" type="string" indexed="true" stored="true" />
    <field name="uuid" type="string" indexed="true" stored="true" />
    <field name="volume" type="integer" indexed="true" stored="true" />
-   <field name="volume" type="integer" indexed="true" stored="true" />
 
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
@@ -327,7 +326,7 @@
 
    <copyField source="uuid" dest="id" />
    <copyField source="byline" dest="text" />
-   <copyField source="keywordset" dest="text" />
+   <copyField source="keywords" dest="text" />
    <copyField source="main_text" dest="text" />
    <copyField source="ressort" dest="text" />
    <copyField source="serie" dest="text" />
