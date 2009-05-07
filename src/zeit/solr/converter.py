@@ -15,6 +15,13 @@ def join_tuple(tuple):
     if tuple:
         return ' '.join([str(arg) for arg in tuple])
 
+def canonize_date(arg):
+    if str(arg)[-6:] == '+00:00':
+        return str(arg)[:-6] + 'Z'
+    else:
+        return arg
+
+
 class SolrConverter(object):
     """Convert content objects to XML data using a Solr schema to feed the Solr
     server.
@@ -36,7 +43,7 @@ class SolrConverter(object):
             (zeit.cms.content.interfaces.ICommonMetadata, "byline")
                 : ("byline", identity),
             (zeit.cms.workflow.interfaces.IModified, "date_last_modified")
-                : ("date-last-modified", identity),
+                : ("date-last-modified", canonize_date),
             (zeit.cms.content.interfaces.ICommonMetadata, "shortTeaserText")
                 : ("indexteaser_title", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "shortTeaserTitle")
@@ -44,9 +51,9 @@ class SolrConverter(object):
             (zeit.cms.content.interfaces.ICommonMetadata, "keywords")
                 : ("keywords", join_tuple),
             (zeit.cms.workflow.interfaces.IModified, "last_modified_by")
-                : ("last_modified_by", identity),
+                : ("last_modified_by", canonize_date),
             (zeit.cms.content.interfaces.ISemanticChange, "last_semantic_change")
-                : ("last-semantic-change", identity),
+                : ("last-semantic-change", canonize_date),
             (zeit.solr.interfaces.ISearchableText, "text")
                 : ("main_text", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "boxMostRead")
