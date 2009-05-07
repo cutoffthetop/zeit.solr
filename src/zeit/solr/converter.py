@@ -36,7 +36,7 @@ class SolrConverter(object):
             (zeit.cms.content.interfaces.ICommonMetadata, "byline")
                 : ("byline", identity),
             (zeit.cms.workflow.interfaces.IModified, "date_last_modified")
-                : ("date_last_modified", identity),
+                : ("date-last-modified", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "shortTeaserText")
                 : ("indexteaser_title", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "shortTeaserTitle")
@@ -46,7 +46,7 @@ class SolrConverter(object):
             (zeit.cms.workflow.interfaces.IModified, "last_modified_by")
                 : ("last_modified_by", identity),
             (zeit.cms.content.interfaces.ISemanticChange, "last_semantic_change")
-                : ("last_semantic_change", identity),
+                : ("last-semantic-change", identity),
             (zeit.solr.interfaces.ISearchableText, "text")
                 : ("main_text", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "boxMostRead")
