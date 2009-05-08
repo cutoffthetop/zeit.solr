@@ -1,0 +1,93 @@
+==================
+Solr data transfer
+==================
+
+
+Create a new Solr handle:
+
+>>> import zeit.solr.handle
+>>> solrh1 = zeit.solr.handle.SolrHandle()
+>>> solrh1
+<zeit.solr.handle.SolrHandle instance at 0x...>
+
+
+Try to push invalid data into Solr:
+
+>>> data = """
+...     <add>
+...       <doc>
+...         <field name="foo">bar</field>
+...       </doc>
+...     </add>
+... """
+>>> solrh1.url = '194.77.156.97:8180'
+>>> solrh1.push_data(data)
+>>> print solrh1.response.status, solrh1.response.reason
+400 ERROR:unknown field 'foo'
+
+
+Setup site:
+
+Push a valid test-article into Solr:
+
+>>> add_data = """
+... <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <doc>
+...     <field name="uuid" py:pytype="str">testfooblafaseleinzigartig</field>
+...     <field name="supertitle" py:pytype="str">Test</field>
+...     <field name="date-last-modified" py:pytype="str">2008-03-07T12:47:16Z</field>
+...     <field name="volume" py:pytype="int">1</field>
+...     <field name="byline" py:pytype="str">Just for testing purposes</field>
+...     <field name="ressort" py:pytype="str">Local</field>
+...     <field name="title" py:pytype="str">foo</field>
+...     <field name="mostread" py:pytype="bool">false</field>
+...     <field name="indexteaser_title" py:pytype="str">indexteaser title</field>
+...     <field name="indexteaser_text" py:pytype="str">indexteaser text 123</field>
+...     <field name="teaser_title" py:pytype="str">teaser title</field>
+...     <field name="teaser_text" py:pytype="str">teaser text 456</field>
+...     <field name="main_text" py:pytype="str">foobar blabla fasel bla text</field>
+...     <field name="authors" py:pytype="str">hoshi</field>
+...   </doc>
+... </add>
+... """
+>>> solrh2 = zeit.solr.handle.SolrHandle()
+>>> solrh2.url = '194.77.156.97:8180'
+>>> response = solrh2.push_data(add_data)
+>>> print solrh2.response.status, solrh2.response.reason
+200 OK
+
+
+To make the index store the new data we have to commit:
+
+>>> commit = """
+...     <commit/>
+... """
+>>> solrh2.push_data(commit)
+
+
+Check indexed data:
+
+>>> solrh2.search_data()
+>>> print solrh2.response.status, solrh2.response.reason
+200 OK
+
+>>> solrh2.response.read()
+'<?xml...<str name="q">foo</str>...numFound="1"...<str name="authors">hoshi</str>...<str name="byline">Just for testing purposes</str>...<date name="date-last-modified">2008-03-07T12:47:16Z</date>...<str name="id">testfooblafaseleinzigartig</str>...<str name="indexteaser_text">indexteaser text 123</str>...<str name="indexteaser_title">indexteaser title</str>...<str name="main_text">foobar blabla fasel bla text</str>...<bool name="mostread">false</bool>...<str name="ressort">Local</str>...<str name="supertitle">Test</str>...<str name="teaser_text">teaser text 456</str>...<str name="teaser_title">teaser title</str>...<date name="timestamp">...</date>...<str name="title">foo</str>...<str name="uuid">testfooblafaseleinzigartig</str>...<int name="volume">1</int>...
+ 
+
+Remove test-article from index:
+
+>>> del_data = """
+... <delete>
+...     <id>testfooblafaseleinzigartig</id>
+... </delete>
+... """
+>>> solrh2.push_data(del_data)
+>>> solrh2.push_data(commit)
+
+
+Check if article really has been removed from index:
+
+>>> solrh2.search_data()
+>>> solrh2.response.read()
+'<?xml...<str name="q">foo</str>...<result name="response" numFound="0"...

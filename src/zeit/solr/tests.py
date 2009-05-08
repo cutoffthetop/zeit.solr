@@ -18,4 +18,11 @@ def test_suite():
         optionflags=doctest.ELLIPSIS
         ))
 
+    long_running = doctest.DocFileSuite(
+        'handle.txt',
+        optionflags=doctest.ELLIPSIS
+        )
+    long_running.level = 3
+    suite.addTest(long_running)
+
     return suite
