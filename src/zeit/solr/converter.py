@@ -13,13 +13,16 @@ def identity(arg):
 
 def join_tuple(tuple):
     if tuple:
-        return ' '.join([str(arg) for arg in tuple])
+        return ' '.join(unicode(arg) for arg in tuple)
+
+def join_labels(tuple):
+    if tuple:
+        return ' '.join(unicode(arg.label) for arg in tuple)
 
 def canonize_date(arg):
-    if str(arg)[-6:] == '+00:00':
-        return str(arg)[:-6] + 'Z'
-    else:
-        return arg
+    if arg:
+        solr_date = str(arg).replace(' ','T', 1)
+        return solr_date.replace('+00:00', 'Z')
 
 
 class SolrConverter(object):
@@ -49,7 +52,7 @@ class SolrConverter(object):
             (zeit.cms.content.interfaces.ICommonMetadata, "shortTeaserTitle")
                 : ("indexteaser_text", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "keywords")
-                : ("keywords", join_tuple),
+                : ("keywords", join_labels),
             (zeit.cms.workflow.interfaces.IModified, "last_modified_by")
                 : ("last_modified_by", canonize_date),
             (zeit.cms.content.interfaces.ISemanticChange, "last_semantic_change")
@@ -74,18 +77,20 @@ class SolrConverter(object):
                 : ("subtitle", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "supertitle")
                 : ("supertitle", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "teaserText")
-                : ("teaser_title", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "teaserTitle")
+                : ("teaser_title", identity),
+            (zeit.cms.content.interfaces.ICommonMetadata, "teaserText")
                 : ("teaser_text", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "title")
                 : ("title", identity),
             (zeit.cms.repository.interfaces.IUnknownResource, "type")
                 : ("type", identity),
-            (zeit.cms.content.interfaces.IUUID, "uuid")
+            (zeit.cms.content.interfaces.IUUID, "id")
                 : ("uuid", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "volume")
                 : ("volume", identity),
+            (zeit.cms.interfaces.ICMSContent, "uniqueId")
+                : ("uniqueId", identity),
         }
         root_node = lxml.objectify.E.add()
         doc_node = lxml.objectify.E.doc()
@@ -95,7 +100,9 @@ class SolrConverter(object):
             prepare = solr_map[interface, att_name][1]
             adapter = interface(self.context, None)
             attr = prepare(getattr(adapter, att_name, None))
-            if attr is None:
+            if att_name == 'uuid' and not attr:
+                raise ValueError("Cannot index without UUID.")
+            if not attr:
                 continue
             field_node = lxml.objectify.E.field(
                 attr,

@@ -255,15 +255,15 @@
    <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
 
    <!-- My fields -->
-   <field name="authors" type="string" indexed="true" stored="true" />
-   <field name="byline" type="string" indexed="true" stored="true" />
+   <field name="authors" type="text" indexed="true" stored="true" />
+   <field name="byline" type="text" indexed="true" stored="true" />
    <field name="date-last-modified" type="date" indexed="true" stored="true" />
    <field name="indexteaser_title" type="string" indexed="true" stored="true" />
    <field name="indexteaser_text" type="string" indexed="true" stored="true" />
-   <field name="keywords" type="string" indexed="true" stored="true" />
+   <field name="keywords" type="text" indexed="true" stored="true" />
    <field name="last_modified_by" type="string" indexed="true" stored="true" />
    <field name="last-semantic-change" type="date" indexed="true" stored="true" />
-   <field name="main_text" type="string" indexed="true" stored="true" />
+   <field name="main_text" type="text" indexed="true" stored="true" />
    <field name="mostread" type="boolean" indexed="true" stored="true" />
    <field name="page" type="integer" indexed="true" stored="true" />
    <field name="published" type="boolean" indexed="true" stored="true" />
@@ -271,12 +271,13 @@
    <field name="ressort" type="string" indexed="true" stored="true" />
    <field name="serie" type="string" indexed="true" stored="true" />
    <field name="sub_ressort" type="string" indexed="true" stored="true" />
-   <field name="subtitle" type="string" indexed="true" stored="true" />
-   <field name="supertitle" type="string" indexed="true" stored="true" />
+   <field name="subtitle" type="text" indexed="true" stored="true" />
+   <field name="supertitle" type="text" indexed="true" stored="true" />
    <field name="teaser_title" type="string" indexed="true" stored="true" />
    <field name="teaser_text" type="string" indexed="true" stored="true" />
-   <field name="title" type="string" indexed="true" stored="true" />
+   <field name="title" type="text" indexed="true" stored="true" />
    <field name="type" type="string" indexed="true" stored="true" />
+   <field name="uniqueId" type="string" indexed="true" stored="true" />
    <field name="uuid" type="string" indexed="true" stored="true" />
    <field name="volume" type="integer" indexed="true" stored="true" />
 
@@ -326,6 +327,8 @@
 
    <copyField source="uuid" dest="id" />
    <copyField source="byline" dest="text" />
+   <copyField source="indexteaser_title" dest="text" />
+   <copyField source="indexteaser_text" dest="text" />
    <copyField source="keywords" dest="text" />
    <copyField source="main_text" dest="text" />
    <copyField source="ressort" dest="text" />
@@ -333,6 +336,8 @@
    <copyField source="sub_ressort" dest="text" />
    <copyField source="subtitle" dest="text" />
    <copyField source="supertitle" dest="text" />
+   <copyField source="teaser_title" dest="text" />
+   <copyField source="teaser_text" dest="text" />
    <copyField source="title" dest="text" />
 
 

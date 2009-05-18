@@ -10,11 +10,17 @@ setup(
     package_dir = {'' : 'src'},
     include_package_data = True,
     zip_safe = False,
-    namespace = ['zeit'],
+    namespace_packages = ['zeit'],
     install_requires = [
         'setuptools',
+        'zeit.care',
         'zeit.connector',
         'zeit.content.article',
     ],
+    entry_points = """
+        [console_scripts]  
+        solr-updater = zeit.solr.worker:update_main
+        """
+
 )
 
