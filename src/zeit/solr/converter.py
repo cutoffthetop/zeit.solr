@@ -95,9 +95,7 @@ class SolrConverter(object):
         root_node = lxml.objectify.E.add()
         doc_node = lxml.objectify.E.doc()
         root_node.append(doc_node)
-        for interface, att_name in solr_map:
-            solr_name = solr_map[interface, att_name][0]
-            prepare = solr_map[interface, att_name][1]
+        for ((interface, att_name), (solr_name, prepare)) in solr_map.items():
             adapter = interface(self.context, None)
             attr = prepare(getattr(adapter, att_name, None))
             if att_name == 'uuid' and not attr:
