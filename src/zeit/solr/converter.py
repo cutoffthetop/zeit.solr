@@ -26,7 +26,7 @@ def canonize_date(arg):
 
 
 def get_type(properties):
-    return properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY]
+    return properties.get(zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
 
 
 class SolrConverter(object):
