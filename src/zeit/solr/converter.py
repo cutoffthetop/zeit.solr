@@ -25,6 +25,10 @@ def canonize_date(arg):
         return solr_date.replace('+00:00', 'Z')
 
 
+def get_type(properties):
+    return properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY]
+
+
 class SolrConverter(object):
     """Convert content objects to XML data using a Solr schema to feed the Solr
     server.
@@ -83,8 +87,8 @@ class SolrConverter(object):
                 : ("teaser_text", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "title")
                 : ("title", identity),
-            (zeit.cms.repository.interfaces.IUnknownResource, "type")
-                : ("type", identity),
+            (zeit.connector.interfaces.IWebDAVProperties, None)
+                : ("type", get_type),
             (zeit.cms.content.interfaces.IUUID, "id")
                 : ("uuid", identity),
             (zeit.cms.content.interfaces.ICommonMetadata, "volume")
@@ -96,15 +100,15 @@ class SolrConverter(object):
         doc_node = lxml.objectify.E.doc()
         root_node.append(doc_node)
         for ((interface, att_name), (solr_name, prepare)) in solr_map.items():
-            adapter = interface(self.context, None)
-            attr = prepare(getattr(adapter, att_name, None))
-            if att_name == 'uuid' and not attr:
+            value = interface(self.context, None)
+            if att_name is not None:
+                value = getattr(value, att_name, None)
+            value = prepare(value)
+            if att_name == 'uuid' and not value:
                 raise ValueError("Cannot index without UUID.")
-            if not attr:
+            if not value:
                 continue
             field_node = lxml.objectify.E.field(
-                attr,
-                name=solr_name
-            )
+                value, name=solr_name)
             doc_node.append(field_node)
         return root_node
