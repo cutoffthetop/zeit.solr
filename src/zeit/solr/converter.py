@@ -38,69 +38,72 @@ class SolrConverter(object):
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(zeit.solr.interfaces.ISolrConverter)
 
+    solr_map = {
+        (zeit.cms.content.interfaces.ICommonMetadata, "authors")
+            : ("authors", join_tuple),
+        (zeit.cms.content.interfaces.ICommonMetadata, "byline")
+            : ("byline", identity),
+        (zeit.cms.workflow.interfaces.IModified, "date_last_modified")
+            : ("date-last-modified", canonize_date),
+        (zeit.cms.content.interfaces.ICommonMetadata, "shortTeaserText")
+            : ("indexteaser_title", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "shortTeaserTitle")
+            : ("indexteaser_text", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "keywords")
+            : ("keywords", join_labels),
+        (zeit.cms.workflow.interfaces.IModified, "last_modified_by")
+            : ("last_modified_by", canonize_date),
+        (zeit.cms.content.interfaces.ISemanticChange, "last_semantic_change")
+            : ("last-semantic-change", canonize_date),
+        (zeit.solr.interfaces.ISearchableText, "text")
+            : ("main_text", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "boxMostRead")
+            : ("mostread", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "page")
+            : ("page", identity),
+        (zeit.cms.workflow.interfaces.IPublishInfo, "published")
+            : ("published", identity),
+        (zeit.workflow.interfaces.IContentWorkflow, "refined")
+            : ("refined", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "ressort")
+            : ("ressort", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "serie")
+            : ("serie", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "sub_ressort")
+            : ("sub_ressort", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "subtitle")
+            : ("subtitle", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "supertitle")
+            : ("supertitle", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "teaserTitle")
+            : ("teaser_title", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "teaserText")
+            : ("teaser_text", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "title")
+            : ("title", identity),
+        (zeit.connector.interfaces.IWebDAVProperties, None)
+            : ("type", get_type),
+        (zeit.cms.content.interfaces.IUUID, "id")
+            : ("uuid", identity),
+        (zeit.cms.content.interfaces.ICommonMetadata, "volume")
+            : ("volume", identity),
+        (zeit.cms.interfaces.ICMSContent, "uniqueId")
+            : ("uniqueId", identity),
+    }
+
     def __init__(self, context):
         self.context = context
+        self.adapters = {}
 
     def prepare_dav_props(self):
         # This map contains the following types:
         # interface, python attribute, solr attriute, filter function
-        solr_map = {
-            (zeit.cms.content.interfaces.ICommonMetadata, "authors")
-                : ("authors", join_tuple),
-            (zeit.cms.content.interfaces.ICommonMetadata, "byline")
-                : ("byline", identity),
-            (zeit.cms.workflow.interfaces.IModified, "date_last_modified")
-                : ("date-last-modified", canonize_date),
-            (zeit.cms.content.interfaces.ICommonMetadata, "shortTeaserText")
-                : ("indexteaser_title", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "shortTeaserTitle")
-                : ("indexteaser_text", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "keywords")
-                : ("keywords", join_labels),
-            (zeit.cms.workflow.interfaces.IModified, "last_modified_by")
-                : ("last_modified_by", canonize_date),
-            (zeit.cms.content.interfaces.ISemanticChange, "last_semantic_change")
-                : ("last-semantic-change", canonize_date),
-            (zeit.solr.interfaces.ISearchableText, "text")
-                : ("main_text", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "boxMostRead")
-                : ("mostread", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "page")
-                : ("page", identity),
-            (zeit.cms.workflow.interfaces.IPublishInfo, "published")
-                : ("published", identity),
-            (zeit.workflow.interfaces.IContentWorkflow, "refined")
-                : ("refined", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "ressort")
-                : ("ressort", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "serie")
-                : ("serie", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "sub_ressort")
-                : ("sub_ressort", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "subtitle")
-                : ("subtitle", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "supertitle")
-                : ("supertitle", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "teaserTitle")
-                : ("teaser_title", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "teaserText")
-                : ("teaser_text", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "title")
-                : ("title", identity),
-            (zeit.connector.interfaces.IWebDAVProperties, None)
-                : ("type", get_type),
-            (zeit.cms.content.interfaces.IUUID, "id")
-                : ("uuid", identity),
-            (zeit.cms.content.interfaces.ICommonMetadata, "volume")
-                : ("volume", identity),
-            (zeit.cms.interfaces.ICMSContent, "uniqueId")
-                : ("uniqueId", identity),
-        }
         root_node = lxml.objectify.E.add()
         doc_node = lxml.objectify.E.doc()
         root_node.append(doc_node)
-        for ((interface, att_name), (solr_name, prepare)) in solr_map.items():
-            value = interface(self.context, None)
+        for ((interface, att_name), (solr_name, prepare)) in (
+            self.solr_map.items()):
+            value = self.get_adapter(interface)
             if att_name is not None:
                 value = getattr(value, att_name, None)
             value = prepare(value)
@@ -112,3 +115,11 @@ class SolrConverter(object):
                 value, name=solr_name)
             doc_node.append(field_node)
         return root_node
+
+    def get_adapter(self, interface):
+        try:
+            adapter = self.adapters[interface]
+        except KeyError:
+            adapter = interface(self.context, None)
+            self.adapters[interface] = adapter
+        return adapter
