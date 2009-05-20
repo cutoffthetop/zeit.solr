@@ -72,7 +72,7 @@ Check indexed data:
 200 OK
 
 >>> solrh2.response.read()
-'<?xml...<str name="q">foo</str>...numFound="1"...<str name="authors">hoshi</str>...<str name="byline">Just for testing purposes</str>...<date name="date-last-modified">2008-03-07T12:47:16Z</date>...<str name="id">testfooblafaseleinzigartig</str>...<str name="indexteaser_text">indexteaser text 123</str>...<str name="indexteaser_title">indexteaser title</str>...<str name="main_text">foobar blabla fasel bla text</str>...<bool name="mostread">false</bool>...<str name="ressort">Local</str>...<str name="supertitle">Test</str>...<str name="teaser_text">teaser text 456</str>...<str name="teaser_title">teaser title</str>...<date name="timestamp">...</date>...<str name="title">foo</str>...<str name="uuid">testfooblafaseleinzigartig</str>...<int name="volume">1</int>...
+'<?xml...<str name="q">foo</str>...numFound="1"...<arr name="authors"><str>hoshi</str></arr>...<str name="byline">Just for testing purposes</str>...<date name="date-last-modified">2008-03-07T12:47:16Z</date>...<str name="id">testfooblafaseleinzigartig</str>...<str name="indexteaser_text">indexteaser text 123</str>...<str name="indexteaser_title">indexteaser title</str>...<str name="main_text">foobar blabla fasel bla text</str>...<bool name="mostread">false</bool>...<str name="ressort">Local</str>...<str name="supertitle">Test</str>...<str name="teaser_text">teaser text 456</str>...<str name="teaser_title">teaser title</str>...<date name="timestamp">...</date>...<str name="title">foo</str>...<str name="uuid">testfooblafaseleinzigartig</str>...<int name="volume">1</int>...
  
 
 Remove test-article from index:
