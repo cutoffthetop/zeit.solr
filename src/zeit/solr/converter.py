@@ -8,12 +8,6 @@ import zope.component
 import zope.interface
 
 
-def identity(arg, solr_name, node):
-    field_node = lxml.objectify.E.field(
-        arg, name=solr_name
-    )
-    node.append(field_node)
-
 def join_tuple(tuple, solr_name, node):
     append_to_node(
         ' '.join(unicode(arg) for arg in tuple),
@@ -74,7 +68,7 @@ class SolrConverter(object):
             zeit.cms.content.interfaces.ICommonMetadata,
             'byline',
             'byline',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.workflow.interfaces.IModified,
@@ -86,13 +80,13 @@ class SolrConverter(object):
             zeit.cms.content.interfaces.ICommonMetadata,
             'shortTeaserTitle',
             'indexteaser_title',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'shortTeaserText',
             'indexteaser_text',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
@@ -116,79 +110,79 @@ class SolrConverter(object):
             zeit.solr.interfaces.ISearchableText,
             'text',
             'main_text',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'boxMostRead',
             'mostread',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'page',
             'page',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.workflow.interfaces.IPublicationStatus,
             'published',
             'published',
-            identity,
+            append_to_node,
         ),
         (
             zeit.workflow.interfaces.IContentWorkflow,
             'refined',
             'refined',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'ressort',
             'ressort',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'serie',
             'serie',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'sub_ressort',
             'sub_ressort',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'subtitle',
             'subtitle',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'supertitle',
             'supertitle',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'teaserTitle',
             'teaser_title',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'teaserText',
             'teaser_text',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'title',
             'title',
-            identity,
+            append_to_node,
         ),
         (
             zeit.connector.interfaces.IWebDAVProperties,
@@ -200,19 +194,19 @@ class SolrConverter(object):
             zeit.cms.content.interfaces.IUUID,
             'id',
             'uuid',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.content.interfaces.ICommonMetadata,
             'volume',
             'volume',
-            identity,
+            append_to_node,
         ),
         (
             zeit.cms.interfaces.ICMSContent,
             'uniqueId',
             'uniqueId',
-            identity,
+            append_to_node,
         ),
     ]
 
