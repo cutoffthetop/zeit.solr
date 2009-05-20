@@ -267,7 +267,7 @@
    <field name="main_text" type="text" indexed="true" stored="true" />
    <field name="mostread" type="boolean" indexed="true" stored="true" />
    <field name="page" type="integer" indexed="true" stored="true" />
-   <field name="published" type="boolean" indexed="true" stored="true" />
+   <field name="published" type="string" indexed="true" stored="true" />
    <field name="refined" type="boolean" indexed="true" stored="true" />
    <field name="ressort" type="string" indexed="true" stored="true" />
    <field name="serie" type="string" indexed="true" stored="true" />

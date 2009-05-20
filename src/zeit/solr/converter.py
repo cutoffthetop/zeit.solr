@@ -131,7 +131,7 @@ class SolrConverter(object):
             identity,
         ),
         (
-            zeit.cms.workflow.interfaces.IPublishInfo,
+            zeit.cms.workflow.interfaces.IPublicationStatus,
             'published',
             'published',
             identity,
