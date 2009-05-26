@@ -50,7 +50,7 @@ class SolrConverter(object):
     zope.interface.implements(zeit.solr.interfaces.ISolrConverter)
 
     # This map contains the following types:
-    # interface, python attribute, solr attriute, filter function
+    # interface, python attribute, solr attribute, filter function
     solr_mapping = [
         (
             zeit.cms.content.interfaces.ICommonMetadata,
