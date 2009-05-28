@@ -208,6 +208,12 @@ class SolrConverter(object):
             'uniqueId',
             append_to_node,
         ),
+        (
+            zeit.cms.content.interfaces.ICommonMetadata,
+            'year',
+            'year',
+            append_to_node,
+        ),
     ]
 
     def __init__(self, context):
