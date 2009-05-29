@@ -259,6 +259,7 @@
    <field name="authors_fulltext" type="text" indexed="true" stored="false" />
    <field name="byline" type="text" indexed="true" stored="true" />
    <field name="date-last-modified" type="date" indexed="true" stored="true" />
+   <field name="icon" type="string" indexed="false" stored="true" />
    <field name="indexteaser_title" type="string" indexed="true" stored="true" />
    <field name="indexteaser_text" type="string" indexed="true" stored="true" />
    <field name="keywords" type="text" indexed="true" stored="true" />
