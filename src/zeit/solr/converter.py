@@ -6,6 +6,7 @@ import zeit.solr.interfaces
 import zeit.workflow.interfaces
 import zope.component
 import zope.interface
+import zope.publisher.browser
 
 
 def join_tuple(tuple, solr_name, node):
@@ -38,6 +39,17 @@ def get_type(properties, solr_name, node):
 def append_to_node(value, solr_name, parent_node):
     child_node = lxml.objectify.E.field(value, name=solr_name)
     parent_node.append(child_node)
+
+
+def get_icon(context, default):
+    request = zope.publisher.browser.TestRequest(
+        skin=zeit.cms.browser.interfaces.ICMSSkin)
+    icon = zope.component.queryMultiAdapter(
+        (context, request), name='zmi_icon')
+    if icon is None:
+        return default
+    path = icon.url().replace(request['SERVER_URL'], '')
+    return path
 
 
 class SolrConverter(object):
@@ -214,6 +226,7 @@ class SolrConverter(object):
             'year',
             append_to_node,
         ),
+        (get_icon, None, 'icon', append_to_node),
     ]
 
     def __init__(self, context):
