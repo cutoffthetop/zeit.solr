@@ -17,7 +17,6 @@ Get article for adapter tests:
 >>> article = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
 
-
 Build a converter:
 
 >>> import zeit.solr.interfaces
@@ -73,7 +72,101 @@ Convert a centerpage and check resultset:
 
 
 
+Get a date
+>>> import datetime
+>>> import pytz
+>>> date = datetime.datetime.now(tz=pytz.UTC)
+>>> date
+datetime.datetime...
+
+Checkout article, change last semantic change to date, checkin
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction() 
+>>> dummy = with_statement
+>>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
+
+>>> root_node = article_converter.prepare_dav_props()
+>>> doc_node = root_node.doc
+>>> print (doc_node.tag)
+doc
+
+
+Now we are doing some boosting. For day 0:  
+
+>>> lastsemchange = zeit.cms.content.interfaces.ISemanticChange(article)
+>>> lastsemchange.last_semantic_change
+datetime.datetime(...
+
+
+>>> booster = zeit.solr.converter.Boost (doc_node,lastsemchange.last_semantic_change)
+>>> print booster.calc_boost()
+7
+
+
+For day 1
+>>> date =  datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=1)
+>>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
+>>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
+>>> print booster.calc_boost()
+5
+
+For day 6
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=6)
+>>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
+>>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
+>>> print booster.calc_boost()
+3
+
+For day 7
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=7)
+>>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
+>>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
+>>> print booster.calc_boost()
+2
+
+For day 20
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=20)
+>>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
+>>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
+>>> print booster.calc_boost()
+2
+
+For day 30
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=30)
+>>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
+>>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
+>>> print booster.calc_boost()
+1
+
+For day 70
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=70)
+>>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
+>>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
+>>> print booster.calc_boost()
+0
+
+
+Now lets set the boost
+>>> booster.set_boost (booster.calc_boost)
+>>> print lxml.etree.tostring(doc_node, pretty_print=True)
+
+
+
+
+
+
+
 Clean up:
 
 >>> zope.app.component.hooks.setSite(old_site)
+
+
+
 

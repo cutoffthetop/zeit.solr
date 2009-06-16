@@ -40,6 +40,6 @@ def update_worker(content):
 def update_pusher(root_node):
     data = lxml.etree.tostring(root_node, pretty_print=True, encoding='utf8')
     solrh = zeit.solr.handle.SolrHandle()
-    solrh.url = '194.77.156.97:8180'
+    solrh.url = 'localhost:8180'
     solrh.push_data(data)
 

@@ -11,7 +11,7 @@ class SolrHandle():
         )
         conn.endheaders()
         self.response = conn.getresponse()
-
+        
     def push_data(self, data):
         conn = httplib.HTTPConnection(self.url)
         conn.putrequest('POST', '/solr/update/')
