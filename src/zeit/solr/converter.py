@@ -209,7 +209,7 @@ class SolrConverter(object):
 
 class Boost (Index):
 
-    def __init__ (self, doc_node, last_semantic_change):
+    def __init__(self, doc_node, last_semantic_change):
         date = datetime.datetime.now (tz=pytz.UTC)
         self.conf = (
                      (date, 7),
@@ -222,14 +222,14 @@ class Boost (Index):
         self.doc_node = doc_node
         self.last_semantic_change = last_semantic_change
 
-    def set_boost (self, boost):
+    def set_boost(self, boost):
         self.doc_node.set ('boost', str(boost))
         self.process (str(boost),self.doc_node)
 
     def process(self, value, doc_node):
-       self.append_to_node(unicode(arg), doc_node)
+       self.append_to_node(unicode(value), doc_node)
 
-    def calc_boost (self):
+    def calc_boost(self):
         boost = 0
         for time_boost in self.conf:
             if self.last_semantic_change < time_boost[0]:
