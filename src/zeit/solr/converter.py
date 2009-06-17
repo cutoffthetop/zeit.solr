@@ -93,7 +93,7 @@ class Icon(Index):
 class Boost (Index):
 
     @property
-    def conf (self):
+    def conf(self):
         date = datetime.datetime.now (tz=pytz.UTC)
         return (
                   (date - datetime.timedelta(days = 60),0),
@@ -101,15 +101,16 @@ class Boost (Index):
                   (date - datetime.timedelta(days = 7), 2),
                   (date - datetime.timedelta(days = 2), 3),
                   (date - datetime.timedelta(days = 1), 5),
-                  (date, 7)
+                  (date, 6)
                )
 
-    def set_boost(self, boost):
-        self.doc_node.set('boost', str(boost))
+    def set_boost(self, boost, doc_node):
+        doc_node.set('boost', str(boost))
 
     def process(self, value, doc_node):
-        self.set_boost(self.calc_boost (value),doc_node)
-        self.append_to_node(unicode(value), doc_node)
+        boost = self.calc_boost(value)
+        self.set_boost(boost, doc_node)
+        self.append_to_node(boost, doc_node)
 
     def calc_boost(self,last_semantic_change):
         for time_boost in self.conf:
@@ -129,7 +130,7 @@ class SolrConverter(object):
 
     Boost(
         zeit.cms.content.interfaces.ISemanticChange,
-        'boost')
+        'last_semantic_change', solr='boost')
     SplitTuple(
         zeit.cms.content.interfaces.ICommonMetadata,
         'authors')

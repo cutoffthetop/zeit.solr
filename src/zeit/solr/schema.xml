@@ -283,7 +283,7 @@
    <field name="uuid" type="string" indexed="true" stored="true" />
    <field name="volume" type="integer" indexed="true" stored="true" />
    <field name="year" type="integer" indexed="true" stored="true" />
-
+   <field name="boost" type="integer" indexed="true" stored="false" />
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
         will be used if the name matches any of the patterns.

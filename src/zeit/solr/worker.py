@@ -6,13 +6,19 @@ import zeit.solr.handle
 import zeit.solr.interfaces
 import zope.app.security.interfaces
 
+solrh = zeit.solr.handle.SolrHandle()
+solrh.url = 'localhost:8180'
+
 
 @gocept.runner.once()
 def update_main():
+    if len(sys.argv) > 2:
+        solrh.url = sys.argv[2]
     update_container(sys.argv[1])
 
 
 def update_container(container_id):
+    print solrh.url 
     start_container = zeit.cms.interfaces.ICMSContent(container_id)
     stack = [start_container]
     while stack:
@@ -28,7 +34,8 @@ def update_worker(content):
     print content.uniqueId
     assert zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
         content)
-    converter = zeit.solr.interfaces.ISolrConverter(content)
+    converter = zeit.solr.interfaces.ISolrConverter(
+        content)
     try:
         root_node = converter.prepare_dav_props()
     except ValueError, e:
@@ -39,7 +46,5 @@ def update_worker(content):
 
 def update_pusher(root_node):
     data = lxml.etree.tostring(root_node, pretty_print=True, encoding='utf8')
-    solrh = zeit.solr.handle.SolrHandle()
-    solrh.url = 'localhost:8180'
     solrh.push_data(data)
 

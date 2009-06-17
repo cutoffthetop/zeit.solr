@@ -91,80 +91,77 @@ Checkout article, change last semantic change to date, checkin
 >>> print (doc_node.tag)
 doc
 
-
-Now we are doing some boosting. For day 0:  
-
->>> lastsemchange = zeit.cms.content.interfaces.ISemanticChange(article)
->>> lastsemchange.last_semantic_change
-datetime.datetime(...
-
-
->>> booster = zeit.solr.converter.Boost (doc_node,lastsemchange.last_semantic_change)
->>> print booster.calc_boost()
-7
-
+Now we are doing some boosting. For today:  
+>>> date = datetime.datetime.now(tz=pytz.UTC)
+>>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
+>>> root_node = article_converter.prepare_dav_props()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add...<doc boost="6">...
+...<field name="boost" py:pytype="int">6</field>...
+<BLANKLINE>
 
 For day 1
->>> date =  datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=1)
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=1)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
->>> print booster.calc_boost()
-5
+>>> root_node = article_converter.prepare_dav_props()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add...<doc boost="5">...
+...<field name="boost" py:pytype="int">5</field>...
+<BLANKLINE>
 
 For day 6
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=6)
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=6)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
->>> print booster.calc_boost()
-3
+>>> root_node = article_converter.prepare_dav_props()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add...<doc boost="3">...
+...<field name="boost" py:pytype="int">3</field>...
+<BLANKLINE>
 
 For day 7
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=7)
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=7)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
->>> print booster.calc_boost()
-2
+>>> root_node = article_converter.prepare_dav_props()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add...<doc boost="2">...
+...<field name="boost" py:pytype="int">2</field>...
+<BLANKLINE>
 
 For day 20
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=20)
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=20)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
->>> print booster.calc_boost()
-2
+>>> root_node = article_converter.prepare_dav_props()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add...<doc boost="2">...
+...<field name="boost" py:pytype="int">2</field>...
+<BLANKLINE>
 
 For day 30
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=30)
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=30)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
->>> print booster.calc_boost()
-1
+>>> root_node = article_converter.prepare_dav_props()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add...<doc boost="1">...
+...<field name="boost" py:pytype="int">1</field>...
+<BLANKLINE>
 
 For day 70
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta (days=70)
+>>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=70)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> booster = zeit.solr.converter.Boost (root_node,lastsemchange.last_semantic_change)
->>> print booster.calc_boost()
-0
-
-
-Now lets set the boost
->>> booster.set_boost (booster.calc_boost)
->>> print lxml.etree.tostring(doc_node, pretty_print=True)
-
-
-
-
-
-
+>>> root_node = article_converter.prepare_dav_props()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add...<doc boost="0">...
+...<field name="boost" py:pytype="int">0</field>...
+<BLANKLINE>
 
 Clean up:
-
 >>> zope.app.component.hooks.setSite(old_site)
 
 
