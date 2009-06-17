@@ -90,6 +90,34 @@ class Icon(Index):
         self.append_to_node(path, doc_node)
 
 
+class Boost (Index):
+
+    @property
+    def conf (self):
+        date = datetime.datetime.now (tz=pytz.UTC)
+        return (
+                  (date - datetime.timedelta(days = 60),0),
+                  (date - datetime.timedelta(days = 30),1),
+                  (date - datetime.timedelta(days = 7), 2),
+                  (date - datetime.timedelta(days = 2), 3),
+                  (date - datetime.timedelta(days = 1), 5),
+                  (date, 7)
+               )
+
+    def set_boost(self, boost):
+        self.doc_node.set('boost', str(boost))
+
+    def process(self, value, doc_node):
+        self.set_boost(self.calc_boost (value),doc_node)
+        self.append_to_node(unicode(value), doc_node)
+
+    def calc_boost(self,last_semantic_change):
+        for time_boost in self.conf:
+            if last_semantic_change < time_boost[0]:
+                return time_boost[1]
+
+        return 0
+
 class SolrConverter(object):
     """Convert content objects to XML data using a Solr schema to feed the Solr
     server.
@@ -99,6 +127,9 @@ class SolrConverter(object):
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(zeit.solr.interfaces.ISolrConverter)
 
+    Boost(
+        zeit.cms.content.interfaces.ISemanticChange,
+        'boost')
     SplitTuple(
         zeit.cms.content.interfaces.ICommonMetadata,
         'authors')
@@ -206,39 +237,3 @@ class SolrConverter(object):
             adapter = interface(self.context, None)
             self.adapters[interface] = adapter
         return adapter
-
-class Boost (Index):
-
-    def __init__(self, doc_node, last_semantic_change):
-        date = datetime.datetime.now (tz=pytz.UTC)
-        self.conf = (
-                     (date, 7),
-                     (date - datetime.timedelta(days = 1), 5),
-                     (date - datetime.timedelta(days = 2), 3),
-                     (date - datetime.timedelta(days = 7), 2),
-                     (date - datetime.timedelta(days = 30),1),
-                     (date - datetime.timedelta(days = 60),0)
-                    )
-        self.doc_node = doc_node
-        self.last_semantic_change = last_semantic_change
-
-    def set_boost(self, boost):
-        self.doc_node.set ('boost', str(boost))
-        self.process (str(boost),self.doc_node)
-
-    def process(self, value, doc_node):
-       self.append_to_node(unicode(value), doc_node)
-
-    def calc_boost(self):
-        boost = 0
-        for time_boost in self.conf:
-            if self.last_semantic_change < time_boost[0]:
-                boost = time_boost[1]
-
-        return boost
-
-
-
-
-
-
