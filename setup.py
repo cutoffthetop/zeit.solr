@@ -12,13 +12,15 @@ setup(
     zip_safe = False,
     namespace_packages = ['zeit'],
     install_requires = [
+        'pysolr >= 2.0.1',
         'setuptools',
+        'simplejson', # for pysolr
         'zeit.care',
         'zeit.connector',
         'zeit.content.article',
     ],
     entry_points = """
-        [console_scripts]  
+        [console_scripts]
         solr-updater = zeit.solr.worker:update_main
         """
 

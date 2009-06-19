@@ -2,6 +2,8 @@
    xmlns="http://namespaces.zope.org/zope"
    >
 
+  <utility factory=".connection.solr_connection_factory" />
+
   <adapter factory=".converter.SolrConverter" />
   <adapter factory=".searchable.SearchableText" />
 </configure>
