@@ -97,11 +97,11 @@ class Boost (Index):
         date = datetime.datetime.now (tz=pytz.UTC)
         return (
                   (date - datetime.timedelta(days = 60),0),
-                  (date - datetime.timedelta(days = 30),1),
-                  (date - datetime.timedelta(days = 7), 2),
-                  (date - datetime.timedelta(days = 2), 3),
-                  (date - datetime.timedelta(days = 1), 5),
-                  (date, 6)
+                  (date - datetime.timedelta(days = 30),1.0),
+                  (date - datetime.timedelta(days = 7), 2.0),
+                  (date - datetime.timedelta(days = 2), 3.0),
+                  (date - datetime.timedelta(days = 1), 5.0),
+                  (date, 6.0)
                )
 
     def set_boost(self, boost, doc_node):
@@ -109,8 +109,9 @@ class Boost (Index):
 
     def process(self, value, doc_node):
         boost = self.calc_boost(value)
-        self.set_boost(boost, doc_node)
-        self.append_to_node(boost, doc_node)
+        if boost > 0:
+            self.set_boost(boost, doc_node)
+            self.append_to_node(boost, doc_node)
 
     def calc_boost(self,last_semantic_change):
         for time_boost in self.conf:

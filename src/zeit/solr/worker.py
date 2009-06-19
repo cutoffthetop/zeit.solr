@@ -18,7 +18,7 @@ def update_main():
 
 
 def update_container(container_id):
-    print solrh.url 
+    print solrh.url
     start_container = zeit.cms.interfaces.ICMSContent(container_id)
     stack = [start_container]
     while stack:
