@@ -11,6 +11,7 @@ import zope.publisher.browser
 import datetime
 import pytz
 
+
 class Index(object):
 
     def __init__(self, interface, attribute, solr=None, stackup=1):
@@ -29,6 +30,7 @@ class Index(object):
     def append_to_node(self, value, parent_node):
         child_node = lxml.objectify.E.field(value, name=self.solr)
         parent_node.append(child_node)
+
 
 class JoinTuple(Index):
 
@@ -119,6 +121,7 @@ class Boost (Index):
                 return time_boost[1]
 
         return 0
+
 
 class SolrConverter(object):
     """Convert content objects to XML data using a Solr schema to feed the Solr
@@ -218,7 +221,7 @@ class SolrConverter(object):
         self.context = context
         self.adapters = {}
 
-    def prepare_dav_props(self):
+    def convert(self):
         root_node = lxml.objectify.E.add()
         doc_node = lxml.objectify.E.doc()
         root_node.append(doc_node)

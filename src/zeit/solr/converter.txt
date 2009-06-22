@@ -28,7 +28,7 @@ Build a converter:
 Convert an article and check resultset:
 
 >>> import lxml.etree
->>> root_node = article_converter.prepare_dav_props()
+>>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doc>
@@ -45,7 +45,7 @@ Convert an image and check resultset:
 >>> image = zeit.cms.interfaces.ICMSContent(
 ... 'http://xml.zeit.de/2006/DSC00109_2.JPG')
 >>> image_converter = zeit.solr.interfaces.ISolrConverter(image)
->>> root_node = image_converter.prepare_dav_props()
+>>> root_node = image_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doc>
@@ -61,7 +61,7 @@ Convert a centerpage and check resultset:
 >>> cp = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/online/2007/01/index')
 >>> cp_converter = zeit.solr.interfaces.ISolrConverter(cp)
->>> root_node = cp_converter.prepare_dav_props()
+>>> root_node = cp_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doc>
@@ -86,7 +86,7 @@ Checkout article, change last semantic change to date, checkin
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
 
->>> root_node = article_converter.prepare_dav_props()
+>>> root_node = article_converter.convert()
 >>> doc_node = root_node.doc
 >>> print (doc_node.tag)
 doc
@@ -95,7 +95,7 @@ Now we are doing some boosting. For today:
 >>> date = datetime.datetime.now(tz=pytz.UTC)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.prepare_dav_props()
+>>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="6.0">...
 ...<field name="boost" py:pytype="float">6.0</field>...
@@ -105,7 +105,7 @@ For day 1
 >>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=1)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.prepare_dav_props()
+>>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="5.0">...
 ...<field name="boost" py:pytype="float">5.0</field>...
@@ -115,7 +115,7 @@ For day 6
 >>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=6)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.prepare_dav_props()
+>>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="3.0">...
 ...<field name="boost" py:pytype="float">3.0</field>...
@@ -125,7 +125,7 @@ For day 7
 >>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=7)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.prepare_dav_props()
+>>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="2.0">...
 ...<field name="boost" py:pytype="float">2.0</field>...
@@ -135,7 +135,7 @@ For day 20
 >>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=20)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.prepare_dav_props()
+>>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="2.0">...
 ...<field name="boost" py:pytype="float">2.0</field>...
@@ -145,7 +145,7 @@ For day 30
 >>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=30)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.prepare_dav_props()
+>>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="1.0">...
 ...<field name="boost" py:pytype="float">1.0</field>...
@@ -155,7 +155,7 @@ For day 70
 >>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=70)
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.prepare_dav_props()
+>>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc>...
 <BLANKLINE>

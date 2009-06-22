@@ -28,19 +28,19 @@ def update_container(container_id):
         content = stack.pop(0)
         if zeit.cms.repository.interfaces.ICollection.providedBy(content):
             stack.extend(content.values())
-        update_worker(content)
+        update_content(content)
     conn.commit()
 
 
-def update_worker(content):
+def update_content(content):
     logger.info("updating content '%s'" % content.uniqueId)
     assert zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
         content)
     converter = zeit.solr.interfaces.ISolrConverter(content)
     try:
-        root_node = converter.prepare_dav_props()
+        root_node = converter.convert()
     except ValueError, e:
-        print e
+        logger.exception(e)
         return None
 
     conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
