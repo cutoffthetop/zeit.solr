@@ -21,7 +21,7 @@ setup(
     ],
     entry_points = """
         [console_scripts]
-        solr-updater = zeit.solr.worker:update_main
+        solr-updater = zeit.solr.update:update_main
         """
 
 )
