@@ -42,14 +42,10 @@ def update_worker(content):
     except ValueError, e:
         print e
         return None
-    update_pusher(root_node)
 
-
-def update_pusher(root_node):
     conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-    data = lxml.etree.tostring(root_node, pretty_print=True, encoding='utf8')
     # XXX it would be nicer to use add(), but then the converter would have to
     # be rewritten not to produce XML anymore (and pysolr would have to learn
     # how to set the boost), so we just push the raw XML here and bypass all
     # the pysolr niceties.
-    conn.update_raw(data)
+    conn.update_raw(root_node)

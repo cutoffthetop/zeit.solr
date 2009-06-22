@@ -1,3 +1,4 @@
+import lxml.etree
 import lxml.html
 import pysolr
 import zeit.solr.interfaces
@@ -10,7 +11,8 @@ class SolrConnection(pysolr.Solr):
     zope.interface.implements(zeit.solr.interfaces.ISolr)
 
     def update_raw(self, xml):
-        response = self._update(xml)
+        data = lxml.etree.tostring(xml, pretty_print=True, encoding='utf8')
+        response = self._update(data)
         if response.status != 200:
             raise pysolr.SolrError(self._extract_error(response))
 

@@ -6,7 +6,7 @@ class ISolr(zope.interface.Interface):
     see there for available methods not listed here."""
 
     def update_raw(xml):
-        """post raw XML to the solr server"""
+        """post raw XML (given as an lxml.etree node) to the solr server"""
 
 
 class ISolrConverter(zope.interface.Interface):
