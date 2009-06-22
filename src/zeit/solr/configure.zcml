@@ -1,5 +1,6 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
+  xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
    >
 
   <utility factory=".connection.solr_connection_factory" />
@@ -10,4 +11,16 @@
   <adapter factory=".update.IdUpdater" />
   <adapter factory=".update.ContentUpdater" />
   <adapter factory=".update.Deleter" name="delete" />
+
+  <permission
+    id="zeit.solr.UpdateIndex"
+    title="Update Solr index"
+    />
+
+  <xmlrpc:view
+    for="zope.location.interfaces.ISite"
+    class=".xmlrpc.UpdateIndex"
+    permission="zeit.solr.UpdateIndex"
+    methods="update_solr"
+    />
 </configure>

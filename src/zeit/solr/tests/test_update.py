@@ -1,25 +1,8 @@
-from mock import Mock
 import unittest
-import zeit.cms.testing
-import zeit.solr.interfaces
 import zeit.solr.testing
-import zope.component
-import zope.interface
 
 
-class UpdateTest(zeit.cms.testing.FunctionalTestCase):
-
-    layer = zeit.solr.testing.SolrLayer
-
-    def setUp(self):
-        super(UpdateTest, self).setUp()
-        self.solr = Mock()
-        zope.interface.alsoProvides(self.solr, zeit.solr.interfaces.ISolr)
-        zope.component.provideUtility(self.solr)
-
-    def tearDown(self):
-        zope.component.getSiteManager().unregisterUtility(self.solr)
-        super(UpdateTest, self).tearDown()
+class UpdateTest(zeit.solr.testing.FunctionalTestCase):
 
     def test_existing_id_should_be_updated(self):
         zeit.solr.interfaces.IUpdater(

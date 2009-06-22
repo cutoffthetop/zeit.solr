@@ -24,4 +24,15 @@
 
   <include package="zeit.solr" />
 
+  <principal
+    id="zope.solr"
+    title="Updater"
+    login="solr"
+    password="solrpw" />
+
+  <grant
+    principal="zope.solr"
+    permission="zeit.solr.UpdateIndex"
+    />
+
 </configure>
