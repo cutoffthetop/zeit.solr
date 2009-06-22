@@ -1,3 +1,5 @@
+# export this here so clients are not coupled to pysolr
+from pysolr import SolrError
 import zope.interface
 
 
@@ -12,7 +14,7 @@ class ISolr(zope.interface.Interface):
 class ISolrConverter(zope.interface.Interface):
     """Converting XML files using a solr schema."""
 
-    def prepare_dav_props():
+    def convert():
         """Prepare DAV properties for Solr"""
 
 

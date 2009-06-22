@@ -36,16 +36,15 @@ def update_content(content):
     logger.info("updating content '%s'" % content.uniqueId)
     assert zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
         content)
+    conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
     converter = zeit.solr.interfaces.ISolrConverter(content)
     try:
-        root_node = converter.convert()
-    except ValueError, e:
-        logger.exception(e)
+        # XXX it would be nicer to use add(), but then the converter would have
+        # to be rewritten not to produce XML anymore (and pysolr would have to
+        # learn how to set the boost), so we just push the raw XML here and
+        # bypass all the pysolr niceties.
+        conn.update_raw(converter.convert())
+    except zeit.solr.interfaces.SolrError, e:
+        logger.error("Solr server returned '%s' while updating %s" %
+                     (e, content.uniqueId))
         return None
-
-    conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-    # XXX it would be nicer to use add(), but then the converter would have to
-    # be rewritten not to produce XML anymore (and pysolr would have to learn
-    # how to set the boost), so we just push the raw XML here and bypass all
-    # the pysolr niceties.
-    conn.update_raw(root_node)
