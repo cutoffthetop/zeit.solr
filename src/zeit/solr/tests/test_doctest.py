@@ -1,13 +1,7 @@
 from zope.testing import doctest
-import pkg_resources
 import unittest
 import zeit.cms.testing
-import zope.app.testing.functional
-
-
-SolrLayer = zope.app.testing.functional.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'SolrLayer', allow_teardown=True)
+import zeit.solr.testing
 
 
 def test_suite():
@@ -15,6 +9,7 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'converter.txt',
         'searchable.txt',
-        layer=SolrLayer,
+        package='zeit.solr',
+        layer=zeit.solr.testing.SolrLayer,
         ))
     return suite
