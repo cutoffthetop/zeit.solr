@@ -19,6 +19,9 @@ setup(
         'zeit.connector',
         'zeit.content.article',
     ],
+    extras_require=dict(test=[
+        'mock',
+    ]),
     entry_points = """
         [console_scripts]
         solr-updater = zeit.solr.update:update_main

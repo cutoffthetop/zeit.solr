@@ -21,3 +21,13 @@ class ISolrConverter(zope.interface.Interface):
 class ISearchableText(zope.interface.Interface):
     """Interface for handling text content of articles."""
 
+
+class IUpdater(zope.interface.Interface):
+    """Triggers an update of the solr index for an object.
+
+    If the object exists in the repository, the solr index is updated,
+    else the object is deleted from the solr index.
+    """
+
+    def update():
+        pass

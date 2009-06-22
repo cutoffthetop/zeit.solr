@@ -6,4 +6,8 @@
 
   <adapter factory=".converter.SolrConverter" />
   <adapter factory=".searchable.SearchableText" />
+
+  <adapter factory=".update.IdUpdater" />
+  <adapter factory=".update.ContentUpdater" />
+  <adapter factory=".update.Deleter" name="delete" />
 </configure>
