@@ -1,6 +1,7 @@
 import StringIO
 import logging
 import unittest
+import xmlrpclib
 import zeit.solr.testing
 import zope.app.testing.xmlrpc
 import zope.security.management
@@ -37,6 +38,9 @@ class XMLRPCTest(zeit.solr.testing.FunctionalTestCase):
             "zope.solr triggered solr index update for "
             "'http://xml.zeit.de/online/2007/01/Somalia'"
             in self.log.getvalue())
+
+    def test_invalid_type_should_fail(self):
+        self.assertRaises(xmlrpclib.Fault, self.update_solr, 42)
 
 
 def test_suite():
