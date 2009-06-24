@@ -12,6 +12,7 @@ setup(
     zip_safe = False,
     namespace_packages = ['zeit'],
     install_requires = [
+        'mock',
         'pysolr >= 2.0.1',
         'setuptools',
         'simplejson', # for pysolr
@@ -19,9 +20,6 @@ setup(
         'zeit.connector',
         'zeit.content.article',
     ],
-    extras_require=dict(test=[
-        'mock',
-    ]),
     entry_points = """
         [console_scripts]
         solr-updater = zeit.solr.update:update_main
