@@ -2,7 +2,7 @@ import unittest
 import zeit.solr.testing
 
 
-class UpdateTest(zeit.solr.testing.FunctionalTestCase):
+class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
 
     def test_existing_id_should_be_updated(self):
         zeit.solr.interfaces.IUpdater(

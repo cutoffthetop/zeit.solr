@@ -7,7 +7,7 @@ import zope.app.testing.xmlrpc
 import zope.security.management
 
 
-class XMLRPCTest(zeit.solr.testing.FunctionalTestCase):
+class XMLRPCTest(zeit.solr.testing.MockedFunctionalTestCase):
 
     def setUp(self):
         super(XMLRPCTest, self).setUp()
