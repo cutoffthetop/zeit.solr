@@ -1,6 +1,12 @@
 zeit.solr changes
 =================
 
+0.1.1 (2009-06-25)
+------------------
+
+- Test-Solr-Ergebnisse mit einem MD5-Namen ablegen, da sonst die Pfade zu lang
+  werden.
+
 0.1 (2009-06-25)
 ----------------
 

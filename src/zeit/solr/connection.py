@@ -1,6 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import hashlib
 import lxml.etree
 import lxml.html
 import pysolr
@@ -34,7 +35,9 @@ class SolrConnection(pysolr.Solr):
         """
         if self.url.startswith('file://'):
             assert method == 'GET' and not headers
-            url = 'file://%s' % path
+            additional_path = path[len(self.path):]
+            url = '/'.join(
+                (self.url, hashlib.md5(additional_path).hexdigest()))
             return urllib2.urlopen(url).read()
         return super(SolrConnection, self)._send_request(
             method, path, body, headers)
