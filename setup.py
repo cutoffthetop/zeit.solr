@@ -19,6 +19,7 @@ setup(
         'zeit.care',
         'zeit.connector',
         'zeit.content.article',
+        'zope.index',
     ],
     entry_points = """
         [console_scripts]

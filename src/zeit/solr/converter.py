@@ -32,6 +32,12 @@ class Index(object):
         parent_node.append(child_node)
 
 
+class TextIndex(Index):
+
+    def process(self, value, doc_node):
+        super(TextIndex, self).process(' '.join(value()), doc_node)
+
+
 class JoinTuple(Index):
 
     def process(self, value, doc_node):
@@ -163,9 +169,9 @@ class SolrConverter(object):
     Date(
         zeit.cms.content.interfaces.ISemanticChange,
         'last_semantic_change', solr='last-semantic-change')
-    Index(
-        zeit.solr.interfaces.ISearchableText,
-        'text', solr='main_text')
+    TextIndex(
+        zope.index.text.interfaces.ISearchableText,
+        'getSearchableText', solr='main_text')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'boxMostRead', solr='mostread')

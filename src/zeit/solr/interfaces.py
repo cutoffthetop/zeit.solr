@@ -18,10 +18,6 @@ class ISolrConverter(zope.interface.Interface):
         """Prepare DAV properties for Solr"""
 
 
-class ISearchableText(zope.interface.Interface):
-    """Interface for handling text content of articles."""
-
-
 class IUpdater(zope.interface.Interface):
     """Triggers an update of the solr index for an object.
 
