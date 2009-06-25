@@ -2,7 +2,6 @@ import inspect
 import lxml.etree
 import lxml.objectify
 import zeit.connector.interfaces
-import zeit.content.article
 import zeit.solr.interfaces
 import zeit.workflow.interfaces
 import zope.component

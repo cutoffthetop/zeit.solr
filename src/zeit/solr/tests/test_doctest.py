@@ -8,7 +8,6 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'converter.txt',
-        'searchable.txt',
         package='zeit.solr',
         layer=zeit.solr.testing.SolrLayer,
         ))

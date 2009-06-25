@@ -5,7 +5,6 @@
   <utility factory=".connection.solr_connection_factory" />
 
   <adapter factory=".converter.SolrConverter" />
-  <adapter factory=".searchable.SearchableText" />
 
   <adapter factory=".update.IdUpdater" />
   <adapter factory=".update.ContentUpdater" />
@@ -22,4 +21,5 @@
     permission="zeit.solr.UpdateIndex"
     methods="update_solr"
     />
+
 </configure>

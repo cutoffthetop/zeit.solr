@@ -16,9 +16,8 @@ setup(
         'pysolr >= 2.0.1',
         'setuptools',
         'simplejson', # for pysolr
-        'zeit.care',
+        'zeit.cms',
         'zeit.connector',
-        'zeit.content.article',
         'zope.index',
     ],
     entry_points = """
