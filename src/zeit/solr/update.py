@@ -46,7 +46,8 @@ class IdUpdater(object):
             zeit.solr.interfaces.IUpdater(content).update()
         except TypeError: # id does not exist in repository
             zope.component.getAdapter(
-                self.context, zeit.solr.interfaces.IUpdater, name='delete').update()
+                self.context,
+                zeit.solr.interfaces.IUpdater, name='delete').update()
 
 
 class ContentUpdater(object):
@@ -62,10 +63,10 @@ class ContentUpdater(object):
         conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
         converter = zeit.solr.interfaces.ISolrConverter(self.context)
         try:
-            # XXX it would be nicer to use add(), but then the converter would have
-            # to be rewritten not to produce XML anymore (and pysolr would have to
-            # learn how to set the boost), so we just push the raw XML here and
-            # bypass all the pysolr niceties.
+            # XXX it would be nicer to use add(), but then the converter would
+            # have to be rewritten not to produce XML anymore (and pysolr would
+            # have to learn how to set the boost), so we just push the raw XML
+            # here and bypass all the pysolr niceties.
             conn.update_raw(converter.convert())
         except zeit.solr.interfaces.SolrError, e:
             logger.error("Solr server returned '%s' while updating %s" %
