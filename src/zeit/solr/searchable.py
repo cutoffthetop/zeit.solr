@@ -1,6 +1,9 @@
 import zeit.cms.interfaces
+import zeit.content.article.interfaces
+import zeit.solr.interfaces
 import zope.component
 import zope.interface
+
 
 class SearchableText(object):
     """Prepare articles and store the whole text content"""
