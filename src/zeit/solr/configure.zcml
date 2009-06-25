@@ -1,7 +1,6 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
-  xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
-   >
+   xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc">
 
   <utility factory=".connection.solr_connection_factory" />
 
