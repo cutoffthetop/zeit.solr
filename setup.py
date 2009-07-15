@@ -13,7 +13,7 @@ setup(
     namespace_packages = ['zeit'],
     install_requires = [
         'mock',
-        'pysolr >= 2.0.1',
+        'pysolr > 2.0.5',
         'setuptools',
         'simplejson', # for pysolr
         'zeit.cms',
