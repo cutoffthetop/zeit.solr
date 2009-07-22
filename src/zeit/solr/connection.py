@@ -4,6 +4,7 @@
 import hashlib
 import lxml.etree
 import lxml.html
+import os.path
 import pysolr
 import urllib2
 import zeit.solr.interfaces
@@ -17,9 +18,7 @@ class SolrConnection(pysolr.Solr):
 
     def update_raw(self, xml):
         data = lxml.etree.tostring(xml, pretty_print=True, encoding='utf8')
-        response = self._update(data)
-        if response.status != 200:
-            raise pysolr.SolrError(self._extract_error(response))
+        return self._update(data)
 
     def _extract_error(self, response):
         # patched to use HTML instead of XML parser, so it does not choke
@@ -36,9 +35,13 @@ class SolrConnection(pysolr.Solr):
         if self.url.startswith('file://'):
             assert method == 'GET' and not headers
             additional_path = path[len(self.path):]
-            url = '/'.join(
-                (self.url, hashlib.md5(additional_path).hexdigest()))
-            return urllib2.urlopen(url).read()
+            local_path = '/'.join(
+                (self.url[7:], hashlib.md5(additional_path).hexdigest()))
+            if not os.path.exists(local_path):
+                raise ValueError("Could not find %s while opening %s" % (
+                    local_path, path))
+            return open(local_path).read()
+
         return super(SolrConnection, self)._send_request(
             method, path, body, headers)
 
