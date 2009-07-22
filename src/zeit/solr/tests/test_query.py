@@ -16,7 +16,7 @@ class QueryTest(zeit.solr.testing.FunctionalTestCase):
             result.docs[0]['uniqueId'])
 
     def test_not_existing(self):
-        self.assertRaises(OSError, self.solr.search, 'foo')
+        self.assertRaises(ValueError, self.solr.search, 'foo')
 
 
 def test_suite():
