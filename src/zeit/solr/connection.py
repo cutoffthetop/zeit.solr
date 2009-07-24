@@ -17,7 +17,8 @@ class SolrConnection(pysolr.Solr):
     zope.interface.implements(zeit.solr.interfaces.ISolr)
 
     def update_raw(self, xml):
-        data = lxml.etree.tostring(xml, pretty_print=True)
+        data = lxml.etree.tostring(xml, pretty_print=True, encoding='utf8',
+                                   xml_declaration=True)
         return self._update(data)
 
     def _extract_error(self, response):
