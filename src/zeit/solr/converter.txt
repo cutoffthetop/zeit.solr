@@ -33,7 +33,7 @@ Convert an article and check resultset:
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doc>
     <field ...
-    <field name="icon" py:pytype="str">/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png</field>...
+    <field name="icon">/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png</field>...
   </doc>
 </add>
 <BLANKLINE>
@@ -98,7 +98,7 @@ Now we are doing some boosting. For today:
 >>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="6.0">...
-...<field name="boost" py:pytype="float">6.0</field>...
+...<field name="boost">6.0</field>...
 <BLANKLINE>
 
 For day 1
@@ -108,7 +108,7 @@ For day 1
 >>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="5.0">...
-...<field name="boost" py:pytype="float">5.0</field>...
+...<field name="boost">5.0</field>...
 <BLANKLINE>
 
 For day 6
@@ -118,7 +118,7 @@ For day 6
 >>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="3.0">...
-...<field name="boost" py:pytype="float">3.0</field>...
+...<field name="boost">3.0</field>...
 <BLANKLINE>
 
 For day 7
@@ -128,7 +128,7 @@ For day 7
 >>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="2.0">...
-...<field name="boost" py:pytype="float">2.0</field>...
+...<field name="boost">2.0</field>...
 <BLANKLINE>
 
 For day 20
@@ -138,7 +138,7 @@ For day 20
 >>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="2.0">...
-...<field name="boost" py:pytype="float">2.0</field>...
+...<field name="boost">2.0</field>...
 <BLANKLINE>
 
 For day 30
@@ -148,7 +148,7 @@ For day 30
 >>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add...<doc boost="1.0">...
-...<field name="boost" py:pytype="float">1.0</field>...
+...<field name="boost">1.0</field>...
 <BLANKLINE>
 
 For day 70
@@ -162,7 +162,3 @@ For day 70
 
 Clean up:
 >>> zope.app.component.hooks.setSite(old_site)
-
-
-
-
