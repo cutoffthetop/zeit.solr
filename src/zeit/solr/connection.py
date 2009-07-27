@@ -21,11 +21,8 @@ class SolrConnection(pysolr.Solr):
         data = lxml.etree.tostring(xml, encoding='UTF-8', xml_declaration=True)
         path = '%s/update/' % self.path
         result = self._send_request(
-            'POST', path, data, {'Content-type': 'text/xml;charset=UTF-8'})
-        result = lxml.objectify.fromstring(result)
-        status = result.get('status')
-        if status != '0':
-            raise pysolr.SolrError(status, result.text)
+            'POST', path, data, {'Content-type': 'text/xml'})
+        return result
 
     def _extract_error(self, response):
         # patched to use HTML instead of XML parser, so it does not choke
