@@ -22,7 +22,7 @@ setup(
     ],
     entry_points = """
         [console_scripts]
-        solr-updater = zeit.solr.update:update_main
+        solr-reindex-object = zeit.solr.update:update_main
+        solr-reindex-query = zeit.solr.reindex:reindex
         """
-
 )

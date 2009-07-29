@@ -7,6 +7,9 @@ zeit.solr changes
 - Fixed boosting: Was 0 based instead of 1 based, also reaching the noop boost
   was not possible.
 
+- Added script to reindex solr by a query. This is useful to reindex boosts
+  with ``solr-update-query boost:[2 TO *]`` for instance.
+
 0.3 (2009-07-29)
 ----------------
 
