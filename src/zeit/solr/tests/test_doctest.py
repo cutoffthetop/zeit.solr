@@ -11,4 +11,8 @@ def test_suite():
         package='zeit.solr',
         layer=zeit.solr.testing.SolrLayer,
         ))
+    suite.addTest(doctest.DocFileSuite(
+        'query.txt',
+        package='zeit.solr',
+    ))
     return suite
