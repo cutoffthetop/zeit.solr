@@ -16,8 +16,10 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         zeit.solr.interfaces.IUpdater(
             'http://xml.zeit.de/nonexistent').update()
         self.assert_(self.solr.delete.called)
-        query = self.solr.delete.call_args[1]['q']
-        self.assert_('http://xml.zeit.de/nonexistent' in query)
+        query = self.solr.delete.call_args[1]
+        self.assertEquals({'commit': True,
+                           'q': 'uniqueId:(http\\://xml.zeit.de/nonexistent)'},
+                          query)
 
     def test_malformed_id_is_treated_as_delete(self):
         zeit.solr.interfaces.IUpdater('foo').update()

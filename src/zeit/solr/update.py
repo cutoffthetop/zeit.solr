@@ -1,3 +1,4 @@
+from zeit.solr import query as lq
 import gocept.runner
 import logging
 import lxml.etree
@@ -83,5 +84,8 @@ class Deleter(object):
         self.context = context
 
     def update(self):
+        # Note that we cannot use the UUID to delete because we just don't know
+        # it. All we have is the uniqueId.
         conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-        conn.delete(q='uniqueId:%s' % self.context, commit=True)
+        query = lq.field('uniqueId', self.context)
+        conn.delete(q=query, commit=True)
