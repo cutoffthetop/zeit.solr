@@ -8,7 +8,7 @@ import zeit.solr.interfaces
 import zope.component
 
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 @gocept.runner.once()
@@ -21,7 +21,7 @@ def update_main():
 
 def update_container(container_id):
     conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
-    logger.info("updating container '%s' on '%s'" % (container_id, conn.url))
+    log.info("updating container '%s' on '%s'" % (container_id, conn.url))
     start_container = zeit.cms.interfaces.ICMSContent(container_id)
     stack = [start_container]
     while stack:
@@ -59,7 +59,7 @@ class ContentUpdater(object):
         self.context = context
 
     def update(self):
-        logger.info("updating content '%s'" % self.context.uniqueId)
+        log.info("updating content '%s'" % self.context.uniqueId)
         conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
         converter = zeit.solr.interfaces.ISolrConverter(self.context)
         try:
@@ -69,7 +69,7 @@ class ContentUpdater(object):
             # here and bypass all the pysolr niceties.
             conn.update_raw(converter.convert())
         except zeit.solr.interfaces.SolrError, e:
-            logger.error("Solr server returned '%s' while updating %s" %
+            log.error("Solr server returned '%s' while updating %s" %
                          (e, self.context.uniqueId))
             return None
 
