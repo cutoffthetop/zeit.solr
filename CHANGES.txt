@@ -4,7 +4,9 @@ zeit.solr changes
 0.3 (unreleased)
 ----------------
 
-- moved solr query generator from zeit.find to here.
+- Moved solr query generator from zeit.find to here.
+
+- Fixed solr updater to quote the query correctly.
 
 0.2.2 (2009-07-29)
 ------------------
