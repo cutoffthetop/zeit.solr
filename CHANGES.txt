@@ -1,6 +1,12 @@
 zeit.solr changes
 =================
 
+0.4 (unreleased)
+----------------
+
+- Fixed boosting: Was 0 based instead of 1 based, also reaching the noop boost
+  was not possible.
+
 0.3 (2009-07-29)
 ----------------
 

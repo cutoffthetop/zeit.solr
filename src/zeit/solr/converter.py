@@ -102,31 +102,29 @@ class Boost (Index):
 
     @property
     def conf(self):
-        date = datetime.datetime.now (tz=pytz.UTC)
+        date = datetime.datetime.now(tz=pytz.UTC)
         return (
-                  (date - datetime.timedelta(days = 60),0),
-                  (date - datetime.timedelta(days = 30),1.0),
-                  (date - datetime.timedelta(days = 7), 2.0),
-                  (date - datetime.timedelta(days = 2), 3.0),
-                  (date - datetime.timedelta(days = 1), 5.0),
-                  (date, 6.0)
-               )
+            (date - datetime.timedelta(days=60), 1),
+            (date - datetime.timedelta(days=30), 2),
+            (date - datetime.timedelta(days=7), 3),
+            (date - datetime.timedelta(days=2), 4),
+            (date - datetime.timedelta(days=1), 6),
+            (date, 7),
+        )
 
     def set_boost(self, boost, doc_node):
         doc_node.set('boost', str(boost))
 
     def process(self, value, doc_node):
         boost = self.calc_boost(value)
-        if boost > 0:
-            self.set_boost(boost, doc_node)
-            self.append_to_node(boost, doc_node)
+        self.set_boost(boost, doc_node)
+        self.append_to_node(boost, doc_node)
 
     def calc_boost(self,last_semantic_change):
-        for time_boost in self.conf:
-            if last_semantic_change < time_boost[0]:
-                return time_boost[1]
-
-        return 0
+        for date, boost in self.conf:
+            if last_semantic_change < date:
+                return boost
+        return 1
 
 
 class SolrConverter(object):
