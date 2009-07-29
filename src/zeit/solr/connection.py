@@ -27,8 +27,8 @@ class SolrConnection(pysolr.Solr):
     def _extract_error(self, headers, response):
         # patched to use HTML instead of XML parser, so it does not choke
         # on <hr>-Tags, for example
-        et = lxml.html.fromString(response)
-        return "[%s] %s" % (headers.get('reason'), et.findtext('body/h1'))
+        et = lxml.html.fromstring(response)
+        return "[%s] %s" % (headers.getheader('reason'), et.findtext('body/h1'))
 
     def _send_request(self, method, path, body=None, headers=None):
         """Override to use urllib2 instead of httplib directly for file urls.
