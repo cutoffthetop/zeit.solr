@@ -5,6 +5,8 @@ queries.
 import re
 
 def _field(name, value):
+    if isinstance(value, unicode):
+        value = value.encode('utf8')
     return '%s:%s' % (name, value)
 
 def field(name, value):

@@ -24,6 +24,12 @@ We can also use nasty characters safely, as they will be escaped:
 >>> print lq.field('text', 'bar ||')
 text:(bar \|\|)
 
+Unicode will be spit out as UTF8:
+
+>>> lq.field('text', u't\xfcst')
+'text:(t\xc3\xbcst)'
+
+
 We can query boolean fields:
 
 >>> print lq.bool_field('name', True)
@@ -36,7 +42,7 @@ We can also do a text range query:
 >>> print lq.text_range('name', 'abc', 'xyz')
 name:[(abc) TO (xyz)]
 
-Ranges can also be left open on each end::
+Ranges can also be left open on each end:
 
 >>> print lq.text_range('name', None, 'xyz')
 name:[* TO (xyz)]

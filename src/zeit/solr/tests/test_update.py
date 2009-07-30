@@ -1,3 +1,4 @@
+# coding: utf8
 import unittest
 import zeit.solr.testing
 
@@ -25,6 +26,11 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         zeit.solr.interfaces.IUpdater('foo').update()
         self.assert_(self.solr.delete.called)
 
-
-def test_suite():
-    return unittest.makeSuite(UpdateTest)
+    def test_delete_with_unicode(self):
+        zeit.solr.interfaces.IUpdater(
+            u'http://xml.zeit.de/nöd-däh').update()
+        query = self.solr.delete.call_args[1]
+        self.assertEquals(
+            {'commit': True,
+             'q': 'uniqueId:(http\\://xml.zeit.de/n\xc3\xb6d\\-d\xc3\xa4h)'},
+            query)

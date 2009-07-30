@@ -10,6 +10,8 @@ zeit.solr changes
 - Added script to reindex solr by a query. This is useful to reindex boosts
   with ``solr-update-query boost:[2 TO *]`` for instance.
 
+- Fixed error with non us-ascii URIs when deleting from Solr.
+
 0.3 (2009-07-29)
 ----------------
 
