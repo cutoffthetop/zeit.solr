@@ -33,7 +33,6 @@ Convert an article and check resultset:
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doc>
     <field ...
-    <field name="icon">/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png</field>...
   </doc>
 </add>
 <BLANKLINE>
