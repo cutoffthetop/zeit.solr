@@ -2,6 +2,7 @@ import inspect
 import lxml.etree
 import lxml.objectify
 import zeit.connector.interfaces
+import zeit.content.image.interfaces
 import zeit.solr.interfaces
 import zeit.workflow.interfaces
 import zope.component
@@ -139,6 +140,9 @@ class SolrConverter(object):
     Boost(
         zeit.cms.content.interfaces.ISemanticChange,
         'last_semantic_change', solr='boost')
+    Index(
+        zeit.content.image.interfaces.IImageMetadata,
+        'alt')
     SplitTuple(
         zeit.cms.content.interfaces.ICommonMetadata,
         'authors')
@@ -148,6 +152,9 @@ class SolrConverter(object):
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'byline')
+    Index(
+        zeit.content.image.interfaces.IImageMetadata,
+        'caption')
     Date(zeit.cms.workflow.interfaces.IModified,
          'date_last_modified', solr='date-last-modified')
     Index(
@@ -206,6 +213,9 @@ class SolrConverter(object):
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'title')
+    Index(
+        zeit.content.image.interfaces.IImageMetadata,
+        'title')
     Type(solr='type')
     Index(
         zeit.cms.content.interfaces.IUUID,
@@ -214,10 +224,16 @@ class SolrConverter(object):
         zeit.cms.content.interfaces.ICommonMetadata,
         'volume')
     Index(
+        zeit.content.image.interfaces.IImageMetadata,
+        'volume')
+    Index(
         zeit.cms.interfaces.ICMSContent,
         'uniqueId')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
+        'year')
+    Index(
+        zeit.content.image.interfaces.IImageMetadata,
         'year')
     Icon(solr='icon')
 

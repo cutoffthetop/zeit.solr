@@ -21,6 +21,8 @@
 
   <include package="zeit.content.article" />
 
+  <include package="zeit.content.image" />
+
   <principal
     id="zope.solr"
     title="Updater"

@@ -39,16 +39,32 @@ Convert an article and check resultset:
 
 
 Convert an image and check resultset:
-(TODO: Use image with dav properties!)
-
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction() 
 >>> image = zeit.cms.interfaces.ICMSContent(
 ... 'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> with zeit.cms.checkout.helper.checked_out(image) as checked_out:
+...     image_meta = zeit.content.image.interfaces.IImageMetadata(checked_out)
+...     image_meta.title   = 'image title'
+...     image_meta.year    = '2006'
+...     image_meta.volume  = '05'
+...     image_meta.alt     = 'alternative text'
+...     image_meta.caption = 'caption text'
 >>> image_converter = zeit.solr.interfaces.ISolrConverter(image)
 >>> root_node = image_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
-<add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<add ...>
   <doc>
-    <field ...
+    <field name="alt">alternative text</field>
+    <field name="caption">caption text</field>
+    <field name="date-last-modified">...</field>
+    <field name="last_modified_by">zope.user</field>
+    <field name="title">image title</field>
+    <field name="type">image</field>
+    <field name="uuid">{urn:uuid:a429930f-f213-4dfb-b02a-441a134e0d09}</field>
+    <field name="volume">5</field>
+    <field name="uniqueId">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
+    <field name="year">2006</field>
   </doc>
 </add>
 <BLANKLINE>
@@ -79,8 +95,6 @@ Get a date
 datetime.datetime...
 
 Checkout article, change last semantic change to date, checkin
->>> import zeit.cms.testing
->>> principal = zeit.cms.testing.create_interaction() 
 >>> dummy = with_statement
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
@@ -160,6 +174,7 @@ For day 70
 <add...<doc boost="1">...
 ...<field name="boost">1</field>...
 <BLANKLINE>
+
 
 Clean up:
 >>> zope.app.component.hooks.setSite(old_site)
