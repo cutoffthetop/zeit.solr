@@ -17,6 +17,7 @@ setup(
         'setuptools',
         'simplejson', # for pysolr
         'zeit.cms',
+        'zeit.content.article',
         'zeit.connector',
         'zope.index',
     ],

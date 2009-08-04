@@ -19,6 +19,8 @@
 
   <include package="zeit.solr" />
 
+  <include package="zeit.content.article" />
+
   <principal
     id="zope.solr"
     title="Updater"
