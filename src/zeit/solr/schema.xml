@@ -51,12 +51,13 @@
        limits compression (if enabled in the derived fields) to values which
        exceed a certain size (in characters).
     -->
-    <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true">
+    <!-- <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true">
          <analyzer>
             <tokenizer class="solr.WhitespaceTokenizerFactory"/>
             <filter class="solr.SnowballPorterFilterFactory" language="German" />
         </analyzer>
-    </fieldType>
+    </fieldType> -->
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
 
     <!-- boolean type: "true" or "false" -->
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
