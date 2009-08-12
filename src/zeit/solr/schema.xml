@@ -51,13 +51,15 @@
        limits compression (if enabled in the derived fields) to values which
        exceed a certain size (in characters).
     -->
-    <!-- <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true">
+    <!-- A string field that has no tokenizer -->
+    <fieldType name="string_nt" class="solr.StrField" omitNorms="true"/>
+
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true">
          <analyzer>
             <tokenizer class="solr.WhitespaceTokenizerFactory"/>
             <filter class="solr.SnowballPorterFilterFactory" language="German" />
         </analyzer>
-    </fieldType> -->
-    <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+    </fieldType>
 
     <!-- boolean type: "true" or "false" -->
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
@@ -291,7 +293,7 @@
    <field name="teaser_text" type="string" indexed="true" stored="true" />
    <field name="teaser_title" type="string" indexed="true" stored="true" />
    <field name="title" type="text" indexed="true" stored="true" />
-   <field name="type" type="string" indexed="true" stored="true" />
+   <field name="type" type="string_nt" indexed="true" stored="true" />
    <field name="uniqueId" type="string" indexed="true" stored="true" />
    <field name="uuid" type="string" indexed="true" stored="true" />
    <field name="volume" type="integer" indexed="true" stored="true" />
