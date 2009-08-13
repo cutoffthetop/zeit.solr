@@ -13,6 +13,7 @@ import zope.interface
 product_config = """\
 <product-config zeit.solr>
     solr-url file://%s
+    public-solr-url http://dummy
 </product-config>
 """ % pkg_resources.resource_filename(__name__, 'tests/data')
 

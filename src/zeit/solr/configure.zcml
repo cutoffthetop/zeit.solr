@@ -3,6 +3,10 @@
    xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc">
 
   <utility factory=".connection.solr_connection_factory" />
+  <utility
+    factory=".connection.public_solr_connection_factory"
+    name="public"
+    />
 
   <adapter factory=".converter.SolrConverter" />
 
@@ -22,4 +26,6 @@
     methods="update_solr"
     />
 
+  <subscriber handler=".update.update_public_after_publish" />
+  <subscriber handler=".update.delete_public_after_retract" />
 </configure>

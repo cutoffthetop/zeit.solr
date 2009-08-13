@@ -4,6 +4,7 @@ import logging
 import lxml.etree
 import sys
 import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.solr.connection
 import zeit.solr.interfaces
 import zope.component
@@ -59,9 +60,10 @@ class ContentUpdater(object):
     def __init__(self, context):
         self.context = context
 
-    def update(self):
+    def update(self, solr=u''):
         log.info("updating content '%s'" % self.context.uniqueId)
-        conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        conn = zope.component.getUtility(zeit.solr.interfaces.ISolr,
+                                         name=solr)
         converter = zeit.solr.interfaces.ISolrConverter(self.context)
         try:
             # XXX it would be nicer to use add(), but then the converter would
@@ -83,9 +85,22 @@ class Deleter(object):
     def __init__(self, context):
         self.context = context
 
-    def update(self):
+    def update(self, solr=u''):
         # Note that we cannot use the UUID to delete because we just don't know
         # it. All we have is the uniqueId.
-        conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        conn = zope.component.getUtility(zeit.solr.interfaces.ISolr,
+                                         name=solr)
         query = lq.field('uniqueId', self.context)
         conn.delete(q=query, commit=True)
+
+
+@zope.component.adapter(zeit.cms.workflow.interfaces.IPublishedEvent)
+def update_public_after_publish(event):
+    zeit.solr.interfaces.IUpdater(event.object).update(solr='public')
+
+
+@zope.component.adapter(zeit.cms.workflow.interfaces.IBeforeRetractEvent)
+def delete_public_after_retract(event):
+    up = zope.component.getAdapter(
+        event.object.uniqueId, zeit.solr.interfaces.IUpdater, name='delete')
+    up.update(solr='public')

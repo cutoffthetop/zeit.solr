@@ -57,3 +57,10 @@ def solr_connection_factory():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.solr')
     url = config.get('solr-url')
     return SolrConnection(url)
+
+
+@zope.interface.implementer(zeit.solr.interfaces.ISolr)
+def public_solr_connection_factory():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.solr')
+    url = config.get('public-solr-url')
+    return SolrConnection(url)
