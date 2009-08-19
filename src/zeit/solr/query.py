@@ -5,8 +5,9 @@ queries.
 import re
 
 def _field(name, value):
-    if isinstance(value, unicode):
-        value = value.encode('utf8')
+    if isinstance(value, str):
+        value = unicode(value)
+    assert isinstance(value, unicode)
     return '%s:%s' % (name, value)
 
 def field(name, value):
@@ -49,7 +50,7 @@ def or_(*args):
 def multi_field(name, value):
     words = value.split()
     return and_(*[field(name, word) for word in words])
-    
+
 _to_escape = ['+', '-', '&', '|', '!', '(', ')', '{', '}',
              '[', ']', '^', '"', '~', '*', '?', ':', '\\']
 

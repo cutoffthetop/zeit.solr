@@ -24,10 +24,17 @@ We can also use nasty characters safely, as they will be escaped:
 >>> print lq.field('text', 'bar ||')
 text:(bar \|\|)
 
-Unicode will be spit out as UTF8:
+Unicode will be preserved. Everything else is decoded to unicode (assuming it
+doesn't contain non us ascii charachters):
 
 >>> lq.field('text', u't\xfcst')
-'text:(t\xc3\xbcst)'
+u'text:(t\xfcst)'
+>>> lq.field('text', 'foo')
+u'text:(foo)'
+>>> lq.field('text', 'f\xfcoo')
+Traceback (most recent call last):
+    ...
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xfc in position 2: ordinal not in range(128)
 
 
 We can query boolean fields:

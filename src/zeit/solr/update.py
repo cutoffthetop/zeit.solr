@@ -90,7 +90,7 @@ class Deleter(object):
         # it. All we have is the uniqueId.
         conn = zope.component.getUtility(zeit.solr.interfaces.ISolr,
                                          name=solr)
-        query = lq.field('uniqueId', self.context)
+        query = lq.field('uniqueId', self.context).encode('UTF-8')
         conn.delete(q=query, commit=True)
 
 
