@@ -9,6 +9,8 @@ zeit.solr changes
 
 - Fix unicode handling for select and delete (#6028).
 
+- Use listrepresentation for indexing the title (#6038).
+
 0.4 (2009-07-30)
 ----------------
 

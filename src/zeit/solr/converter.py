@@ -1,6 +1,8 @@
+import datetime
 import inspect
 import lxml.etree
 import lxml.objectify
+import pytz
 import zeit.connector.interfaces
 import zeit.content.image.interfaces
 import zeit.solr.interfaces
@@ -8,8 +10,6 @@ import zeit.workflow.interfaces
 import zope.component
 import zope.interface
 import zope.publisher.browser
-import datetime
-import pytz
 
 
 class Index(object):
@@ -97,6 +97,30 @@ class Icon(Index):
             return
         path = icon.url().replace(request['SERVER_URL'], '')
         self.append_to_node(path, doc_node)
+
+
+class ListRepresentationIndex(Index):
+
+    interface = zope.interface.Interface
+    attribute = None
+
+    def __init__(self, attribute, solr=None):
+        if solr is None:
+            solr = attribute
+        super(ListRepresentationIndex, self).__init__(
+            self.interface, self.attribute, solr, 2)
+        self.list_attribute = attribute
+
+    def process(self, value, doc_node):
+        request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSSkin)
+        list_repr = zope.component.queryMultiAdapter(
+            (value, request), zeit.cms.browser.interfaces.IListRepresentation)
+        if list_repr is None:
+            return
+        value = getattr(list_repr, self.list_attribute)
+        self.append_to_node(value, doc_node)
+
 
 
 class Boost (Index):
@@ -210,31 +234,16 @@ class SolrConverter(object):
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'teaserText', solr='teaser_text')
-    Index(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        'title')
-    Index(
-        zeit.content.image.interfaces.IImageMetadata,
-        'title')
+    ListRepresentationIndex('title')
     Type(solr='type')
     Index(
         zeit.cms.content.interfaces.IUUID,
         'id', solr='uuid')
-    Index(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        'volume')
-    Index(
-        zeit.content.image.interfaces.IImageMetadata,
-        'volume')
+    ListRepresentationIndex('volume')
     Index(
         zeit.cms.interfaces.ICMSContent,
         'uniqueId')
-    Index(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        'year')
-    Index(
-        zeit.content.image.interfaces.IImageMetadata,
-        'year')
+    ListRepresentationIndex('year')
     Icon(solr='icon')
 
     def __init__(self, context):

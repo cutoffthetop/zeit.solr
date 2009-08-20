@@ -22,6 +22,7 @@
   <include package="zeit.content.article" />
 
   <include package="zeit.content.image" />
+  <include package="zeit.content.image.browser" />
 
   <principal
     id="zope.solr"

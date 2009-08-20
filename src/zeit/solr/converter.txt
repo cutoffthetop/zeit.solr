@@ -65,6 +65,7 @@ Convert an image and check resultset:
     <field name="volume">5</field>
     <field name="uniqueId">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
     <field name="year">2006</field>
+    <field name="icon">/@@/zeit-content-image-interfaces-IImage-zmi_icon.png</field>
   </doc>
 </add>
 <BLANKLINE>
