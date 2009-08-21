@@ -37,8 +37,11 @@ Convert an article and check resultset:
 </add>
 <BLANKLINE>
 
+>>> zope.index.text.interfaces.ISearchableText(article).getSearchableText()
+[u'Kriegsherr Hussein Mohammed Aidid hat ...
 
 Convert an image and check resultset:
+
 >>> import zeit.cms.testing
 >>> principal = zeit.cms.testing.create_interaction() 
 >>> image = zeit.cms.interfaces.ICMSContent(

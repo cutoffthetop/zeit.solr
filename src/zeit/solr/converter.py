@@ -1,4 +1,5 @@
 import datetime
+import grokcore.component
 import inspect
 import lxml.etree
 import lxml.objectify
@@ -10,6 +11,16 @@ import zeit.workflow.interfaces
 import zope.component
 import zope.interface
 import zope.publisher.browser
+
+class GenericXMLContentTextIndex(grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.cms.content.interfaces.IXMLContent)
+    grokcore.component.implements(zope.index.text.interfaces.ISearchableText)
+
+    def getSearchableText(self):
+        main_text = []
+        text = self.context.xml.xpath("//text()")
+        return [unicode(s) for s in text]
 
 
 class Index(object):

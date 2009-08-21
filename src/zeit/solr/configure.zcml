@@ -1,6 +1,9 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
-   xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc">
+   xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc"
+   xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." />
 
   <utility factory=".connection.solr_connection_factory" />
   <utility

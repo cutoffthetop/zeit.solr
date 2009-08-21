@@ -12,13 +12,14 @@ setup(
     zip_safe = False,
     namespace_packages = ['zeit'],
     install_requires = [
+        'grokcore.component',
         'mock',
         'pysolr > 2.0.5',
         'setuptools',
         'simplejson', # for pysolr
         'zeit.cms',
-        'zeit.content.article',
         'zeit.connector',
+        'zeit.content.article',
         'zope.index',
     ],
     entry_points = """
