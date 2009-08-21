@@ -11,6 +11,9 @@ zeit.solr changes
 
 - Use listrepresentation for indexing the title (#6038).
 
+- Added a generic SearchableText for all IXMLContent which yields all text
+  (#6038).
+
 0.4 (2009-07-30)
 ----------------
 
