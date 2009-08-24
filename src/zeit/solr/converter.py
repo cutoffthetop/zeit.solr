@@ -219,6 +219,12 @@ class SolrConverter(object):
         zeit.cms.content.interfaces.ICommonMetadata,
         'page')
     Index(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        'product_id')
+    Index(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        'product_text')
+    Index(
         zeit.cms.workflow.interfaces.IPublicationStatus,
         'published')
     Index(
