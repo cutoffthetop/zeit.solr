@@ -6,6 +6,8 @@ zeit.solr changes
 
 - Neue Felder im Solr: product_id, product_text
 
+- Optionen zur Reindizierung über die Kommandozeile hinzugefügt
+
 
 0.5 (2009-08-21)
 ----------------

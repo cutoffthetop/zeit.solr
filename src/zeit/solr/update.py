@@ -1,3 +1,4 @@
+from optparse import OptionParser
 from zeit.solr import query as lq
 import gocept.runner
 import logging
@@ -15,13 +16,29 @@ log = logging.getLogger(__name__)
 
 @gocept.runner.once()
 def update_main():
-    if len(sys.argv) > 2:
-        url = sys.argv[2]
-        zope.component.provideUtility(zeit.solr.connection.SolrConnection(url))
-    update_container(sys.argv[1])
+    usage = "usage: %prog [options] arg"
+    parser = OptionParser(usage)
+    parser.add_option("-s", "--solr", dest="solr",
+                      help="solr server uri")
+    parser.add_option("-w", "--webdav", dest="webdav",
+                      help="webdav server uri")
+    parser.add_option("-p", "--published", action="store_true", dest="published",
+                        help="only work on published resources")
+
+    (options, args) = parser.parse_args()
+
+    if not options.solr:
+        parser.error("missing solr url")
+    if not options.webdav:
+        parser.error("missing webdav uri")
+    if options.solr and options.webdav:
+        zope.component.provideUtility(
+            zeit.solr.connection.SolrConnection(options.solr))
+        update_container(options.webdav, options.published)
 
 
-def update_container(container_id):
+def update_container(container_id, needs_publish):
+    valid_status = ['OK', 'imported', 'importedVHB']
     conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
     log.info("updating container '%s' on '%s'" % (container_id, conn.url))
     start_container = zeit.cms.interfaces.ICMSContent(container_id)
@@ -30,6 +47,12 @@ def update_container(container_id):
         content = stack.pop(0)
         if zeit.cms.repository.interfaces.ICollection.providedBy(content):
             stack.extend(content.values())
+        if needs_publish == True:
+            pubinfo = zeit.cms.workflow.interfaces.IPublishInfo(content)
+            published = pubinfo.published
+            status = zeit.workflow.interfaces.IOldCMSStatus(content).status
+            if (published == False) and (status not in valid_status):
+                continue
         zeit.solr.interfaces.IUpdater(content).update()
     conn.commit()
 
