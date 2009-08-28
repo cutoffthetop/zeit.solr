@@ -209,8 +209,15 @@ class SolrConverter(object):
     Index(
         zeit.content.image.interfaces.IImageMetadata,
         'caption')
-    Date(zeit.cms.workflow.interfaces.IModified,
-         'date_last_modified', solr='date-last-modified')
+    Date(
+        zeit.cms.workflow.interfaces.IPublishInfo,
+        'date_first_released', solr='date-first-released')
+    Date(
+        zeit.cms.workflow.interfaces.IModified,
+        'date_last_modified', solr='date-last-modified')
+    Date(
+        zeit.cms.workflow.interfaces.IPublishInfo,
+        'date_last_published', solr='date-last-published')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'shortTeaserTitle',
