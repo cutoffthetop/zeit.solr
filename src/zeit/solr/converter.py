@@ -133,6 +133,25 @@ class ListRepresentationIndex(Index):
         self.append_to_node(value, doc_node)
 
 
+class ImageIndex(Index):
+
+    def process(self, values, doc_node):
+        image = zeit.content.image.interfaces.IImageMetadata(values[0])
+        self.append_to_node(unicode(values[0].uniqueId), doc_node)
+        pub = zeit.workflow.interfaces.ITimeBasedPublishing(values[0])
+        if pub is not None:
+            expires = pub.released_to
+        if expires is None:
+            expires = ''
+        self.append_to_node(unicode(expires), doc_node)
+        ref = zope.component.getAdapter(
+            values[0],
+            zeit.cms.content.interfaces.IXMLReference, name='image')
+        type = ref.get('type')
+        if type is None:
+            type = ''
+        self.append_to_node(unicode(type), doc_node)
+
 
 class Boost (Index):
 
@@ -227,6 +246,9 @@ class SolrConverter(object):
     Index(
         zeit.cms.workflow.interfaces.IPublicationStatus,
         'published')
+    ImageIndex(
+        zeit.content.image.interfaces.IImages,
+        'images', solr='image-reference')
     Index(
         zeit.workflow.interfaces.IContentWorkflow,
         'refined')

@@ -14,8 +14,22 @@ We need to set the site since we're a functional test:
 Get article for adapter tests:
 
 >>> import zeit.cms.interfaces
+>>> import zeit.cms.testing
+>>> import datetime
+>>> principal = zeit.cms.testing.create_interaction() 
 >>> article = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> images = zeit.content.image.interfaces.IImages(article)
+>>> image = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     image).checkout()
+>>> image_metadata = zeit.content.image.interfaces.IImageMetadata(checked_out)
+>>> image_metadata.expires = datetime.datetime(2007, 4, 1)
+>>> checked_in = zeit.cms.checkout.interfaces.ICheckinManager(
+...     checked_out).checkin()
+>>> images.images = (checked_in, )
+
 
 Build a converter:
 
@@ -30,9 +44,32 @@ Convert an article and check resultset:
 >>> import lxml.etree
 >>> root_node = article_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
-<add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<add ...>
   <doc>
-    <field ...
+    <field name="authors">Hans Meiser</field>
+    <field name="authors_fulltext">Hans Meiser</field>
+    <field name="byline">Von Jochen Stahnke</field>
+    <field name="date-last-modified">2008-03-07T12:47:16Z</field>
+    <field name="indexteaser_title">Somalia</field>
+    <field name="indexteaser_text">R&#252;ckkehr der Warlords</field>
+    <field name="main_text">Kriegsherr...</field>
+    <field name="mostread">true</field>
+    <field name="published">not-published</field>
+    <field name="image-reference">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
+    <field name="image-reference"></field>
+    <field name="image-reference">JPG</field>
+    <field name="ressort">International</field>
+    <field name="serie">-</field>
+    <field name="subtitle">Im Zuge des &#228;thiopischen Vormarsches auf Mogadischu kriechen in Somalia auch die alten Miliz-Chefs wieder hervor.</field>
+    <field name="supertitle">Somalia</field>
+    <field name="teaser_title">R&#252;ckkehr der Warlords</field>
+    <field name="teaser_text">Im Zuge des &#228;thiopischen Vormarsches auf Mogadischu kriechen in Somalia auch die alten Miliz-Chefs wieder hervor.</field>
+    <field name="title">R&#252;ckkehr der Warlords</field>
+    <field name="type">article</field>
+    <field name="volume">1</field>
+    <field name="uniqueId">http://xml.zeit.de/online/2007/01/Somalia</field>
+    <field name="year">2007</field>
+    <field name="icon">/++noop++7b96ef8299459c6372971b040141db4d/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png</field>
   </doc>
 </add>
 <BLANKLINE>
@@ -42,8 +79,6 @@ Convert an article and check resultset:
 
 Convert an image and check resultset:
 
->>> import zeit.cms.testing
->>> principal = zeit.cms.testing.create_interaction() 
 >>> image = zeit.cms.interfaces.ICMSContent(
 ... 'http://xml.zeit.de/2006/DSC00109_2.JPG')
 >>> with zeit.cms.checkout.helper.checked_out(image) as checked_out:
@@ -62,6 +97,7 @@ Convert an image and check resultset:
     <field name="caption">caption text</field>
     <field name="date-last-modified">...</field>
     <field name="last_modified_by">zope.user</field>
+    <field name="published">not-published</field>
     <field name="title">image title</field>
     <field name="type">image</field>
     <field name="uuid">{urn:uuid:a429930f-f213-4dfb-b02a-441a134e0d09}</field>
@@ -92,7 +128,6 @@ Convert a centerpage and check resultset:
 
 
 Get a date
->>> import datetime
 >>> import pytz
 >>> date = datetime.datetime.now(tz=pytz.UTC)
 >>> date
