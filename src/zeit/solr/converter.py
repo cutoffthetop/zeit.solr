@@ -139,9 +139,11 @@ class ImageIndex(Index):
     def process(self, values, doc_node):
         if len(values) == 0:
             return
-        image = zeit.content.image.interfaces.IImageMetadata(values[0])
+        image = zeit.content.image.interfaces.IImageMetadata(values[0], None)
+        if image is None:
+            return
         self.append_to_node(unicode(values[0].uniqueId), doc_node)
-        pub = zeit.workflow.interfaces.ITimeBasedPublishing(values[0])
+        pub = zeit.workflow.interfaces.ITimeBasedPublishing(values[0], None)
         if pub is not None:
             expires = pub.released_to
         if expires is None:
