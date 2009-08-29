@@ -20,8 +20,6 @@
   <include package="zeit.solr" />
 
   <include package="zeit.content.article" />
-
-  <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />
 
   <include package="zeit.content.image" />
