@@ -6,6 +6,7 @@ import lxml.objectify
 import pytz
 import zeit.connector.interfaces
 import zeit.content.image.interfaces
+import zeit.content.article.interfaces
 import zeit.solr.interfaces
 import zeit.workflow.interfaces
 import zope.component
@@ -40,6 +41,7 @@ class Index(object):
 
     def append_to_node(self, value, parent_node):
         child_node = lxml.objectify.E.field(value, name=self.solr)
+        print self.solr, value
         lxml.objectify.deannotate(child_node)
         parent_node.append(child_node)
 
@@ -204,11 +206,20 @@ class SolrConverter(object):
         zeit.cms.content.interfaces.ICommonMetadata,
         'authors', solr='authors_fulltext')
     Index(
+         zeit.content.article.interfaces.IArticleMetadata,
+        'boxMostRead', solr='mostread')
+    Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'byline')
     Index(
         zeit.content.image.interfaces.IImageMetadata,
         'caption')
+    Index(
+         zeit.workflow.interfaces.IContentWorkflow,
+        'corrected')
+    Index(
+         zeit.cms.content.interfaces.ICommonMetadata,
+         'countings')
     Date(
         zeit.cms.workflow.interfaces.IPublishInfo,
         'date_first_released', solr='date-first-released')
@@ -219,9 +230,15 @@ class SolrConverter(object):
         zeit.cms.workflow.interfaces.IPublishInfo,
         'date_last_published', solr='date-last-published')
     Index(
+         zeit.cms.content.interfaces.ICommonMetadata,
+        'dailyNewsletter', solr='DailyNL')
+    Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'shortTeaserTitle',
         solr='indexteaser_title')
+    Index(
+         zeit.content.article.interfaces.IArticleMetadata,
+        'has_recensions')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'shortTeaserText',
@@ -238,9 +255,6 @@ class SolrConverter(object):
     TextIndex(
         zope.index.text.interfaces.ISearchableText,
         'getSearchableText', solr='main_text')
-    Index(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        'boxMostRead', solr='mostread')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'page')
@@ -289,6 +303,9 @@ class SolrConverter(object):
     Index(
         zeit.cms.interfaces.ICMSContent,
         'uniqueId')
+    Index(
+         zeit.workflow.interfaces.IContentWorkflow,
+        'urgent')
     ListRepresentationIndex('year')
     Icon(solr='icon')
 
@@ -304,7 +321,8 @@ class SolrConverter(object):
             value = self.get_adapter(index.interface)
             if index.attribute is not None:
                 value = getattr(value, index.attribute, None)
-            if not value:
+            print index.attribute, value
+            if value is None:
                 continue
             index.process(value, doc_node)
 

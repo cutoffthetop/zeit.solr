@@ -4,7 +4,8 @@ zeit.solr changes
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Neue Felder im Solr: DailyNL, corrected, countings, has_recensions,
+  mostread, urgent
 
 
 0.6 (2009-08-29)
