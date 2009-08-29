@@ -41,7 +41,6 @@ class Index(object):
 
     def append_to_node(self, value, parent_node):
         child_node = lxml.objectify.E.field(value, name=self.solr)
-        print self.solr, value
         lxml.objectify.deannotate(child_node)
         parent_node.append(child_node)
 
@@ -321,7 +320,6 @@ class SolrConverter(object):
             value = self.get_adapter(index.interface)
             if index.attribute is not None:
                 value = getattr(value, index.attribute, None)
-            print index.attribute, value
             if value is None:
                 continue
             index.process(value, doc_node)
