@@ -273,8 +273,8 @@
    <field name="boost" type="integer" indexed="true" stored="false" />
    <field name="byline" type="text" indexed="true" stored="true" />
    <field name="caption" type="string" indexed="true" stored="true" />
-   <field name="corrected" type="string" indexed="true" stored="true" />
-   <field name="countings" type="string" indexed="true" stored="true" />
+   <field name="corrected" type="string_nt" indexed="true" stored="true" />
+   <field name="countings" type="string_nt" indexed="true" stored="true" />
    <field name="date-first-released" type="date" indexed="true" stored="true" />
    <field name="date-last-modified" type="date" indexed="true" stored="true" />
    <field name="date-last-published" type="date" indexed="true" stored="true" />
@@ -292,20 +292,20 @@
    <field name="page" type="integer" indexed="true" stored="true" />
    <field name="product_id" type="string_nt" indexed="true" stored="true" />
    <field name="product_text" type="string" indexed="true" stored="true" />
-   <field name="published" type="string" indexed="true" stored="true" />
-   <field name="refined" type="string" indexed="true" stored="true" />
-   <field name="ressort" type="string" indexed="true" stored="true" />
+   <field name="published" type="string_nt" indexed="true" stored="true" />
+   <field name="refined" type="string_nt" indexed="true" stored="true" />
+   <field name="ressort" type="string_nt" indexed="true" stored="true" />
    <field name="serie" type="string" indexed="true" stored="true" />
-   <field name="sub_ressort" type="string" indexed="true" stored="true" />
+   <field name="sub_ressort" type="string_nt" indexed="true" stored="true" />
    <field name="subtitle" type="text" indexed="true" stored="true" />
    <field name="supertitle" type="text" indexed="true" stored="true" />
    <field name="teaser_text" type="string" indexed="true" stored="true" />
    <field name="teaser_title" type="string" indexed="true" stored="true" />
    <field name="title" type="text" indexed="true" stored="true" />
    <field name="type" type="string_nt" indexed="true" stored="true" />
-   <field name="uniqueId" type="string" indexed="true" stored="true" />
+   <field name="uniqueId" type="string_nt" indexed="true" stored="true" />
    <field name="urgent" type="boolean" indexed="true" stored="true" />
-   <field name="uuid" type="string" indexed="true" stored="true" />
+   <field name="uuid" type="string_nt" indexed="true" stored="true" />
    <field name="volume" type="integer" indexed="true" stored="true" />
    <field name="year" type="integer" indexed="true" stored="true" />
 
