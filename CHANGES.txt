@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.8 (unreleased)
+0.8 (2009-09-01)
 ----------------
 
 - Beim Anlegen und Einchecken von Objekten werden diese jetzt sofort, asynchron
