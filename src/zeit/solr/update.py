@@ -1,14 +1,18 @@
 from optparse import OptionParser
 from zeit.solr import query as lq
+import gocept.async
 import gocept.runner
+import grokcore.component
 import logging
 import lxml.etree
 import sys
 import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.solr.connection
 import zeit.solr.interfaces
 import zope.component
+import zope.lifecycleevent
 
 
 log = logging.getLogger(__name__)
@@ -127,3 +131,24 @@ def delete_public_after_retract(event):
     up = zope.component.getAdapter(
         event.object.uniqueId, zeit.solr.interfaces.IUpdater, name='delete')
     up.update(solr='public')
+
+
+
+@grokcore.component.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zope.lifecycleevent.IObjectAddedEvent)
+def index_after_add(context, event):
+    if not zeit.cms.repository.interfaces.IRepository.providedBy(context):
+        do_index_object(context)
+
+
+@grokcore.component.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+def index_after_checkin(context, event):
+    do_index_object(context)
+
+
+@gocept.async.function(u'events')
+def do_index_object(context):
+    zeit.solr.interfaces.IUpdater(context).update()
