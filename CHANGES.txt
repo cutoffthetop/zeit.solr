@@ -11,7 +11,7 @@ zeit.solr changes
 ----------------
 
 - Beim Anlegen und Einchecken von Objekten werden diese jetzt sofort, asynchron
-  inidiziert (#6331).
+  inidiziert (#6113).
 
 
 0.7 (2009-09-01)
