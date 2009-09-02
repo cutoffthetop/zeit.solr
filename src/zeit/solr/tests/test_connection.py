@@ -42,28 +42,33 @@ class TestSolrConnection(unittest.TestCase):
                                    {'posts_received': []})
         self.data = lxml.objectify.XML('<foo/>')
 
-    #def tearDown(self):
-    #     super(TestSolrConnection, self).tearDown()
+    def tearDown(self):
+         self.httpd.shutdown()
+         super(TestSolrConnection, self).tearDown()
 
     def start_httpd(self):
         self.thread = threading.Thread(target=self.start_httpd_handler)
         self.thread.start()
 
     def start_httpd_handler(self):
+        self.running = True
         server_address = ('localhost', self.port)
         self.httpd = BaseHTTPServer.HTTPServer(server_address,
                                                self.RequestHandler)
-        self.httpd.handle_request()
+        self.httpd.serve_forever(0.1)
 
     def test_update_raw(self):
         self.start_httpd()
         self.solr.update_raw(self.data)
-        self.assertEquals(1, len(self.RequestHandler.posts_received))
-        post = self.RequestHandler.posts_received[0]
-        self.assertEquals('/solr/update/', post['path'])
+        self.assertEquals(2, len(self.RequestHandler.posts_received))
+        post = self.RequestHandler.posts_received
+        self.assertEquals('/solr/update/', post[0]['path'])
         self.assertEquals("<?xml version='1.0' encoding='UTF-8'?>\n<foo/>",
-                          post['data'])
-        self.assertEquals('text/xml', post['headers']['Content-Type'])
+                          post[0]['data'])
+        self.assertEquals('text/xml', post[0]['headers']['Content-Type'])
+        self.assertEquals('/solr/update/', post[1]['path'])
+        self.assertEquals('<commit />', post[1]['data'])
+        self.assertEquals('text/xml', post[1]['headers']['Content-Type'])
 
     def test_update_raw_with_error(self):
         self.RequestHandler.response_code = 500

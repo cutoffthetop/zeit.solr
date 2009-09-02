@@ -4,7 +4,7 @@ zeit.solr changes
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Nach dem Indizieren wird ein <commit/> an Solr gesendet.
 
 
 0.8 (2009-09-01)

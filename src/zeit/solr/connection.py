@@ -21,6 +21,7 @@ class SolrConnection(pysolr.Solr):
         path = '%s/update/' % self.path
         result = self._send_request(
             'POST', path, data, {'Content-type': 'text/xml'})
+        self.commit()
         return result
 
     def _extract_error(self, response, body):
