@@ -146,7 +146,11 @@ def index_after_add(context, event):
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
-    do_index_object(context)
+    # Only index if we're not already asynced. In the case a checkin happens in
+    # an asynchronous task the indexinx via jabber invalidations is ver much
+    # sufficient.
+    if not gocept.async.is_async():
+        do_index_object(context)
 
 
 @gocept.async.function(u'events')

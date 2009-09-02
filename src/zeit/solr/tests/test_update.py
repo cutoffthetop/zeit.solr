@@ -10,6 +10,14 @@ import zeit.cms.testcontenttype.testcontenttype
 import zeit.solr.testing
 import zope.component
 import zope.interface
+import gocept.async
+
+@gocept.async.function(service='events')
+def checkout_and_checkin():
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
+        pass
 
 
 class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
@@ -64,6 +72,11 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         gocept.async.tests.process()
         self.assertTrue(self.solr.update_raw.called)
         self.assert_unique_id('http://xml.zeit.de/testcontent')
+
+    def test_no_update_on_checkin_when_already_in_async(self):
+        checkout_and_checkin()
+        gocept.async.tests.process()
+        self.assertFalse(self.solr.update_raw.called)
 
 
 

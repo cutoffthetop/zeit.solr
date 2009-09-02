@@ -12,6 +12,7 @@ setup(
     zip_safe = False,
     namespace_packages = ['zeit'],
     install_requires = [
+        'gocept.async>=0.3.1',
         'grokcore.component',
         'mock',
         'pysolr > 2.0.5',
