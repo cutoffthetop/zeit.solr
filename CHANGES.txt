@@ -1,6 +1,12 @@
 zeit.solr changes
 =================
 
+\ (unreleased)
+--------------
+
+- Nothing changed yet.
+
+
 0.10 (2009-09-02)
 -----------------
 
