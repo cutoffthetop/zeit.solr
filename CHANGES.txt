@@ -1,8 +1,8 @@
 zeit.solr changes
 =================
 
-\ (unreleased)
---------------
+0.11 (unreleased)
+-----------------
 
 - Nothing changed yet.
 
