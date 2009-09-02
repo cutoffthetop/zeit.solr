@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.10 (unreleased)
+0.10 (2009-09-02)
 -----------------
 
 - Beim Einchecken wird nur noch Indiziert, wenn sich der Prozess nicht um einen
