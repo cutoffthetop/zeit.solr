@@ -7,6 +7,7 @@ import logging
 import lxml.etree
 import sys
 import zeit.cms.interfaces
+import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.solr.connection
