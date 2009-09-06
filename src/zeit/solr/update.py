@@ -92,8 +92,6 @@ class ContentUpdater(object):
         solr = zope.component.getUtility(zeit.solr.interfaces.ISolr,
                                          name=solr)
         stack = [self.context]
-        if zeit.cms.repository.interfaces.ICollection.providedBy(self.context):
-            stack.extend(self.context.values())
         while stack:
             content = stack.pop(0)
 
@@ -110,6 +108,11 @@ class ContentUpdater(object):
                 log.error("Solr server returned '%s' while updating %s" %
                              (e, content.uniqueId))
                 return None
+            else:
+                if zeit.cms.repository.interfaces.ICollection.providedBy(
+                    content):
+                    stack.extend(content.values())
+
 
 
 class Deleter(object):
@@ -142,7 +145,7 @@ def delete_public_after_retract(event):
 
 
 
-@grokcore.component.subscribe(
+@zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
     zope.lifecycleevent.IObjectAddedEvent)
 def index_after_add(context, event):
@@ -150,12 +153,12 @@ def index_after_add(context, event):
         do_index_object(context)
 
 
-@grokcore.component.subscribe(
+@zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
     # Only index if we're not already asynced. In the case a checkin happens in
-    # an asynchronous task the indexinx via jabber invalidations is ver much
+    # an asynchronous task the indexing via jabber invalidations is ver much
     # sufficient.
     if not gocept.async.is_async():
         do_index_object(context)

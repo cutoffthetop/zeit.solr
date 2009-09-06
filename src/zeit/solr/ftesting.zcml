@@ -39,4 +39,7 @@
     permission="zeit.solr.UpdateIndex"
     />
 
+  <subscriber handler="zeit.solr.update.index_after_add" />
+  <subscriber handler="zeit.solr.update.index_after_checkin" />
+
 </configure>
