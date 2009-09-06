@@ -4,7 +4,7 @@ zeit.solr changes
 0.13 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Wird ein Ordner indiziert, wird nur noch sein direkter Inhalt indiziert.
 
 
 0.12 (2009-09-06)

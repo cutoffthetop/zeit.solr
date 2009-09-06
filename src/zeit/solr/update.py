@@ -92,10 +92,10 @@ class ContentUpdater(object):
         solr = zope.component.getUtility(zeit.solr.interfaces.ISolr,
                                          name=solr)
         stack = [self.context]
+        if zeit.cms.repository.interfaces.ICollection.providedBy(self.context):
+            stack.extend(self.context.values())
         while stack:
             content = stack.pop(0)
-            if zeit.cms.repository.interfaces.ICollection.providedBy(content):
-                stack.extend(content.values())
 
             log.info("updating content '%s'" % content.uniqueId)
             converter = zeit.solr.interfaces.ISolrConverter(content)
