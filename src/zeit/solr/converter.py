@@ -236,16 +236,8 @@ class SolrConverter(object):
          zeit.cms.content.interfaces.ICommonMetadata,
         'dailyNewsletter', solr='DailyNL')
     Index(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        'shortTeaserTitle',
-        solr='indexteaser_title')
-    Index(
          zeit.content.article.interfaces.IArticleMetadata,
         'has_recensions')
-    Index(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        'shortTeaserText',
-        solr='indexteaser_text')
     Keywords(
         zeit.cms.content.interfaces.ICommonMetadata,
         'keywords')

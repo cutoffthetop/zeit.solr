@@ -74,7 +74,7 @@ class IdUpdater(object):
         try:
             content = zeit.cms.interfaces.ICMSContent(self.context)
             zeit.solr.interfaces.IUpdater(content).update()
-        except TypeError: # id does not exist in repository
+        except TypeError:  # id does not exist in repository
             zope.component.getAdapter(
                 self.context,
                 zeit.solr.interfaces.IUpdater, name='delete').update()
@@ -89,20 +89,27 @@ class ContentUpdater(object):
         self.context = context
 
     def update(self, solr=u''):
-        log.info("updating content '%s'" % self.context.uniqueId)
-        conn = zope.component.getUtility(zeit.solr.interfaces.ISolr,
+        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr,
                                          name=solr)
-        converter = zeit.solr.interfaces.ISolrConverter(self.context)
-        try:
-            # XXX it would be nicer to use add(), but then the converter would
-            # have to be rewritten not to produce XML anymore (and pysolr would
-            # have to learn how to set the boost), so we just push the raw XML
-            # here and bypass all the pysolr niceties.
-            conn.update_raw(converter.convert())
-        except zeit.solr.interfaces.SolrError, e:
-            log.error("Solr server returned '%s' while updating %s" %
-                         (e, self.context.uniqueId))
-            return None
+        stack = [self.context]
+        while stack:
+            content = stack.pop(0)
+            if zeit.cms.repository.interfaces.ICollection.providedBy(content):
+                stack.extend(content.values())
+
+            log.info("updating content '%s'" % content.uniqueId)
+            converter = zeit.solr.interfaces.ISolrConverter(content)
+            try:
+
+                # NOTE: It would be nicer to use add(), but then the converter
+                # would have to be rewritten not to produce XML anymore (and
+                # pysolr would have to learn how to set the boost), so we just
+                # push the raw XML here and bypass all the pysolr niceties.
+                solr.update_raw(converter.convert())
+            except zeit.solr.interfaces.SolrError, e:
+                log.error("Solr server returned '%s' while updating %s" %
+                             (e, content.uniqueId))
+                return None
 
 
 class Deleter(object):

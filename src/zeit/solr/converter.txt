@@ -51,8 +51,6 @@ Convert an article and check resultset:
     <field name="mostread">true</field>
     <field name="byline">Von Jochen Stahnke</field>
     <field name="date-last-modified">2008-03-07T12:47:16Z</field>
-    <field name="indexteaser_title">Somalia</field>
-    <field name="indexteaser_text">R&#252;ckkehr der Warlords</field>
     <field name="keywords"></field>
     <field name="main_text">Kriegsherr...</field>
     <field name="published">not-published</field>

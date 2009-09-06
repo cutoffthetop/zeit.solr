@@ -4,14 +4,14 @@ zeit.solr changes
 0.12 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- ShortTeaser gibts nicht mehr.
 
+- Ordner werden rekursiv indiziert.
 
 0.11 (2009-09-04)
 -----------------
 
-- Nothing changed yet.
-
+- Nothing changed, brown bag release.
 
 0.10 (2009-09-02)
 -----------------

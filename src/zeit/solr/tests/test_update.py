@@ -78,6 +78,12 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         gocept.async.tests.process()
         self.assertFalse(self.solr.update_raw.called)
 
+    def test_recursive(self):
+        zeit.solr.interfaces.IUpdater(
+            u'http://xml.zeit.de/2007/01').update()
+        self.assertTrue(self.solr.update_raw.called)
+        # 1 Folder + 40 objects contained in it
+        self.assertEquals(41, len(self.solr.update_raw.call_args_list))
 
 
 class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):
