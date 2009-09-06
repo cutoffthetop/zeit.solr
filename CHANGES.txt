@@ -1,8 +1,8 @@
 zeit.solr changes
 =================
 
-0.14 (unreleased)
------------------
+0.13.1 (2009-09-06)
+-------------------
 
 - Indizieren beim Checkin ausgeschaltet. Kann per site.zcml wieder aktiviert
   werden.
