@@ -89,13 +89,14 @@ class ContentUpdater(object):
         self.context = context
 
     def update(self, solr=u''):
+        solr_name = solr
         solr = zope.component.getUtility(zeit.solr.interfaces.ISolr,
                                          name=solr)
         stack = [self.context]
         while stack:
             content = stack.pop(0)
 
-            log.info("updating content '%s'" % content.uniqueId)
+            log.info("Updating %s: '%s'" % (solr_name, content.uniqueId))
             converter = zeit.solr.interfaces.ISolrConverter(content)
             try:
 
@@ -114,7 +115,6 @@ class ContentUpdater(object):
                     stack.extend(content.values())
 
 
-
 class Deleter(object):
 
     zope.component.adapts(basestring)
@@ -126,6 +126,7 @@ class Deleter(object):
     def update(self, solr=u''):
         # Note that we cannot use the UUID to delete because we just don't know
         # it. All we have is the uniqueId.
+        log.info('Removing %s: %s' % (solr, self.context))
         conn = zope.component.getUtility(zeit.solr.interfaces.ISolr,
                                          name=solr)
         query = lq.field('uniqueId', self.context).encode('UTF-8')
@@ -144,12 +145,13 @@ def delete_public_after_retract(event):
     up.update(solr='public')
 
 
-
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
     zope.lifecycleevent.IObjectAddedEvent)
 def index_after_add(context, event):
     if not zeit.cms.repository.interfaces.IRepository.providedBy(context):
+        log.debug('AfterAdd: Creating async index job for %s (async=%s)' % (
+            context.uniqueId, gocept.async.is_async()))
         do_index_object(context)
 
 
@@ -160,7 +162,12 @@ def index_after_checkin(context, event):
     # Only index if we're not already asynced. In the case a checkin happens in
     # an asynchronous task the indexing via jabber invalidations is ver much
     # sufficient.
-    if not gocept.async.is_async():
+    if gocept.async.is_async():
+        log.debug('Not indexing after checkin because already in async: %s' %
+                  context.uniqueId)
+    else:
+        log.debug('AfterCheckin: creating async index job for %s.' %
+                  context.uniqueId)
         do_index_object(context)
 
 
