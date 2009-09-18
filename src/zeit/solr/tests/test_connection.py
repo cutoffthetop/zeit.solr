@@ -60,15 +60,12 @@ class TestSolrConnection(unittest.TestCase):
     def test_update_raw(self):
         self.start_httpd()
         self.solr.update_raw(self.data)
-        self.assertEquals(2, len(self.RequestHandler.posts_received))
+        self.assertEquals(1, len(self.RequestHandler.posts_received))
         post = self.RequestHandler.posts_received
         self.assertEquals('/solr/update/', post[0]['path'])
         self.assertEquals("<?xml version='1.0' encoding='UTF-8'?>\n<foo/>",
                           post[0]['data'])
         self.assertEquals('text/xml', post[0]['headers']['Content-Type'])
-        self.assertEquals('/solr/update/', post[1]['path'])
-        self.assertEquals('<commit />', post[1]['data'])
-        self.assertEquals('text/xml', post[1]['headers']['Content-Type'])
 
     def test_update_raw_with_error(self):
         self.RequestHandler.response_code = 500
