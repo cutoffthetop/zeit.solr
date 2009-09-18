@@ -1,8 +1,8 @@
 zeit.solr changes
 =================
 
-0.13.2 (unreleased)
--------------------
+0.14 (2009-09-18)
+-----------------
 
 - Ein Commit wird jetzt nicht mehr automatisch beim Indizierungsvorgang
   durchgeführt, da der Solr-Server nun diese Aufgabe übernimmt.
