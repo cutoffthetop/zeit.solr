@@ -4,8 +4,8 @@ zeit.solr changes
 0.13.2 (unreleased)
 -------------------
 
-- Ein commit wird jetzt nicht mehr automatisch beim Indizierungsvorgang
-  durchgeführt, da der solr server nun diese Aufgabe übernimmt.
+- Ein Commit wird jetzt nicht mehr automatisch beim Indizierungsvorgang
+  durchgeführt, da der Solr-Server nun diese Aufgabe übernimmt.
 
 
 0.13.1 (2009-09-06)
