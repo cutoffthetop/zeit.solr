@@ -280,6 +280,7 @@
    <field name="date-last-modified" type="date" indexed="true" stored="true" />
    <field name="date-last-published" type="date" indexed="true" stored="true" />
    <field name="DailyNL" type="boolean" indexed="true" stored="true" />
+   <field name="graphical-preview-url" type="string_nt" indexed="false" stored="true" />
    <field name="has_recensions" type="boolean" indexed="true" stored="true" />
    <field name="icon" type="string" indexed="false" stored="true" />
    <field name="image-reference" type="string" indexed="true" stored="true" multiValued="true" />
