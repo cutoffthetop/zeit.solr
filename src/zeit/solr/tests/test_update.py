@@ -104,7 +104,8 @@ class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):
 
     def test_update_after_publish(self):
         zope.event.notify(
-            zeit.cms.workflow.interfaces.PublishedEvent(self.article))
+            zeit.cms.workflow.interfaces.PublishedEvent(
+                self.article, self.article))
         self.assert_(not self.solr.update_raw.called)
         self.assert_(self.public.update_raw.called)
         xml = self.public.update_raw.call_args[0][0]
@@ -113,7 +114,8 @@ class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):
 
     def test_delete_after_retract(self):
         zope.event.notify(
-            zeit.cms.workflow.interfaces.BeforeRetractEvent(self.article))
+            zeit.cms.workflow.interfaces.BeforeRetractEvent(
+                self.article, self.article))
         self.assert_(not self.solr.delete.called)
         self.assert_(self.public.delete.called)
         query = self.public.delete.call_args[1]

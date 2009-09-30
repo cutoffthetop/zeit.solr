@@ -4,7 +4,7 @@ zeit.solr changes
 0.15 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Graphical-Preview-URL indizieren.
 
 
 0.14 (2009-09-18)

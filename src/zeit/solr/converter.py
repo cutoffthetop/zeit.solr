@@ -5,13 +5,15 @@ import lxml.etree
 import lxml.objectify
 import pytz
 import zeit.connector.interfaces
-import zeit.content.image.interfaces
 import zeit.content.article.interfaces
+import zeit.content.image.interfaces
 import zeit.solr.interfaces
 import zeit.workflow.interfaces
 import zope.component
 import zope.interface
 import zope.publisher.browser
+import zope.traversing.interfaces
+
 
 class GenericXMLContentTextIndex(grokcore.component.Adapter):
 
@@ -108,6 +110,30 @@ class Icon(Index):
         if icon is None:
             return
         path = icon.url().replace(request['SERVER_URL'], '')
+        self.append_to_node(path, doc_node)
+
+
+class Thumbnail(Index):
+
+    interface = zope.interface.Interface
+    attribute = None
+
+    def __init__(self, solr):
+        super(Thumbnail, self).__init__(self.interface, self.attribute, solr, 2)
+
+    def process(self, value, doc_node):
+        view_name = 'thumbnail'
+        request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSSkin)
+        thumbnail = zope.component.queryMultiAdapter(
+            (value, request), name=view_name)
+        if thumbnail is None:
+            return
+        url = zope.component.getMultiAdapter(
+            (value, request),
+            zope.traversing.browser.interfaces.IAbsoluteURL)
+        path = '%s/@@%s' % (
+            url().replace(request['SERVER_URL'], ''), view_name)
         self.append_to_node(path, doc_node)
 
 
@@ -303,6 +329,7 @@ class SolrConverter(object):
         'urgent')
     ListRepresentationIndex('year')
     Icon(solr='icon')
+    Thumbnail(solr='graphical-preview-url')
 
     def __init__(self, context):
         self.context = context
