@@ -1,8 +1,8 @@
 zeit.solr changes
 =================
 
-0.16 (unreleased)
------------------
+0.15.1 (2009-10-19)
+-------------------
 
 - Set i18n domain in configure to prevent warning.
 
