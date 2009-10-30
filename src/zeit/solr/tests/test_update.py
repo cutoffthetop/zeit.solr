@@ -1,5 +1,7 @@
 # coding: utf8
+
 from __future__ import with_statement
+import gocept.async
 import gocept.async.tests
 import mock
 import unittest
@@ -9,8 +11,10 @@ import zeit.cms.repository
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.solr.testing
 import zope.component
+import zope.event
 import zope.interface
-import gocept.async
+import zope.lifecycleevent
+
 
 @gocept.async.function(service='events')
 def checkout_and_checkin():
@@ -84,6 +88,16 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         self.assertTrue(self.solr.update_raw.called)
         # 1 Folder + 40 objects contained in it
         self.assertEquals(41, len(self.solr.update_raw.call_args_list))
+
+    def test_removed_event_calls_delete(self):
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content.uniqueId = 'xzy://bla/fasel'
+        zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(content))
+        gocept.async.tests.process()
+        query = self.solr.delete.call_args[1]
+        self.assertEquals(
+            {'q': 'uniqueId:(xzy\\://bla/fasel)', 'commit': True},
+            query)
 
 
 class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):

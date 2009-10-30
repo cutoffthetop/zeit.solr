@@ -6,10 +6,11 @@ import grokcore.component
 import logging
 import lxml.etree
 import sys
-import zeit.cms.interfaces
 import zeit.cms.checkout.interfaces
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.cms.workingcopy.interfaces
 import zeit.solr.connection
 import zeit.solr.interfaces
 import zope.component
@@ -99,7 +100,6 @@ class ContentUpdater(object):
             log.info("Updating %s: '%s'" % (solr_name, content.uniqueId))
             converter = zeit.solr.interfaces.ISolrConverter(content)
             try:
-
                 # NOTE: It would be nicer to use add(), but then the converter
                 # would have to be rewritten not to produce XML anymore (and
                 # pysolr would have to learn how to set the boost), so we just
@@ -149,10 +149,14 @@ def delete_public_after_retract(event):
     zeit.cms.interfaces.ICMSContent,
     zope.lifecycleevent.IObjectAddedEvent)
 def index_after_add(context, event):
-    if not zeit.cms.repository.interfaces.IRepository.providedBy(context):
-        log.debug('AfterAdd: Creating async index job for %s (async=%s)' % (
-            context.uniqueId, gocept.async.is_async()))
-        do_index_object(context)
+    if zeit.cms.repository.interfaces.IRepository.providedBy(context):
+        return
+    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
+        event.newParent):
+        return
+    log.debug('AfterAdd: Creating async index job for %s (async=%s)' % (
+        context.uniqueId, gocept.async.is_async()))
+    do_index_object(context)
 
 
 @zope.component.adapter(
@@ -174,3 +178,16 @@ def index_after_checkin(context, event):
 @gocept.async.function(u'events')
 def do_index_object(context):
     zeit.solr.interfaces.IUpdater(context).update()
+
+
+@grokcore.component.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zope.lifecycleevent.IObjectRemovedEvent)
+def unindex_on_remove(context, event):
+    do_unindex_unique_id(context.uniqueId)
+
+
+@gocept.async.function(u'events')
+def do_unindex_unique_id(uniqueId):
+    updater = zope.component.getAdapter(
+        uniqueId, zeit.solr.interfaces.IUpdater, name='delete').update()
