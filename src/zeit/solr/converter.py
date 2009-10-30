@@ -340,6 +340,7 @@ class SolrConverter(object):
         doc_node = lxml.objectify.E.doc()
         root_node.append(doc_node)
         for index in self.solr_mapping:
+            __traceback_info__ = (self.context, index)
             value = self.get_adapter(index.interface)
             if index.attribute is not None:
                 value = getattr(value, index.attribute, None)
