@@ -6,6 +6,9 @@ zeit.solr changes
 
 - Removing objects from Solr on ObjectRemovedEvent (#6385).
 
+- Use adapter to ITypeDeclaration to get the type identifier for indexing
+  (#6385).
+
 
 0.15.1 (2009-10-19)
 -------------------

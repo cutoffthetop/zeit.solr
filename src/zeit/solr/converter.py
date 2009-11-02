@@ -4,6 +4,7 @@ import inspect
 import lxml.etree
 import lxml.objectify
 import pytz
+import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.article.interfaces
 import zeit.content.image.interfaces
@@ -79,19 +80,6 @@ class Keywords(Index):
     def process(self, value, doc_node):
         self.append_to_node(' '.join(unicode(arg.label) for arg in value),
                             doc_node)
-
-
-class Type(Index):
-
-    interface = zeit.connector.interfaces.IWebDAVProperties
-    attribute = None
-
-    def __init__(self, solr):
-        super(Type, self).__init__(self.interface, self.attribute, solr, 2)
-
-    def process(self, value, doc_node):
-        type = value.get(zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
-        self.append_to_node(type, doc_node)
 
 
 class Icon(Index):
@@ -316,7 +304,9 @@ class SolrConverter(object):
         zeit.cms.content.interfaces.ICommonMetadata,
         'teaserText', solr='teaser_text')
     ListRepresentationIndex('title')
-    Type(solr='type')
+    Index(
+        zeit.cms.interfaces.ITypeDeclaration,
+        'type_identifier', solr='type')
     Index(
         zeit.cms.content.interfaces.IUUID,
         'id', solr='uuid')
