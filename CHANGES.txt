@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.15.2 (unreleased)
+0.16.0 (2009-11-02)
 -------------------
 
 - Removing objects from Solr on ObjectRemovedEvent (#6385).
