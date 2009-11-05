@@ -42,7 +42,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
             'http://xml.zeit.de/nonexistent').update()
         self.assert_(self.solr.delete.called)
         query = self.solr.delete.call_args[1]
-        self.assertEquals({'commit': True,
+        self.assertEquals({'commit': False,
                            'q': 'uniqueId:(http\\://xml.zeit.de/nonexistent)'},
                           query)
 
@@ -55,7 +55,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
             u'http://xml.zeit.de/nöd-däh').update()
         query = self.solr.delete.call_args[1]
         self.assertEquals(
-            {'commit': True,
+            {'commit': False,
              'q': 'uniqueId:(http\\://xml.zeit.de/n\xc3\xb6d\\-d\xc3\xa4h)'},
             query)
 
@@ -96,7 +96,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         gocept.async.tests.process()
         query = self.solr.delete.call_args[1]
         self.assertEquals(
-            {'q': 'uniqueId:(xzy\\://bla/fasel)', 'commit': True},
+            {'q': 'uniqueId:(xzy\\://bla/fasel)', 'commit': False},
             query)
 
 
@@ -133,6 +133,6 @@ class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):
         self.assert_(not self.solr.delete.called)
         self.assert_(self.public.delete.called)
         query = self.public.delete.call_args[1]
-        self.assertEquals({'commit': True,
+        self.assertEquals({'commit': False,
                            'q': 'uniqueId:(http\\://xml.zeit.de/online/2007/01/Somalia)'},
                           query)

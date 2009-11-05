@@ -4,7 +4,7 @@ zeit.solr changes
 0.16.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Do not auto-commit on delete.
 
 
 0.16.0 (2009-11-02)

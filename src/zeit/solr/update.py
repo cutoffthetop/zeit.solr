@@ -130,7 +130,7 @@ class Deleter(object):
         conn = zope.component.getUtility(zeit.solr.interfaces.ISolr,
                                          name=solr)
         query = lq.field('uniqueId', self.context).encode('UTF-8')
-        conn.delete(q=query, commit=True)
+        conn.delete(q=query, commit=False)
 
 
 @zope.component.adapter(zeit.cms.workflow.interfaces.IPublishedEvent)
