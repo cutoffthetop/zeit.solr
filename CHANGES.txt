@@ -4,7 +4,7 @@ zeit.solr changes
 0.16.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Do not remove objects from solr on checkin.
 
 
 0.16.1 (2009-11-05)

@@ -184,6 +184,9 @@ def do_index_object(context):
     zeit.cms.interfaces.ICMSContent,
     zope.lifecycleevent.IObjectRemovedEvent)
 def unindex_on_remove(context, event):
+    if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
+        event.oldParent):
+        return
     do_unindex_unique_id(context.uniqueId)
 
 

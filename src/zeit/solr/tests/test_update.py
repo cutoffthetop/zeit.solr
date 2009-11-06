@@ -9,6 +9,7 @@ import zeit.cms.checkout.helper
 import zeit.cms.interfaces
 import zeit.cms.repository
 import zeit.cms.testcontenttype.testcontenttype
+import zeit.cms.workingcopy.workingcopy
 import zeit.solr.testing
 import zope.component
 import zope.event
@@ -98,6 +99,18 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         self.assertEquals(
             {'q': 'uniqueId:(xzy\\://bla/fasel)', 'commit': False},
             query)
+
+    def test_remove_event_does_not_call_delete_if_parent_is_workingcopy(self):
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content.uniqueId = 'xzy://bla/fasel'
+        event = zope.lifecycleevent.ObjectRemovedEvent(content)
+        event.oldParent = zeit.cms.workingcopy.workingcopy.Workingcopy()
+        zope.event.notify(event)
+        try:
+            gocept.async.tests.process()
+        except IndexError:
+            pass
+        self.assertFalse(self.solr.delete.called)
 
 
 class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):
