@@ -90,6 +90,20 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         # 1 Folder + 40 objects contained in it
         self.assertEquals(41, len(self.solr.update_raw.call_args_list))
 
+    def test_added_event_only_for_events_object(self):
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content.uniqueId = 'xzy://bla/fasel'
+        content_sub = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content_sub.uniqueId = 'xzy://bla/fasel/sub'
+        event = zope.lifecycleevent.ObjectAddedEvent(content)
+        for ignored in zope.component.subscribers((content_sub, event), None):
+            pass
+        try:
+            gocept.async.tests.process()
+        except IndexError:
+            pass
+        self.assertFalse(self.solr.update_raw.called)
+
     def test_removed_event_calls_delete(self):
         content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
         content.uniqueId = 'xzy://bla/fasel'

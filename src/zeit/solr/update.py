@@ -145,21 +145,24 @@ def delete_public_after_retract(event):
     up.update(solr='public')
 
 
-@zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zope.lifecycleevent.IObjectAddedEvent)
-def index_after_add(context, event):
+@grokcore.component.subscribe(zope.lifecycleevent.IObjectAddedEvent)
+def index_after_add(event):
+    # We don't use the "extended" (object, event) method as we are not
+    # interested in the events which are dispatched to sublocations.
+    context = event.object
+    if not zeit.cms.interfaces.ICMSContent.providedBy(context):
+        return
     if zeit.cms.repository.interfaces.IRepository.providedBy(context):
         return
     if zeit.cms.workingcopy.interfaces.IWorkingcopy.providedBy(
         event.newParent):
         return
-    log.debug('AfterAdd: Creating async index job for %s (async=%s)' % (
+    log.info('AfterAdd: Creating async index job for %s (async=%s)' % (
         context.uniqueId, gocept.async.is_async()))
     do_index_object(context)
 
 
-@zope.component.adapter(
+@grokcore.component.subscribe(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
@@ -167,10 +170,10 @@ def index_after_checkin(context, event):
     # an asynchronous task the indexing via jabber invalidations is ver much
     # sufficient.
     if gocept.async.is_async():
-        log.debug('Not indexing after checkin because already in async: %s' %
+        log.info('Not indexing after checkin because already in async: %s' %
                   context.uniqueId)
     else:
-        log.debug('AfterCheckin: creating async index job for %s.' %
+        log.info('AfterCheckin: creating async index job for %s.' %
                   context.uniqueId)
         do_index_object(context)
 

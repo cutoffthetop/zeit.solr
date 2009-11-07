@@ -4,7 +4,8 @@ zeit.solr changes
 0.16.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Ignore added events which where dispachted to sublocations to prevent
+  excessive indexing.
 
 
 0.16.2 (2009-11-06)
