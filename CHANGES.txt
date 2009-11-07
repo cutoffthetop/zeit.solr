@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.16.3 (unreleased)
+0.16.3 (2009-11-07)
 -------------------
 
 - Ignore added events which where dispachted to sublocations to prevent
