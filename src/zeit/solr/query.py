@@ -2,7 +2,9 @@
 Simplistic implementation to make it easier to create safe lucene
 queries.
 """
+
 import re
+
 
 def _field(name, value):
     if isinstance(value, str):
@@ -12,6 +14,9 @@ def _field(name, value):
 
 def field(name, value):
     return _field(name, quoted(value))
+
+def field_raw(name, value):
+    return _field(name, '(%s)' % value)
 
 def any_value():
     return '*:*'
