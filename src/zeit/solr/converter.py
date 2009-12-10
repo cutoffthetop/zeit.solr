@@ -226,6 +226,9 @@ class SolrConverter(object):
          zeit.content.article.interfaces.IArticleMetadata,
         'boxMostRead', solr='mostread')
     Index(
+         zeit.cms.content.interfaces.ICommonMetadata,
+        'breaking_news')
+    Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'byline')
     Index(

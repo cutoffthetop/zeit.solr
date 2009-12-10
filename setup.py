@@ -18,7 +18,7 @@ setup(
         'pysolr > 2.0.5',
         'setuptools',
         'simplejson', # for pysolr
-        'zeit.cms>1.38.1',
+        'zeit.cms>1.39.3',
         'zeit.connector',
         'zeit.content.article',
         'zope.index',

@@ -19,6 +19,10 @@ Get article for adapter tests:
 >>> principal = zeit.cms.testing.create_interaction() 
 >>> article = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     zeit.cms.content.interfaces.ICommonMetadata(
+...         checked_out).breaking_news = True
+
 >>> images = zeit.content.image.interfaces.IImages(article)
 >>> image = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
@@ -49,9 +53,11 @@ Convert an article and check resultset:
     <field name="authors">Hans Meiser</field>
     <field name="authors_fulltext">Hans Meiser</field>
     <field name="mostread">true</field>
+    <field name="breaking_news">true</field>
     <field name="byline">Von Jochen Stahnke</field>
-    <field name="date-last-modified">2008-03-07T12:47:16Z</field>
+    <field name="date-last-modified">20...Z</field>
     <field name="keywords"></field>
+    <field name="last_modified_by">zope.user</field>
     <field name="main_text">Kriegsherr...</field>
     <field name="published">not-published</field>
     <field name="image-reference">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
@@ -65,6 +71,7 @@ Convert an article and check resultset:
     <field name="teaser_text">Im Zuge des &#228;thiopischen Vormarsches auf Mogadischu kriechen in Somalia auch die alten Miliz-Chefs wieder hervor.</field>
     <field name="title">R&#252;ckkehr der Warlords</field>
     <field name="type">article</field>
+    <field name="uuid">{urn:uuid:<GUID>}</field>
     <field name="volume">1</field>
     <field name="uniqueId">http://xml.zeit.de/online/2007/01/Somalia</field>
     <field name="year">2007</field>
