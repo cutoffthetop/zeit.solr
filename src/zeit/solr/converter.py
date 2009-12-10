@@ -223,10 +223,10 @@ class SolrConverter(object):
         zeit.cms.content.interfaces.ICommonMetadata,
         'authors', solr='authors_fulltext')
     Index(
-         zeit.content.article.interfaces.IArticleMetadata,
+        zeit.content.article.interfaces.IArticleMetadata,
         'boxMostRead', solr='mostread')
     Index(
-         zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.cms.content.interfaces.ICommonMetadata,
         'breaking_news')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
@@ -235,11 +235,11 @@ class SolrConverter(object):
         zeit.content.image.interfaces.IImageMetadata,
         'caption')
     Index(
-         zeit.workflow.interfaces.IContentWorkflow,
+        zeit.workflow.interfaces.IContentWorkflow,
         'corrected')
     Index(
-         zeit.cms.content.interfaces.ICommonMetadata,
-         'countings')
+        zeit.cms.content.interfaces.ICommonMetadata,
+        'countings')
     Date(
         zeit.cms.workflow.interfaces.IPublishInfo,
         'date_first_released', solr='date-first-released')
@@ -250,10 +250,10 @@ class SolrConverter(object):
         zeit.cms.workflow.interfaces.IPublishInfo,
         'date_last_published', solr='date-last-published')
     Index(
-         zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.cms.content.interfaces.ICommonMetadata,
         'dailyNewsletter', solr='DailyNL')
     Index(
-         zeit.content.article.interfaces.IArticleMetadata,
+        zeit.content.article.interfaces.IArticleMetadata,
         'has_recensions')
     Keywords(
         zeit.cms.content.interfaces.ICommonMetadata,
@@ -318,7 +318,7 @@ class SolrConverter(object):
         zeit.cms.interfaces.ICMSContent,
         'uniqueId')
     Index(
-         zeit.workflow.interfaces.IContentWorkflow,
+        zeit.workflow.interfaces.IContentWorkflow,
         'urgent')
     ListRepresentationIndex('year')
     Icon(solr='icon')
