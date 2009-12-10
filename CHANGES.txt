@@ -6,6 +6,8 @@ zeit.solr changes
 
 - Add a field_raw method to search without quoting.
 
+- Neues Feld im Solr: breaking_news
+
 
 0.16.3 (2009-11-07)
 -------------------
