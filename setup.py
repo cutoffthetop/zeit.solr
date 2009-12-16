@@ -27,5 +27,6 @@ setup(
         [console_scripts]
         solr-reindex-object = zeit.solr.update:update_main
         solr-reindex-query = zeit.solr.reindex:reindex
+        solr-fix-not-published = zeit.solr.fixnotpublished:fix_not_published
         """
 )
