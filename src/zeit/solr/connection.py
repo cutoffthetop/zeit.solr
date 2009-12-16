@@ -6,7 +6,6 @@ import lxml.etree
 import lxml.html
 import os.path
 import pysolr
-import urllib2
 import zeit.solr.interfaces
 import zope.app.appsetup.product
 import zope.interface
@@ -27,7 +26,7 @@ class SolrConnection(pysolr.Solr):
         # patched to use HTML instead of XML parser, so it does not choke
         # on <hr>-Tags, for example
         et = lxml.html.fromstring(body)
-        message =  et.findtext('body/h1')
+        message = et.findtext('body/h1')
         if not message:
             message = body
         return "[%s %s] %s" % (response.status, response.reason, message)
