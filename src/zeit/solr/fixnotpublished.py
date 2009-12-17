@@ -5,8 +5,10 @@ import transaction
 import urllib2
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.connector.interfaces
 import zeit.solr.interfaces
 import zope.component
+import zope.event
 
 # this is a 'zopectl run' script to correct the entries in the public solr
 # that are marked not-published even though they actually are (#6428).
@@ -58,6 +60,8 @@ class NotPublishedFixer(object):
             return False
 
     def mark_published(self, uniqueId, solr_item):
+        zope.event.notify(
+            zeit.connector.interfaces.ResourceInvalidatedEvent(uniqueId))
         try:
             content = zeit.cms.interfaces.ICMSContent(uniqueId)
         except TypeError:
@@ -68,4 +72,3 @@ class NotPublishedFixer(object):
                 date_last_published = solr_item['date-last-published']
                 print 'publish: %s (%s)' % (uniqueId, date_last_published)
                 pubinfo.published = True
-                pubinfo.date_last_published = date_last_published
