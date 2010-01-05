@@ -82,6 +82,13 @@ class Keywords(Index):
                             doc_node)
 
 
+class SplitKeywords(Index):
+
+    def process(self, value, doc_node):
+        for arg in value:
+            self.append_to_node(unicode(arg.label), doc_node)
+
+
 class Icon(Index):
 
     interface = zope.interface.Interface
@@ -258,6 +265,9 @@ class SolrConverter(object):
     Keywords(
         zeit.cms.content.interfaces.ICommonMetadata,
         'keywords')
+    SplitKeywords(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        'keywords', solr='keywords_list')
     Index(
         zeit.cms.workflow.interfaces.IModified,
         'last_modified_by')

@@ -6,12 +6,15 @@ Convert to Solr XML
 
 We need to set the site since we're a functional test:
 
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
+>>> import zeit.cms.testing       
+>>> zeit.cms.testing.set_site()
 
 
 Get article for adapter tests:
+
+>>> import zeit.cms.content.keyword
+>>> import zope.component
+>>> keywords = zope.component.getUtility(zeit.cms.content.interfaces.IKeywords)
 
 >>> import zeit.cms.interfaces
 >>> import zeit.cms.testing
@@ -22,6 +25,9 @@ Get article for adapter tests:
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ICommonMetadata(
 ...         checked_out).breaking_news = True
+...     zeit.cms.content.interfaces.ICommonMetadata(
+...         checked_out).keywords = keywords.find_keywords('staat')
+
 
 >>> images = zeit.content.image.interfaces.IImages(article)
 >>> image = zeit.cms.interfaces.ICMSContent(
@@ -82,6 +88,65 @@ Convert an article and check resultset:
 
 >>> zope.index.text.interfaces.ISearchableText(article).getSearchableText()
 [u'Kriegsherr Hussein Mohammed Aidid hat ...
+
+
+Check out the article for further field tests.
+
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     article).checkout()
+>>> article_converter2 = zeit.solr.interfaces.ISolrConverter(checked_out)
+>>> article_converter2
+<zeit.solr.converter.SolrConverter object at ...>
+>>> root_node = article_converter2.convert()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add ...>
+  <doc>
+    <field name="authors">Hans Meiser</field>
+    <field name="authors_fulltext">Hans Meiser</field>
+    <field name="mostread">true</field>
+    <field name="breaking_news">true</field>
+    <field name="byline">Von Jochen Stahnke</field>
+    <field name="keywords">Staatliche Sozialleistung Sozialstaat Staatsoberhaupt Staatsdefizit Staatsquote Staatsfinanzen Staatsanwaltschaft Staatsangeh&#246;rigkeit Staatsgrenze Staatsorgane Staatsverschuldung Verstaatlichung Staatssymbol Staat Staatsfinanzen Staat Staatsbesuch</field>
+    <field name="keywords_list">Staatliche Sozialleistung</field>
+    <field name="keywords_list">Sozialstaat</field>
+    <field name="keywords_list">Staatsoberhaupt</field>
+    <field name="keywords_list">Staatsdefizit</field>
+    <field name="keywords_list">Staatsquote</field>
+    <field name="keywords_list">Staatsfinanzen</field>
+    <field name="keywords_list">Staatsanwaltschaft</field>
+    <field name="keywords_list">Staatsangeh&#246;rigkeit</field>
+    <field name="keywords_list">Staatsgrenze</field>
+    <field name="keywords_list">Staatsorgane</field>
+    <field name="keywords_list">Staatsverschuldung</field>
+    <field name="keywords_list">Verstaatlichung</field>
+    <field name="keywords_list">Staatssymbol</field>
+    <field name="keywords_list">Staat</field>
+    <field name="keywords_list">Staatsfinanzen</field>
+    <field name="keywords_list">Staat</field>
+    <field name="keywords_list">Staatsbesuch</field>
+    <field name="last_modified_by">zope.user</field>
+    <field name="main_text">Kriegsherr...</field>
+    <field name="published">not-published</field>
+    <field name="ressort">International</field>
+    <field name="serie">-</field>
+    <field name="subtitle">Im Zuge des &#228;thiopischen Vormarsches auf Mogadischu kriechen in Somalia auch die alten Miliz-Chefs wieder hervor.</field>
+    <field name="supertitle">Somalia</field>
+    <field name="teaser_title">R&#252;ckkehr der Warlords</field>
+    <field name="teaser_text">Im Zuge des &#228;thiopischen Vormarsches auf Mogadischu kriechen in Somalia auch die alten Miliz-Chefs wieder hervor.</field>
+    <field name="title">R&#252;ckkehr der Warlords</field>
+    <field name="type">article</field>
+    <field name="uuid">{urn:uuid:<GUID>}</field>
+    <field name="volume">1</field>
+    <field name="uniqueId">http://xml.zeit.de/online/2007/01/Somalia</field>
+    <field name="year">2007</field>
+    <field name="icon">/++noop++7b96ef8299459c6372971b040141db4d/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png</field>
+  </doc>
+</add>
+<BLANKLINE>
+
+>>> checked_in = zeit.cms.checkout.interfaces.ICheckinManager(
+...     checked_out).checkin()
+
 
 Convert an image and check resultset:
 
@@ -221,6 +286,3 @@ For day 70
 ...<field name="boost">1</field>...
 <BLANKLINE>
 
-
-Clean up:
->>> zope.app.component.hooks.setSite(old_site)
