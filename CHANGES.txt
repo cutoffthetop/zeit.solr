@@ -4,6 +4,8 @@ zeit.solr changes
 0.17.1 (unreleased)
 -------------------
 
+- Allow to negate queries via the ``not_()`` function (#6914)
+
 - Neues Feld im Solr: keywords_list
 
 

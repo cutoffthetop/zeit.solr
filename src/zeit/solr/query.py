@@ -52,6 +52,10 @@ def and_(*args):
 def or_(*args):
     return '(%s)' % ' OR '.join(args)
 
+def not_(arg):
+    return "NOT %s" % (arg,)
+
+
 def multi_field(name, value):
     words = value.split()
     return and_(*[field(name, word) for word in words])
