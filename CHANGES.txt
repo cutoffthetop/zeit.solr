@@ -4,7 +4,7 @@ zeit.solr changes
 0.18.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove ``mostread`` indexing as it was removed from the article (#6878).
 
 
 0.18.0 (2010-03-02)

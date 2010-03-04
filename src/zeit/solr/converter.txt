@@ -58,7 +58,6 @@ Convert an article and check resultset:
   <doc>
     <field name="authors">Hans Meiser</field>
     <field name="authors_fulltext">Hans Meiser</field>
-    <field name="mostread">true</field>
     <field name="breaking_news">true</field>
     <field name="byline">Von Jochen Stahnke</field>
     <field name="date-last-modified">20...Z</field>
@@ -103,7 +102,6 @@ Check out the article for further field tests.
   <doc>
     <field name="authors">Hans Meiser</field>
     <field name="authors_fulltext">Hans Meiser</field>
-    <field name="mostread">true</field>
     <field name="breaking_news">true</field>
     <field name="byline">Von Jochen Stahnke</field>
     <field name="keywords">Staatliche Sozialleistung Sozialstaat Staatsoberhaupt Staatsdefizit Staatsquote Staatsfinanzen Staatsanwaltschaft Staatsangeh&#246;rigkeit Staatsgrenze Staatsorgane Staatsverschuldung Verstaatlichung Staatssymbol Staat Staatsfinanzen Staat Staatsbesuch</field>

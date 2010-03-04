@@ -230,9 +230,6 @@ class SolrConverter(object):
         zeit.cms.content.interfaces.ICommonMetadata,
         'authors', solr='authors_fulltext')
     Index(
-        zeit.content.article.interfaces.IArticleMetadata,
-        'boxMostRead', solr='mostread')
-    Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'breaking_news')
     Index(
