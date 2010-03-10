@@ -20,7 +20,7 @@ setup(
         'simplejson', # for pysolr
         'zeit.cms>1.39.3',
         'zeit.connector',
-        'zeit.content.article',
+        'zeit.content.article>=2.8.1',
         'zope.index',
     ],
     entry_points = """
