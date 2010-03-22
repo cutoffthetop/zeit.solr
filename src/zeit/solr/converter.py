@@ -114,7 +114,8 @@ class Thumbnail(Index):
     attribute = None
 
     def __init__(self, solr):
-        super(Thumbnail, self).__init__(self.interface, self.attribute, solr, 2)
+        super(Thumbnail, self).__init__(
+            self.interface, self.attribute, solr, 2)
 
     def process(self, value, doc_node):
         view_name = 'thumbnail'
