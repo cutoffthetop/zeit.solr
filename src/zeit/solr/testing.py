@@ -17,25 +17,48 @@ product_config = """\
 </product-config>
 """ % pkg_resources.resource_filename(__name__, 'tests/data')
 
-SolrLayer = zope.app.testing.functional.ZCMLLayer(
+
+SolrLayer = zeit.cms.testing.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'SolrLayer', allow_teardown=True,
     product_config=product_config)
 
 
+class SolrMockLayerBase(object):
+
+    @classmethod
+    def setUp(cls):
+        cls.solr = mock.Mock()
+        zope.interface.alsoProvides(cls.solr, zeit.solr.interfaces.ISolr)
+        zope.component.provideUtility(cls.solr)
+        cls.public_solr = mock.Mock()
+        zope.interface.alsoProvides(
+            cls.public_solr, zeit.solr.interfaces.ISolr)
+        zope.component.provideUtility(cls.public_solr, name='public')
+
+    @classmethod
+    def tearDown(cls):
+        zope.component.getSiteManager().unregisterUtility(cls.solr)
+        zope.component.getSiteManager().unregisterUtility(cls.public_solr,
+                                                          name='public')
+
+    @classmethod
+    def testTearDown(cls):
+        cls.solr.reset_mock()
+        cls.public_solr.reset_mock()
+
+
+class SolrMockLayer(SolrLayer, SolrMockLayerBase):
+    """Mocked solr."""
+
+
 class MockedFunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = SolrLayer
+    layer = SolrMockLayer
 
     def setUp(self):
         super(MockedFunctionalTestCase, self).setUp()
-        self.solr = mock.Mock()
-        zope.interface.alsoProvides(self.solr, zeit.solr.interfaces.ISolr)
-        zope.component.provideUtility(self.solr)
-
-    def tearDown(self):
-        zope.component.getSiteManager().unregisterUtility(self.solr)
-        super(MockedFunctionalTestCase, self).tearDown()
+        self.solr = self.layer.solr
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
