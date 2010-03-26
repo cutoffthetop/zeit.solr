@@ -6,6 +6,8 @@ zeit.solr changes
 
 - Using versions from the ZTK.
 
+- Don't log Solr/Update errors as ERROR but as WARNING (#6998).
+
 
 0.18.1 (2010-03-10)
 -------------------

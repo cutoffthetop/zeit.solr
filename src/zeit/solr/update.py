@@ -106,8 +106,8 @@ class ContentUpdater(object):
                 # push the raw XML here and bypass all the pysolr niceties.
                 solr.update_raw(converter.convert())
             except zeit.solr.interfaces.SolrError, e:
-                log.error("Solr server returned '%s' while updating %s" %
-                             (e, content.uniqueId))
+                log.warning("Solr server returned '%s' while updating %s" %
+                            (e, content.uniqueId))
                 return None
             else:
                 if zeit.cms.repository.interfaces.ICollection.providedBy(
