@@ -17,6 +17,7 @@ class SolrConnection(pysolr.Solr):
 
     def update_raw(self, xml):
         data = lxml.etree.tostring(xml, encoding='UTF-8', xml_declaration=True)
+        print data
         path = '%s/update/' % self.path
         result = self._send_request(
             'POST', path, data, {'Content-type': 'text/xml'})

@@ -14,6 +14,7 @@ import zope.component
 import zope.interface
 import zope.publisher.browser
 import zope.traversing.interfaces
+import zope.dublincore.interfaces
 
 
 class GenericXMLContentTextIndex(grokcore.component.Adapter):
@@ -159,6 +160,7 @@ class ListRepresentationIndex(Index):
 class ImageIndex(Index):
 
     def process(self, values, doc_node):
+        
         if len(values) == 0:
             return
         image = zeit.content.image.interfaces.IImageMetadata(values[0], None)
@@ -257,6 +259,9 @@ class SolrConverter(object):
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'dailyNewsletter', solr='DailyNL')
+    Date(
+        zope.dublincore.interfaces.IDCPublishing,
+        'expires')
     Index(
         zeit.content.article.interfaces.IArticleMetadata,
         'has_recensions')
@@ -314,7 +319,8 @@ class SolrConverter(object):
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'teaserText', solr='teaser_text')
-    ListRepresentationIndex('title')
+    Index(zeit.cms.content.interfaces.ICommonMetadata,
+          'title')
     Index(
         zeit.cms.interfaces.ITypeDeclaration,
         'type_identifier', solr='type')
@@ -331,7 +337,10 @@ class SolrConverter(object):
     ListRepresentationIndex('year')
     Icon(solr='icon')
     Thumbnail(solr='graphical-preview-url')
-
+#    SplitTuple(
+#        zeit.content.image.interfaces.IImages,
+#        'images', solr='referenced-images-url')
+    
     def __init__(self, context):
         self.context = context
         self.adapters = {}

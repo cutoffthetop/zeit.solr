@@ -104,7 +104,7 @@ Check out the article for further field tests.
     <field name="authors_fulltext">Hans Meiser</field>
     <field name="breaking_news">true</field>
     <field name="byline">Von Jochen Stahnke</field>
-    <field name="keywords">Staatliche Sozialleistung Sozialstaat Staatsoberhaupt Staatsdefizit Staatsquote Staatsfinanzen Staatsanwaltschaft Staatsangeh&#246;rigkeit Staatsgrenze Staatsorgane Staatsverschuldung Verstaatlichung Staatssymbol Staat Staatsfinanzen Staat Staatsbesuch</field>
+    <field name="keywords">Staatliche Sozialleistung Sozialstaat Staatsoberhaupt Staatsdefizit Staatsquote Staatsfinanzen Staatsanwaltschaft Staatsangeh&#246;rigkeit Staatsorgane Staatsverschuldung Verstaatlichung Staatssymbol Staat Staatsfinanzen Staat Staatsbesuch Staatsgrenze</field>
     <field name="keywords_list">Staatliche Sozialleistung</field>
     <field name="keywords_list">Sozialstaat</field>
     <field name="keywords_list">Staatsoberhaupt</field>
@@ -113,7 +113,6 @@ Check out the article for further field tests.
     <field name="keywords_list">Staatsfinanzen</field>
     <field name="keywords_list">Staatsanwaltschaft</field>
     <field name="keywords_list">Staatsangeh&#246;rigkeit</field>
-    <field name="keywords_list">Staatsgrenze</field>
     <field name="keywords_list">Staatsorgane</field>
     <field name="keywords_list">Staatsverschuldung</field>
     <field name="keywords_list">Verstaatlichung</field>
@@ -122,6 +121,7 @@ Check out the article for further field tests.
     <field name="keywords_list">Staatsfinanzen</field>
     <field name="keywords_list">Staat</field>
     <field name="keywords_list">Staatsbesuch</field>
+    <field name="keywords_list">Staatsgrenze</field>
     <field name="last_modified_by">zope.user</field>
     <field name="main_text">Kriegsherr...</field>
     <field name="published">not-published</field>
@@ -160,24 +160,23 @@ Convert an image and check resultset:
 >>> image_converter = zeit.solr.interfaces.ISolrConverter(image)
 >>> root_node = image_converter.convert()
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
-<add ...>
-  <doc>
+<add ...>...
     <field name="alt">alternative text</field>
     <field name="caption">caption text</field>
     <field name="date-last-modified">...</field>
     <field name="last_modified_by">zope.user</field>
     <field name="published">not-published</field>
-    <field name="title">image title</field>
     <field name="type">image</field>
-    <field name="uuid">{urn:uuid:a429930f-f213-4dfb-b02a-441a134e0d09}</field>
+    <field name="uuid">{urn:uuid:e2500273-fa09-48ff-a63d-063f3fcb3e4e}</field>
     <field name="volume">5</field>
     <field name="uniqueId">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
     <field name="year">2006</field>
-    <field name="icon">/@@/zeit-content-image-interfaces-IImage-zmi_icon.png</field>
-    <field name="graphical-preview-url">/repository/2006/DSC00109_2.JPG/@@thumbnail</field>
-  </doc>
+    <field name="icon">/++noop++3ee62bd74c764a2db7c9faa0a7ea9661/@@/zeit-content-image-interfaces-IImage-zmi_icon.png</field>
+     <field name="graphical-preview-url">/repository/2006/DSC00109_2.JPG/@@thumbnail</field>
+    </doc>
 </add>
 <BLANKLINE>
+
 
 
 Convert a centerpage and check resultset:
