@@ -2,8 +2,8 @@ import datetime
 import grokcore.component
 import inspect
 import lxml.etree
-import lxml.objectify
 import lxml.html
+import lxml.objectify
 import pytz
 import zeit.cms.interfaces
 import zeit.connector.interfaces
@@ -12,11 +12,10 @@ import zeit.content.image.interfaces
 import zeit.solr.interfaces
 import zeit.workflow.interfaces
 import zope.component
+import zope.dublincore.interfaces
 import zope.interface
 import zope.publisher.browser
 import zope.traversing.interfaces
-import zope.dublincore.interfaces
-import xml.sax.saxutils
 
 
 class GenericXMLContentTextIndex(grokcore.component.Adapter):
