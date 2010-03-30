@@ -3,6 +3,7 @@ import grokcore.component
 import inspect
 import lxml.etree
 import lxml.objectify
+import lxml.html
 import pytz
 import zeit.cms.interfaces
 import zeit.connector.interfaces
@@ -15,6 +16,7 @@ import zope.interface
 import zope.publisher.browser
 import zope.traversing.interfaces
 import zope.dublincore.interfaces
+import xml.sax.saxutils
 
 
 class GenericXMLContentTextIndex(grokcore.component.Adapter):
@@ -41,6 +43,10 @@ class Index(object):
         solr_mapping.append(self)
 
     def process(self, value, doc_node):
+        try:
+            value = lxml.html.fromstring(value).text_content()
+        except:
+            pass
         self.append_to_node(value, doc_node)
 
     def append_to_node(self, value, parent_node):

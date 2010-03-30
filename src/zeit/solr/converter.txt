@@ -27,6 +27,8 @@ Get article for adapter tests:
 ...         checked_out).breaking_news = True
 ...     zeit.cms.content.interfaces.ICommonMetadata(
 ...         checked_out).keywords = keywords.find_keywords('staat')
+...     zeit.cms.content.interfaces.ICommonMetadata(
+...         checked_out).title = "Strip <em>the</em> &amp; please"
 
 
 >>> images = zeit.content.image.interfaces.IImages(article)
@@ -131,7 +133,7 @@ Check out the article for further field tests.
     <field name="supertitle">Somalia</field>
     <field name="teaser_title">R&#252;ckkehr der Warlords</field>
     <field name="teaser_text">Im Zuge des &#228;thiopischen Vormarsches auf Mogadischu kriechen in Somalia auch die alten Miliz-Chefs wieder hervor.</field>
-    <field name="title">R&#252;ckkehr der Warlords</field>
+    <field name="title">Strip the &amp; please</field>
     <field name="type">article</field>
     <field name="uuid">{urn:uuid:<GUID>}</field>
     <field name="volume">1</field>
