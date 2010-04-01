@@ -8,6 +8,9 @@ zeit.solr changes
 
 - Don't log Solr/Update errors as ERROR but as WARNING (#6998).
 
+- Index the IAbsoluteURL of thumbnail view instead of a handcrafted one
+  (#6975).
+
 
 0.18.1 (2010-03-10)
 -------------------
