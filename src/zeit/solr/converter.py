@@ -114,25 +114,25 @@ class Icon(Index):
         self.append_to_node(path, doc_node)
 
 
-class Thumbnail(Index):
+class GraphicalPreview(Index):
 
     interface = zope.interface.Interface
     attribute = None
 
-    def __init__(self, solr):
-        super(Thumbnail, self).__init__(
+    def __init__(self, view_name, solr):
+        super(GraphicalPreview, self).__init__(
             self.interface, self.attribute, solr, 2)
+        self.view_name = view_name
 
     def process(self, value, doc_node):
-        view_name = 'thumbnail'
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
-        thumbnail = zope.component.queryMultiAdapter(
-            (value, request), name=view_name)
-        if thumbnail is None:
+        preview = zope.component.queryMultiAdapter(
+            (value, request), name=self.view_name)
+        if preview is None:
             return
         url = zope.component.getMultiAdapter(
-            (thumbnail, request),
+            (preview, request),
             zope.traversing.browser.interfaces.IAbsoluteURL)
         try:
             url = url()
@@ -346,7 +346,8 @@ class SolrConverter(object):
         'urgent')
     ListRepresentationIndex('year')
     Icon(solr='icon')
-    Thumbnail(solr='graphical-preview-url')
+    GraphicalPreview('thumbnail', solr='graphical-preview-url')
+    GraphicalPreview('preview', solr='graphical-preview-url-large')
 
     def __init__(self, context):
         self.context = context
