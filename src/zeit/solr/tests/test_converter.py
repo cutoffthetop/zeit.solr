@@ -19,7 +19,7 @@ class TestThumbnail(zeit.solr.testing.FunctionalTestCase):
     def test_url_for_image(self):
         self.index.process(self.image, self.xml)
         self.assertEquals('thumbnail', self.xml.field.get('name'))
-        self.assertEquals('/repository/2006/DSC00109_2.JPG/@@thumbnail',
+        self.assertEquals('/repository/2006/DSC00109_2.JPG/thumbnail',
                           self.xml.field)
 
     def test_no_url_for_testcontent(self):

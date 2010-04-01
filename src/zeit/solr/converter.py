@@ -132,11 +132,16 @@ class Thumbnail(Index):
         if thumbnail is None:
             return
         url = zope.component.getMultiAdapter(
-            (value, request),
+            (thumbnail, request),
             zope.traversing.browser.interfaces.IAbsoluteURL)
-        path = '%s/@@%s' % (
-            url().replace(request['SERVER_URL'], ''), view_name)
-        self.append_to_node(path, doc_node)
+        try:
+            url = url()
+        except TypeError:
+            # Insufficient context
+            return
+        if url.startswith(request['SERVER_URL']):
+            url = url.replace(request['SERVER_URL'], '')
+        self.append_to_node(url, doc_node)
 
 
 class ListRepresentationIndex(Index):
@@ -342,10 +347,7 @@ class SolrConverter(object):
     ListRepresentationIndex('year')
     Icon(solr='icon')
     Thumbnail(solr='graphical-preview-url')
-#    SplitTuple(
-#        zeit.content.image.interfaces.IImages,
-#        'images', solr='referenced-images-url')
-    
+
     def __init__(self, context):
         self.context = context
         self.adapters = {}

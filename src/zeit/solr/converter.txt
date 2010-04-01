@@ -106,7 +106,7 @@ Check out the article for further field tests.
     <field name="authors_fulltext">Hans Meiser</field>
     <field name="breaking_news">true</field>
     <field name="byline">Von Jochen Stahnke</field>
-    <field name="keywords">Staatliche Sozialleistung Sozialstaat Staatsoberhaupt Staatsdefizit Staatsquote Staatsfinanzen Staatsanwaltschaft Staatsangeh&#246;rigkeit Staatsorgane Staatsverschuldung Verstaatlichung Staatssymbol Staat Staatsfinanzen Staat Staatsbesuch Staatsgrenze</field>
+    <field name="keywords">Staatliche Sozialleistung ...</field>
     <field name="keywords_list">Staatliche Sozialleistung</field>
     <field name="keywords_list">Sozialstaat</field>
     <field name="keywords_list">Staatsoberhaupt</field>
@@ -114,16 +114,7 @@ Check out the article for further field tests.
     <field name="keywords_list">Staatsquote</field>
     <field name="keywords_list">Staatsfinanzen</field>
     <field name="keywords_list">Staatsanwaltschaft</field>
-    <field name="keywords_list">Staatsangeh&#246;rigkeit</field>
-    <field name="keywords_list">Staatsorgane</field>
-    <field name="keywords_list">Staatsverschuldung</field>
-    <field name="keywords_list">Verstaatlichung</field>
-    <field name="keywords_list">Staatssymbol</field>
-    <field name="keywords_list">Staat</field>
-    <field name="keywords_list">Staatsfinanzen</field>
-    <field name="keywords_list">Staat</field>
-    <field name="keywords_list">Staatsbesuch</field>
-    <field name="keywords_list">Staatsgrenze</field>
+    ...
     <field name="last_modified_by">zope.user</field>
     <field name="main_text">Kriegsherr...</field>
     <field name="published">not-published</field>
@@ -174,7 +165,7 @@ Convert an image and check resultset:
     <field name="uniqueId">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
     <field name="year">2006</field>
     <field name="icon">/++noop++3ee62bd74c764a2db7c9faa0a7ea9661/@@/zeit-content-image-interfaces-IImage-zmi_icon.png</field>
-     <field name="graphical-preview-url">/repository/2006/DSC00109_2.JPG/@@thumbnail</field>
+     <field name="graphical-preview-url">/repository/2006/DSC00109_2.JPG/thumbnail</field>
     </doc>
 </add>
 <BLANKLINE>
