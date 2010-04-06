@@ -282,6 +282,7 @@
    <field name="date-last-published" type="date" indexed="true" stored="true" />
    <field name="DailyNL" type="boolean" indexed="true" stored="true" />
    <field name="expires" type="date" indexed="true" stored="true" />
+   <field name="created" type="date" indexed="true" stored="true" />
    <field name="graphical-preview-url" type="string_nt" indexed="false" stored="true" />
    <field name="graphical-preview-url-large" type="string_nt" indexed="false" stored="true" />
    <field name="has_recensions" type="boolean" indexed="true" stored="true" />
@@ -359,7 +360,6 @@
    <copyField source="name" dest="text"/>
    <copyField source="name" dest="nameSort"/>
    <copyField source="name" dest="alphaNameSort"/>
-
    <copyField source="uuid" dest="id" />
    <copyField source="alt" dest="text" />
    <copyField source="byline" dest="text" />

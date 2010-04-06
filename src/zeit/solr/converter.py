@@ -272,6 +272,9 @@ class SolrConverter(object):
     Date(
         zope.dublincore.interfaces.IDCPublishing,
         'expires')
+    Date(
+        zope.dublincore.interfaces.IDCTimes,
+        'created')
     Index(
         zeit.content.article.interfaces.IArticleMetadata,
         'has_recensions')
