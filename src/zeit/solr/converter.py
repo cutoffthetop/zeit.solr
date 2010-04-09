@@ -104,6 +104,7 @@ class Icon(Index):
         super(Icon, self).__init__(self.interface, self.attribute, solr, 2)
 
     def process(self, value, doc_node):
+        
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
         icon = zope.component.queryMultiAdapter(
@@ -245,6 +246,9 @@ class SolrConverter(object):
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'breaking_news')
+    Index(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        'commentsAllowed', solr='allow_comments')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'byline')

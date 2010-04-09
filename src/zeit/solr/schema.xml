@@ -273,6 +273,7 @@
    <field name="authors_fulltext" type="text" indexed="true" stored="false" />
    <field name="boost" type="integer" indexed="true" stored="false" />
    <field name="breaking_news" type="boolean" indexed="true" stored="true" />
+   <field name="allow_comments" type="boolean" indexed="true" stored="true" />
    <field name="byline" type="text" indexed="true" stored="true" />
    <field name="caption" type="text" indexed="true" stored="true" />
    <field name="corrected" type="string_nt" indexed="true" stored="true" />
