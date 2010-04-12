@@ -4,7 +4,8 @@ zeit.solr changes
 0.19.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Allow to update the public solr via xmlrpc and the reindex-query script
+  (#7027)
 
 
 0.19.0 (2010-04-09)

@@ -42,6 +42,10 @@ class XMLRPCTest(zeit.solr.testing.MockedFunctionalTestCase):
     def test_invalid_type_should_fail(self):
         self.assertRaises(xmlrpclib.Fault, self.update_solr, 42)
 
+    def test_invalid_solr_name_fails(self):
+        self.assertRaises(xmlrpclib.Fault,
+                          self.update_solr, 'asdf', 'non-exsisting-solr')
+
 
 def test_suite():
     return unittest.makeSuite(XMLRPCTest)

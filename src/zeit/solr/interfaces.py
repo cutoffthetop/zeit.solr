@@ -25,5 +25,5 @@ class IUpdater(zope.interface.Interface):
     else the object is deleted from the solr index.
     """
 
-    def update():
-        pass
+    def update(solr=u''):
+        """Update solr indicated by ``solr``."""

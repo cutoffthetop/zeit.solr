@@ -55,22 +55,25 @@ class TestReindex(unittest.TestCase):
         xmlrpc = mock.Mock()
         query = 'boost:[2 TO *]'
         solr = zeit.solr.connection.SolrConnection(testdata)
-        reindex = zeit.solr.reindex.Reindex(solr, query, xmlrpc)
+        reindex = zeit.solr.reindex.Reindex(solr, 'public', query, xmlrpc)
         reindex()
         self.assertTrue(xmlrpc.update_solr.called)
         self.assertEquals(10, len(xmlrpc.update_solr.call_args_list))
         self.assertEquals(query_result, self.log.getvalue())
 
     def test_entrypoint_without_query(self):
-        zeit.solr.reindex.reindex(testdata, self.cms_url)
+        zeit.solr.reindex.reindex(testdata, 'public', self.cms_url)
         self.assertEquals('Usage: solr-reindex-query <solr-query>\n',
                           self.log.getvalue())
 
     def test_entrypoint_with_query(self):
         sys.argv.extend(['merkel', 'steinmeier', 'obama'])
-        zeit.solr.reindex.reindex(testdata, self.cms_url)
+        zeit.solr.reindex.reindex(testdata, 'public', self.cms_url)
         self.assertTrue(xmlrpclib.ServerProxy.called)
         self.assertTrue(self.xmlrpc_instance.update_solr.called)
         self.assertEquals(
             'http://xml.zeit.de/online/2009/04/obama-merkel-amtseinfuehrung',
             self.xmlrpc_instance.update_solr.call_args_list[0][0][0])
+        self.assertEquals(
+            'public',
+            self.xmlrpc_instance.update_solr.call_args_list[0][0][1])

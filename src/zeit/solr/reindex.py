@@ -12,8 +12,9 @@ log = sys.stdout
 
 class Reindex(object):
 
-    def __init__(self, solr, query, cms):
+    def __init__(self, solr, solr_name, query, cms):
         self.solr = solr
+        self.solr_name = solr_name
         self.query = query
         self.cms = cms
 
@@ -24,15 +25,15 @@ class Reindex(object):
         for doc in result:
             unique_id = doc['uniqueId']
             print >>log, "   %s" % unique_id
-            self.cms.update_solr(unique_id)
+            self.cms.update_solr(unique_id, self.solr_name)
 
 
-def reindex(solr_url, cms_url):
+def reindex(solr_url, solr_name, cms_url):
     query = ' '.join(sys.argv[1:])
     if not query:
         print >>log, 'Usage: solr-reindex-query <solr-query>'
         return
     solr = zeit.solr.connection.SolrConnection(solr_url)
     cms = xmlrpclib.ServerProxy(cms_url)
-    reindex = Reindex(solr, query, cms)
+    reindex = Reindex(solr, solr_name, query, cms)
     reindex()
