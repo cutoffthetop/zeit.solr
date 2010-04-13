@@ -24,7 +24,7 @@ class Reindex(object):
         print >>log, "Updating %s of %s documents:" % (len(result), result.hits)
         for doc in result:
             unique_id = doc['uniqueId']
-            print >>log, "   %s" % unique_id
+            print >>log, "   %s" % unique_id.encode('utf8')
             self.cms.update_solr(unique_id, self.solr_name)
 
 
