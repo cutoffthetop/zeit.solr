@@ -5,6 +5,8 @@ zeit.solr changes
 -------------------
 
 - Fix reindexer unicode logging.
+- new field "referenced" in  schema.xml
+- new indexing for zeit.relation.interfaces.IReferences
 
 
 0.19.1 (2010-04-12)

@@ -9,6 +9,7 @@ import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.article.interfaces
 import zeit.content.image.interfaces
+import zeit.cms.relation.interfaces
 import zeit.solr.interfaces
 import zeit.workflow.interfaces
 import zope.component
@@ -94,6 +95,11 @@ class SplitKeywords(Index):
         for arg in value:
             self.append_to_node(unicode(arg.label), doc_node)
 
+class SplitReferences(Index):
+
+    def process(self, value, doc_node):
+        for arg in value:
+            self.append_to_node(arg.uniqueId, doc_node)
 
 class Icon(Index):
 
@@ -240,6 +246,9 @@ class SolrConverter(object):
     SplitTuple(
         zeit.cms.content.interfaces.ICommonMetadata,
         'authors')
+    SplitReferences(
+        zeit.cms.relation.interfaces.IReferences,None,
+        solr='referenced')
     JoinTuple(
         zeit.cms.content.interfaces.ICommonMetadata,
         'authors', solr='authors_fulltext')
