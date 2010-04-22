@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.19.2 (unreleased)
+0.20.0 (2010-04-22)
 -------------------
 
 - Fix reindexer unicode logging.
