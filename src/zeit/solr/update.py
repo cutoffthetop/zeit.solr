@@ -115,6 +115,13 @@ class ContentUpdater(object):
                     stack.extend(content.values())
 
 
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.solr.interfaces.IUpdater)
+def default_updater(context):
+    return zope.component.queryAdapter(
+        context, zeit.solr.interfaces.IUpdater, name='update')
+
+
 class Deleter(object):
 
     zope.component.adapts(basestring)

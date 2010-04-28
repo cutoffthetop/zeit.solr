@@ -4,7 +4,7 @@ zeit.solr changes
 0.20.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Provide named access to the Updater for ICMSContent
 
 
 0.20.0 (2010-04-22)

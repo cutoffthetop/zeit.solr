@@ -15,7 +15,8 @@
   <adapter factory=".converter.SolrConverter" />
 
   <adapter factory=".update.IdUpdater" />
-  <adapter factory=".update.ContentUpdater" />
+  <adapter factory=".update.default_updater" />
+  <adapter factory=".update.ContentUpdater" name="update" />
   <adapter factory=".update.Deleter" name="delete" />
 
   <permission
