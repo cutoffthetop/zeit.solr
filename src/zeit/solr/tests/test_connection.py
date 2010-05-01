@@ -14,6 +14,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, object):
 
     response_code = 200
     response_body = ''
+    reason = None
 
     def do_POST(self):
         length = int(self.headers['content-length'])
@@ -23,6 +24,8 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, object):
             headers=self.headers,
         ))
         self.send_response(self.response_code)
+        if self.reason:
+            self.send_header('Reason', self.reason)
         self.end_headers()
         self.wfile.write(self.response_body)
 
@@ -72,12 +75,14 @@ class TestSolrConnection(unittest.TestCase):
         self.RequestHandler.response_body = (
             "<html><body><h1>Failed for some reason</h1> bla"
             "<hr></body></html>")
+        self.RequestHandler.reason = 'Failed for a reason'
         self.start_httpd()
         try:
             self.solr.update_raw(self.data)
         except pysolr.SolrError, e:
             self.assertEquals(
-                '[500 Internal Server Error] Failed for some reason',
+                '[Reason: Failed for a reason]\n<html><body><h1>'
+                'Failed for some reason</h1> bla<hr></body></html>',
                 e.args[0])
         else:
             self.fail("Exception not raised")
@@ -91,7 +96,7 @@ class TestSolrConnection(unittest.TestCase):
             self.solr.update_raw(self.data)
         except pysolr.SolrError, e:
             self.assertEquals(
-                '[500 Internal Server Error] this is not html & broken',
+                '[Reason: None]\nthis is not html & broken',
                 e.args[0])
         else:
             self.fail("Exception not raised")

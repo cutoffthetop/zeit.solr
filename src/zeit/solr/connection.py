@@ -22,15 +22,6 @@ class SolrConnection(pysolr.Solr):
             'POST', path, data, {'Content-type': 'text/xml'})
         return result
 
-    def _extract_error(self, response, body):
-        # patched to use HTML instead of XML parser, so it does not choke
-        # on <hr>-Tags, for example
-        et = lxml.html.fromstring(body)
-        message = et.findtext('body/h1')
-        if not message:
-            message = body
-        return "[%s %s] %s" % (response.status, response.reason, message)
-
     def _send_request(self, method, path, body=None, headers=None):
         """Override to use urllib2 instead of httplib directly for file urls.
 
