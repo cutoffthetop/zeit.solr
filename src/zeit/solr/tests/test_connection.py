@@ -101,3 +101,12 @@ class TestSolrConnection(unittest.TestCase):
         else:
             self.fail("Exception not raised")
         self.assertEquals(1, len(self.RequestHandler.posts_received))
+
+    def test_delete_escapes_xml(self):
+        self.start_httpd()
+        self.solr.delete(q='foo:a\\&b', commit=False)
+        self.assertEquals(1, len(self.RequestHandler.posts_received))
+        post = self.RequestHandler.posts_received
+        self.assertEquals(
+            '<delete><query>foo:a\\&amp;b</query></delete>',
+            post[0]['data'])

@@ -6,6 +6,7 @@ import lxml.etree
 import lxml.html
 import os.path
 import pysolr
+import xml.sax.saxutils
 import zeit.solr.interfaces
 import zope.app.appsetup.product
 import zope.interface
@@ -21,6 +22,13 @@ class SolrConnection(pysolr.Solr):
         result = self._send_request(
             'POST', path, data, {'Content-type': 'text/xml'})
         return result
+
+    def delete(self, id=None, q=None, commit=True, fromPending=True,
+               fromCommitted=True):
+        if q:
+            q = xml.sax.saxutils.escape(q)
+        return super(SolrConnection, self).delete(id, q, commit, fromPending,
+                                                  fromCommitted)
 
     def _send_request(self, method, path, body=None, headers=None):
         """Override to use urllib2 instead of httplib directly for file urls.

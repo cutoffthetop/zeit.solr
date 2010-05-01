@@ -4,6 +4,8 @@ zeit.solr changes
 0.20.1 (unreleased)
 -------------------
 
+- Fix delete of resources with & in url (#7148)
+
 - Support pysolr 2.0.11 (#7001)
 
 - Provide named access to the Updater for ICMSContent
