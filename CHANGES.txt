@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.20.1 (unreleased)
+0.21.0 (2010-05-03)
 -------------------
 
 - Fix delete of resources with & in url (#7148)
