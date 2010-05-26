@@ -8,11 +8,10 @@ import random
 import sys
 import unittest
 import xmlrpclib
+import zeit.cms.testing
 import zeit.solr.connection
 import zeit.solr.reindex
 
-
-testdata = 'file://%s' % pkg_resources.resource_filename(__name__, 'data')
 
 query_result = """\
 Updating 10 of 1382 documents:
@@ -28,7 +27,30 @@ Updating 10 of 1382 documents:
    http://xml.zeit.de/online/2009/26/gfk-index
 """
 
+
+class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
+
+    serve = []
+
+    def do_GET(self):
+        if self.serve:
+            serve = self.serve.pop(0)
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(serve)
+        else:
+            self.send_response(500)
+            self.send_header('Reason', 'Nothing to serve for %s' % self.path)
+            self.end_headers()
+
+
+HTTPLayer, port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
+SOLR_URL = 'http://localhost:%s/solr/' % port
+
+
 class TestReindex(unittest.TestCase):
+
+    layer = HTTPLayer
 
     def setUp(self):
         super(TestReindex, self).setUp()
@@ -39,7 +61,7 @@ class TestReindex(unittest.TestCase):
         self.log = StringIO.StringIO()
         self.old_log = zeit.solr.reindex.log
         zeit.solr.reindex.log = self.log
-        self.cms_url = 'http://localhost:%s/' % random.randint(30000, 40000)
+        self.cms_url = 'http://localhost/'
         self.argv = sys.argv
         sys.argv = [sys.argv[0]]
 
@@ -48,13 +70,17 @@ class TestReindex(unittest.TestCase):
         zeit.solr.reindex.log = self.old_log
         output = self.log.getvalue()
         sys.argv = self.argv
+        RequestHandler.serve[:] = []
         super(TestReindex, self).tearDown()
 
     def test_query(self):
         self.expected = query_result
         xmlrpc = mock.Mock()
         query = 'boost:[2 TO *]'
-        solr = zeit.solr.connection.SolrConnection(testdata)
+        solr = zeit.solr.connection.SolrConnection(SOLR_URL)
+        RequestHandler.serve.append(
+            pkg_resources.resource_string(
+                __name__, 'data/test_reindex.test_query.boost-test.json'))
         reindex = zeit.solr.reindex.Reindex(solr, 'public', query, xmlrpc)
         reindex()
         self.assertTrue(xmlrpc.update_solr.called)
@@ -62,13 +88,15 @@ class TestReindex(unittest.TestCase):
         self.assertEquals(query_result, self.log.getvalue())
 
     def test_entrypoint_without_query(self):
-        zeit.solr.reindex.reindex(testdata, 'public', self.cms_url)
+        zeit.solr.reindex.reindex(SOLR_URL, 'public', self.cms_url)
         self.assertEquals('Usage: solr-reindex-query <solr-query>\n',
                           self.log.getvalue())
 
     def test_entrypoint_with_query(self):
         sys.argv.extend(['merkel', 'steinmeier', 'obama'])
-        zeit.solr.reindex.reindex(testdata, 'public', self.cms_url)
+        RequestHandler.serve.append(pkg_resources.resource_string(
+            __name__, 'data/test_reindex.test_entrypoint_with_query.json'))
+        zeit.solr.reindex.reindex(SOLR_URL, 'public', self.cms_url)
         self.assertTrue(xmlrpclib.ServerProxy.called)
         self.assertTrue(self.xmlrpc_instance.update_solr.called)
         self.assertEquals(
