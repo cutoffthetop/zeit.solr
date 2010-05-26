@@ -13,7 +13,7 @@ import zeit.solr.connection
 import zeit.solr.reindex
 
 
-# The figures are quite strange as the json we provie is quite stragen ;)
+# The figures are quite strange as the json we provie is quite strange ;)
 query_result = """\
 Updating 0-10 of 112 documents:
    http://xml.zeit.de/online/2009/25/jemen-entfuehrung-3
