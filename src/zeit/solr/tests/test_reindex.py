@@ -13,8 +13,20 @@ import zeit.solr.connection
 import zeit.solr.reindex
 
 
+# The figures are quite strange as the json we provie is quite stragen ;)
 query_result = """\
-Updating 10 of 1382 documents:
+Updating 0-10 of 112 documents:
+   http://xml.zeit.de/online/2009/25/jemen-entfuehrung-3
+   http://xml.zeit.de/online/2009/26/bundeswehr-afghanistan-2
+   http://xml.zeit.de/online/2009/26/cdu-wahlprogramm
+   http://xml.zeit.de/online/2009/26/charite-kinderpornografie
+   http://xml.zeit.de/online/2009/26/das-lebendige-wort-gottes
+   http://xml.zeit.de/online/2009/26/erde-sd-kuehlmittel
+   http://xml.zeit.de/online/2009/26/erde-sd-wattenmeer
+   http://xml.zeit.de/online/2009/26/erde-sd-windanlagen
+   http://xml.zeit.de/online/2009/26/ganz-praktisch
+   http://xml.zeit.de/online/2009/26/gfk-index
+Updating 100-110 of 112 documents:
    http://xml.zeit.de/online/2009/25/jemen-entfuehrung-3
    http://xml.zeit.de/online/2009/26/bundeswehr-afghanistan-2
    http://xml.zeit.de/online/2009/26/cdu-wahlprogramm
@@ -78,13 +90,14 @@ class TestReindex(unittest.TestCase):
         xmlrpc = mock.Mock()
         query = 'boost:[2 TO *]'
         solr = zeit.solr.connection.SolrConnection(SOLR_URL)
-        RequestHandler.serve.append(
-            pkg_resources.resource_string(
+        RequestHandler.serve.append(pkg_resources.resource_string(
                 __name__, 'data/test_reindex.test_query.boost-test.json'))
+        RequestHandler.serve.append(pkg_resources.resource_string(
+                __name__, 'data/test_reindex.test_query.boost-test.2.json'))
         reindex = zeit.solr.reindex.Reindex(solr, 'public', query, xmlrpc)
         reindex()
         self.assertTrue(xmlrpc.update_solr.called)
-        self.assertEquals(10, len(xmlrpc.update_solr.call_args_list))
+        self.assertEquals(20, len(xmlrpc.update_solr.call_args_list))
         self.assertEquals(query_result, self.log.getvalue())
 
     def test_entrypoint_without_query(self):

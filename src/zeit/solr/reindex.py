@@ -19,13 +19,20 @@ class Reindex(object):
         self.cms = cms
 
     def __call__(self):
-        result = self.solr.search(
-            self.query, fl='id uniqueId', rows=10000)
-        print >>log, "Updating %s of %s documents:" % (len(result), result.hits)
-        for doc in result:
-            unique_id = doc['uniqueId']
-            print >>log, "   %s" % unique_id.encode('utf8')
-            self.cms.update_solr(unique_id, self.solr_name)
+        start = 0
+        rows_per_batch = 100
+        while True:
+            result = self.solr.search(
+                self.query, fl='id uniqueId', rows=rows_per_batch, start=start)
+            print >>log, "Updating %s-%s of %s documents:" % (
+                start, start+len(result), result.hits)
+            start += rows_per_batch
+            for doc in result:
+                unique_id = doc['uniqueId']
+                print >>log, "   %s" % unique_id.encode('utf8')
+                self.cms.update_solr(unique_id, self.solr_name)
+            if start >= result.hits or not result:
+                break
 
 
 def reindex(solr_url, solr_name, cms_url):

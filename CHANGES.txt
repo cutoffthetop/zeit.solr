@@ -6,6 +6,8 @@ zeit.solr changes
 
 - Fixed tests (#7241)
 
+- Reindex all objects matching a query not only the first 10k (#7249).
+
 
 0.21.0 (2010-05-03)
 -------------------
