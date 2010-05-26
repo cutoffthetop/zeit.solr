@@ -4,7 +4,7 @@ zeit.solr changes
 0.21.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed tests (#7241)
 
 
 0.21.0 (2010-05-03)

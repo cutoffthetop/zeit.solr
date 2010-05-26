@@ -109,6 +109,7 @@ Check out the article for further field tests.
     <field name="breaking_news">true</field>
     ...
     <field name="byline">Von Jochen Stahnke</field>
+    ...
     <field name="keywords">Staatliche Sozialleistung ...</field>
     <field name="keywords_list">Staatliche Sozialleistung</field>
     <field name="keywords_list">Sozialstaat</field>
