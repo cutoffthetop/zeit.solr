@@ -20,7 +20,8 @@ import zope.lifecycleevent
 log = logging.getLogger(__name__)
 
 
-@gocept.runner.once()
+@gocept.runner.once(principal=gocept.runner.from_config(
+    'zeit.solr', 'index-principal'))
 def update_main():
     usage = "usage: %prog [options] arg"
     parser = OptionParser(usage)
