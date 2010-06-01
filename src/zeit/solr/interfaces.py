@@ -27,3 +27,19 @@ class IUpdater(zope.interface.Interface):
 
     def update(solr=u''):
         """Update solr indicated by ``solr``."""
+
+
+class IIndex(zope.interface.Interface):
+    # XXX is this coupled rather tightly to the SolrConverter.convert()
+    # implementation. We might want to refactor this so that an Index
+    # is an adapter that directly adapts ICMSContent to an XML snippet
+    # (or something like that).
+
+    interface = zope.interface.Attribute(
+        'The interface from which we want to retrieve our attribute.')
+
+    attribute = zope.interface.Attribute(
+        'The attribute we are interested in.')
+
+    def process(value, node):
+        """converts the ``value`` to XML and appends it to ``node``."""

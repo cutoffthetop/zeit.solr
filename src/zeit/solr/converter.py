@@ -32,6 +32,8 @@ class GenericXMLContentTextIndex(grokcore.component.Adapter):
 
 class Index(object):
 
+    zope.interface.implements(zeit.solr.interfaces.IIndex)
+
     def __init__(self, interface, attribute, solr=None, stackup=1):
         self.interface = interface
         self.attribute = attribute
@@ -373,7 +375,10 @@ class SolrConverter(object):
         root_node = lxml.objectify.E.add()
         doc_node = lxml.objectify.E.doc()
         root_node.append(doc_node)
-        for index in self.solr_mapping:
+        indexes = self.solr_mapping + (
+            zope.component.getAllUtilitiesRegisteredFor(
+                zeit.solr.interfaces.IIndex))
+        for index in indexes:
             __traceback_info__ = (self.context, index)
             value = self.get_adapter(index.interface)
             if index.attribute is not None:

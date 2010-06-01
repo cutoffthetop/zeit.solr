@@ -8,6 +8,8 @@ zeit.solr changes
 
 - Reindex all objects matching a query not only the first 10k (#7249).
 
+- Allow registering additional indexes as utilities (for #7362).
+
 
 0.21.0 (2010-05-03)
 -------------------
