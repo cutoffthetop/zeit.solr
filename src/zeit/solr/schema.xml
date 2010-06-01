@@ -286,6 +286,7 @@
    <field name="created" type="date" indexed="true" stored="true" />
    <field name="graphical-preview-url" type="string_nt" indexed="false" stored="true" />
    <field name="graphical-preview-url-large" type="string_nt" indexed="false" stored="true" />
+   <field name="h264_url" type="string_nt" indexed="false" stored="true" />
    <field name="has_recensions" type="boolean" indexed="true" stored="true" />
    <field name="icon" type="string" indexed="false" stored="true" />
    <field name="image-reference" type="string" indexed="true" stored="true" multiValued="true" />
