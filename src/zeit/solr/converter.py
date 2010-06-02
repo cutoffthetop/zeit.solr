@@ -25,7 +25,6 @@ class GenericXMLContentTextIndex(grokcore.component.Adapter):
     grokcore.component.implements(zope.index.text.interfaces.ISearchableText)
 
     def getSearchableText(self):
-        main_text = []
         text = self.context.xml.xpath("//text()")
         return [unicode(s) for s in text]
 
