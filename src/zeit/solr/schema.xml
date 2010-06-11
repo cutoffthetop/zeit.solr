@@ -273,7 +273,6 @@
    <field name="authors_fulltext" type="text" indexed="true" stored="false" />
    <field name="banner" type="boolean" indexed="true" stored="true" />
    <field name="banner-id" type="text" indexed="true" stored="true" />
-   <field name="breaking_news" type="boolean" indexed="true" stored="true" />
    <field name="boost" type="integer" indexed="true" stored="false" />
    <field name="breaking_news" type="boolean" indexed="true" stored="true" />
    <field name="allow_comments" type="boolean" indexed="true" stored="true" />
