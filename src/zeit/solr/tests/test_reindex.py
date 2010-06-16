@@ -4,7 +4,6 @@
 import StringIO
 import mock
 import pkg_resources
-import random
 import sys
 import unittest
 import xmlrpclib
