@@ -117,3 +117,19 @@ class TestReindex(unittest.TestCase):
         self.assertEquals(
             'public',
             self.xmlrpc_instance.update_solr.call_args_list[0][0][1])
+
+    def test_xmlrpc_fault_continues_reindexing_remaining_objects(self):
+        xmlrpc = mock.Mock()
+        def raiser(*args, **kw):
+            raise xmlrpclib.Fault(100, 'error')
+        xmlrpc.update_solr.side_effect = raiser
+        query = 'boost:[2 TO *]'
+        solr = zeit.solr.connection.SolrConnection(SOLR_URL)
+        RequestHandler.serve.append(pkg_resources.resource_string(
+                __name__, 'data/test_reindex.test_query.boost-test.json'))
+        RequestHandler.serve.append(pkg_resources.resource_string(
+                __name__, 'data/test_reindex.test_query.boost-test.2.json'))
+        reindex = zeit.solr.reindex.Reindex(solr, 'public', query, xmlrpc)
+        reindex()
+        self.assertTrue(xmlrpc.update_solr.called)
+        self.assertEquals(20, len(xmlrpc.update_solr.call_args_list))

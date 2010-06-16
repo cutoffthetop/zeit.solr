@@ -30,7 +30,11 @@ class Reindex(object):
             for doc in result:
                 unique_id = doc['uniqueId']
                 print >>log, "   %s" % unique_id.encode('utf8')
-                self.cms.update_solr(unique_id, self.solr_name)
+                try:
+                    self.cms.update_solr(unique_id, self.solr_name)
+                except xmlrpclib.Fault, e:
+                    print >>log, 'Server returned fault while reindexing %s: %s' % (
+                        unique_id, str(e))
             if start >= result.hits or not result:
                 break
 
