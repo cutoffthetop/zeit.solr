@@ -1,4 +1,5 @@
 import logging
+import xmlrpclib
 import zeit.solr.interfaces
 import zope.app.publisher.xmlrpc
 

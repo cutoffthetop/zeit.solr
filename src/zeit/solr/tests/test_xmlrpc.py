@@ -40,7 +40,13 @@ class XMLRPCTest(zeit.solr.testing.MockedFunctionalTestCase):
             in self.log.getvalue())
 
     def test_invalid_type_should_fail(self):
-        self.assertRaises(xmlrpclib.Fault, self.update_solr, 42)
+        try:
+            self.update_solr(42)
+        except xmlrpclib.Fault, e:
+            self.assertEquals(
+                '<Fault 100: "`uniqueId` must be string type, got '
+                '<type \'int\'>">',
+                str(e))
 
     def test_invalid_solr_name_fails(self):
         self.assertRaises(xmlrpclib.Fault,
