@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.22.1 (unreleased)
+0.22.1 (2010-07-07)
 -------------------
 
 - Make sure reindexing continues even when the server returns a fault (#7432).
