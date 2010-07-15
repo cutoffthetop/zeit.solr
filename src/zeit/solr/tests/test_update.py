@@ -126,6 +126,14 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
             pass
         self.assertFalse(self.solr.delete.called)
 
+    def test_invalid_updater_should_raise_type_error(self):
+        updater = zeit.solr.interfaces.IUpdater(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        IUpdater = mock.Mock()
+        IUpdater().update = mock.Mock(side_effect=TypeError())
+        with mock.patch('zeit.solr.interfaces.IUpdater', new=IUpdater):
+            self.assertRaises(TypeError, updater.update)
+
 
 class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):
 

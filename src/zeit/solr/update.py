@@ -75,11 +75,12 @@ class IdUpdater(object):
     def update(self, solr=u''):
         try:
             content = zeit.cms.interfaces.ICMSContent(self.context)
-            zeit.solr.interfaces.IUpdater(content).update(solr)
         except TypeError:  # id does not exist in repository
             zope.component.getAdapter(
                 self.context,
                 zeit.solr.interfaces.IUpdater, name='delete').update(solr)
+        else:
+            zeit.solr.interfaces.IUpdater(content).update(solr)
 
 
 class ContentUpdater(object):

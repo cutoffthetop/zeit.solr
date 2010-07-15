@@ -4,7 +4,8 @@ zeit.solr changes
 0.22.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Make sure a TypeError is raised during index update when the updater has an
+  error. Objects where removed from the index before.
 
 
 0.22.1 (2010-07-07)
