@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.22.2 (unreleased)
+0.22.2 (2010-07-15)
 -------------------
 
 - Make sure a TypeError is raised during index update when the updater has an
