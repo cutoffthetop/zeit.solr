@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import xmlrpclib
-import optparse
 import sys
 import zeit.solr.connection
 
