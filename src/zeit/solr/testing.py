@@ -19,9 +19,8 @@ product_config = """\
 
 
 SolrLayer = zeit.cms.testing.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'SolrLayer', allow_teardown=True,
-    product_config=product_config)
+    'ftesting.zcml',
+    product_config=zeit.cms.testing.cms_product_config + product_config)
 
 
 class SolrMockLayerBase(object):
