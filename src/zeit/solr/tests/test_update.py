@@ -78,10 +78,10 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         self.assertTrue(self.solr.update_raw.called)
         self.assert_unique_id('http://xml.zeit.de/testcontent')
 
-    def test_no_update_on_checkin_when_already_in_async(self):
+    def test_update_should_be_called_in_async(self):
         checkout_and_checkin()
         gocept.async.tests.process()
-        self.assertFalse(self.solr.update_raw.called)
+        self.assertTrue(self.solr.update_raw.called)
 
     def test_recursive(self):
         zeit.solr.interfaces.IUpdater(
