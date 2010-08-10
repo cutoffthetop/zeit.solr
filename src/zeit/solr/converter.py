@@ -176,6 +176,21 @@ class ListRepresentationIndex(Index):
         self.append_to_node(value, doc_node)
 
 
+class AccessCounterIndex(Index):
+
+    interface = zeit.cms.content.interfaces.IAccessCounter
+
+    def __init__(self, solr):
+        super(AccessCounterIndex, self).__init__(
+            self.interface, None, solr, stackup=2)
+
+    def process(self, value, doc_node):
+        hits = value.total_hits
+        if hits and value.hits:
+            hits -= value.hits
+        self.append_to_node(hits, doc_node)
+
+
 class ImageIndex(Index):
 
     def process(self, values, doc_node):
@@ -366,6 +381,7 @@ class SolrConverter(object):
     Icon(solr='icon')
     GraphicalPreview('thumbnail', solr='graphical-preview-url')
     GraphicalPreview('preview', solr='graphical-preview-url-large')
+    AccessCounterIndex('range')
 
     def __init__(self, context):
         self.context = context
