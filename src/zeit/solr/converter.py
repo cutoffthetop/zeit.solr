@@ -112,7 +112,7 @@ class Icon(Index):
         super(Icon, self).__init__(self.interface, self.attribute, solr, 2)
 
     def process(self, value, doc_node):
-        
+
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
         icon = zope.component.queryMultiAdapter(
@@ -179,7 +179,7 @@ class ListRepresentationIndex(Index):
 class ImageIndex(Index):
 
     def process(self, values, doc_node):
- 
+
         if len(values) == 0:
             return
         image = zeit.content.image.interfaces.IImageMetadata(values[0], None)
