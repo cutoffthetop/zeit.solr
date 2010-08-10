@@ -96,6 +96,7 @@ class SplitKeywords(Index):
         for arg in value:
             self.append_to_node(unicode(arg.label), doc_node)
 
+
 class SplitReferences(Index):
 
     def process(self, value, doc_node):
@@ -178,7 +179,7 @@ class ListRepresentationIndex(Index):
 class ImageIndex(Index):
 
     def process(self, values, doc_node):
-        
+ 
         if len(values) == 0:
             return
         image = zeit.content.image.interfaces.IImageMetadata(values[0], None)
