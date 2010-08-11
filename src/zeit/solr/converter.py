@@ -382,6 +382,9 @@ class SolrConverter(object):
     GraphicalPreview('thumbnail', solr='graphical-preview-url')
     GraphicalPreview('preview', solr='graphical-preview-url-large')
     AccessCounterIndex('range')
+    Index(
+        zeit.cms.content.interfaces.IAccessCounter, 'detail_url',
+        solr='range_details')
 
     def __init__(self, context):
         self.context = context

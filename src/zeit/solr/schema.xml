@@ -322,6 +322,7 @@
    <field name="volume" type="integer" indexed="true" stored="true" />
    <field name="year" type="integer" indexed="true" stored="true" />
    <field name="range" type="integer" indexed="false" stored="true" />
+   <field name="range_details" type="integer" indexed="false" stored="true" />
 
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
