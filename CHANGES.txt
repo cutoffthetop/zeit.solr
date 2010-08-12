@@ -6,6 +6,8 @@ zeit.solr changes
 
 - Add converter for range / hit counter (#7860).
 
+- Solr-Feld ``referenced-image-url`` (#7861).
+
 
 0.23.0 (2010-08-09)
 -------------------
