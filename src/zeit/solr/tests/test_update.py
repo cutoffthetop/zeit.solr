@@ -134,6 +134,21 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         with mock.patch('zeit.solr.interfaces.IUpdater', new=IUpdater):
             self.assertRaises(TypeError, updater.update)
 
+    def test_do_index_object_should_load_object_from_repository(self):
+        with mock.patch('zeit.cms.interfaces.ICMSContent') as icc:
+            zeit.solr.update.do_index_object('http://xml.zeit.de/testcontent')
+            gocept.async.tests.process()
+            icc.assert_called_with('http://xml.zeit.de/testcontent', None)
+
+    def test_do_index_object_should_not_raise_when_object_vanished(self):
+        with mock.patch('zeit.cms.interfaces.ICMSContent') as icc:
+            with mock.patch('zeit.solr.interfaces.IUpdater') as iu:
+                icc.return_value = None
+                zeit.solr.update.do_index_object(
+                    'http://xml.zeit.de/testcontent')
+                gocept.async.tests.process()
+                self.assertFalse(iu.called)
+
 
 class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):
 

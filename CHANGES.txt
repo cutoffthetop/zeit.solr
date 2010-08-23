@@ -6,6 +6,8 @@ zeit.solr changes
 
 - Titel von Bildern und Bildergruppen werden jetzt indexiert (#7936).
 
+- Objekte werden auch direkt nach dem anlegen korrekt indiziert (#7942).
+
 
 0.24.0 (2010-08-16)
 -------------------

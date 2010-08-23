@@ -168,19 +168,24 @@ def index_after_add(event):
         return
     log.info('AfterAdd: Creating async index job for %s (async=%s)' % (
         context.uniqueId, gocept.async.is_async()))
-    do_index_object(context)
+    do_index_object(context.uniqueId)
 
 
 @grokcore.component.subscribe(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def index_after_checkin(context, event):
-    do_index_object(context)
+    do_index_object(context.uniqueId)
 
 
 @gocept.async.function(u'events')
-def do_index_object(context):
-    zeit.solr.interfaces.IUpdater(context).update()
+def do_index_object(unique_id):
+    context = zeit.cms.interfaces.ICMSContent(unique_id, None)
+    if context is None:
+        log.warning('Could not index %s because it does not exist any longer.',
+                    unique_id)
+    else:
+        zeit.solr.interfaces.IUpdater(context).update()
 
 
 @grokcore.component.subscribe(
