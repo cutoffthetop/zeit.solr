@@ -120,7 +120,6 @@ class Icon(Index):
                                    stackup=2)
 
     def process(self, value, doc_node):
-
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
         icon = zope.component.queryMultiAdapter(
