@@ -2,14 +2,14 @@ import datetime
 import grokcore.component
 import inspect
 import lxml.etree
-import lxml.html
 import lxml.objectify
 import pytz
+import re
 import zeit.cms.interfaces
+import zeit.cms.relation.interfaces
 import zeit.connector.interfaces
 import zeit.content.article.interfaces
 import zeit.content.image.interfaces
-import zeit.cms.relation.interfaces
 import zeit.solr.interfaces
 import zeit.workflow.interfaces
 import zope.component
@@ -29,28 +29,35 @@ class GenericXMLContentTextIndex(grokcore.component.Adapter):
         return [unicode(s) for s in text]
 
 
+remove_tags_pattern = re.compile(r'<.*?>')
+def remove_tags_if_possible(value):
+    if isinstance(value, basestring):
+        value = remove_tags_pattern.sub('', value)
+        value = value.replace('&amp;', '&')
+    return value
+
+
 class Index(object):
 
     zope.interface.implements(zeit.solr.interfaces.IIndex)
 
-    def __init__(self, interface, attribute, solr=None, stackup=1):
+    def __init__(self, interface, attribute, solr=None, filter=lambda x: x,
+                 stackup=1):
         self.interface = interface
         self.attribute = attribute
         if solr is None:
             solr = attribute
         self.solr = solr
+        self.filter = filter
         solr_mapping = inspect.stack()[stackup][0].f_locals.setdefault(
             'solr_mapping', [])
         solr_mapping.append(self)
 
     def process(self, value, doc_node):
-        try:
-            value = lxml.html.fromstring(value).text_content()
-        except:
-            pass
         self.append_to_node(value, doc_node)
 
     def append_to_node(self, value, parent_node):
+        value = self.filter(value)
         child_node = lxml.objectify.E.field(value, name=self.solr)
         lxml.objectify.deannotate(child_node)
         parent_node.append(child_node)
@@ -109,7 +116,8 @@ class Icon(Index):
     attribute = None
 
     def __init__(self, solr):
-        super(Icon, self).__init__(self.interface, self.attribute, solr, 2)
+        super(Icon, self).__init__(self.interface, self.attribute, solr,
+                                   stackup=2)
 
     def process(self, value, doc_node):
 
@@ -130,7 +138,7 @@ class GraphicalPreview(Index):
 
     def __init__(self, view_name, solr):
         super(GraphicalPreview, self).__init__(
-            self.interface, self.attribute, solr, 2)
+            self.interface, self.attribute, solr, stackup=2)
         self.view_name = view_name
 
     def process(self, value, doc_node):
@@ -162,7 +170,7 @@ class ListRepresentationIndex(Index):
         if solr is None:
             solr = attribute
         super(ListRepresentationIndex, self).__init__(
-            self.interface, self.attribute, solr, 2)
+            self.interface, self.attribute, solr, stackup=2)
         self.list_attribute = attribute
 
     def process(self, value, doc_node):
@@ -352,7 +360,7 @@ class SolrConverter(object):
         'sub_ressort')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
-        'subtitle')
+        'subtitle', filter=remove_tags_if_possible)
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'supertitle')
@@ -363,7 +371,7 @@ class SolrConverter(object):
         zeit.cms.content.interfaces.ICommonMetadata,
         'teaserText', solr='teaser_text')
     Index(zeit.cms.content.interfaces.ICommonMetadata,
-          'title')
+          'title', filter=remove_tags_if_possible)
     Index(
         zeit.cms.interfaces.ITypeDeclaration,
         'type_identifier', solr='type')
