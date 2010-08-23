@@ -4,7 +4,7 @@ zeit.solr changes
 0.24.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Titel von Bildern und Bildergruppen werden jetzt im indexiert (#7936).
 
 
 0.24.0 (2010-08-16)

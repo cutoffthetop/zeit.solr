@@ -163,6 +163,7 @@ Convert an image and check resultset:
     <field name="date-last-modified">...</field>
     <field name="last_modified_by">zope.user</field>
     <field name="published">not-published</field>
+    <field name="title">image title</field>
     <field name="type">image</field>
     <field name="uuid">{urn:uuid:e2500273-fa09-48ff-a63d-063f3fcb3e4e}</field>
     <field name="volume">5</field>

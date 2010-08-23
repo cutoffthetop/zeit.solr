@@ -166,11 +166,11 @@ class ListRepresentationIndex(Index):
     interface = zope.interface.Interface
     attribute = None
 
-    def __init__(self, attribute, solr=None):
+    def __init__(self, attribute, solr=None, filter=lambda x: x):
         if solr is None:
             solr = attribute
         super(ListRepresentationIndex, self).__init__(
-            self.interface, self.attribute, solr, stackup=2)
+            self.interface, self.attribute, solr, filter, stackup=2)
         self.list_attribute = attribute
 
     def process(self, value, doc_node):
@@ -370,8 +370,8 @@ class SolrConverter(object):
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'teaserText', solr='teaser_text')
-    Index(zeit.cms.content.interfaces.ICommonMetadata,
-          'title', filter=remove_tags_if_possible)
+    ListRepresentationIndex(
+        'title', filter=remove_tags_if_possible)
     Index(
         zeit.cms.interfaces.ITypeDeclaration,
         'type_identifier', solr='type')
