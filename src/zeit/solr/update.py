@@ -142,18 +142,6 @@ class Deleter(object):
         conn.delete(q=query, commit=False)
 
 
-@zope.component.adapter(zeit.cms.workflow.interfaces.IPublishedEvent)
-def update_public_after_publish(event):
-    zeit.solr.interfaces.IUpdater(event.object).update(solr='public')
-
-
-@zope.component.adapter(zeit.cms.workflow.interfaces.IBeforeRetractEvent)
-def delete_public_after_retract(event):
-    up = zope.component.getAdapter(
-        event.object.uniqueId, zeit.solr.interfaces.IUpdater, name='delete')
-    up.update(solr='public')
-
-
 @grokcore.component.subscribe(zope.lifecycleevent.IObjectAddedEvent)
 def index_after_add(event):
     # We don't use the "extended" (object, event) method as we are not

@@ -4,7 +4,7 @@ zeit.solr changes
 0.25.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Don't update public solr on publish/retract (#8339).
 
 
 0.25.0 (2010-08-30)

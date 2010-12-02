@@ -31,7 +31,4 @@
     methods="update_solr"
     />
 
-  <subscriber handler=".update.update_public_after_publish" />
-  <subscriber handler=".update.delete_public_after_retract" />
-
 </configure>

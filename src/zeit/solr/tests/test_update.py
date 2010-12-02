@@ -151,6 +151,9 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
 
 
 class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):
+    # The publication process used to trigger update/delete on public solr.
+    # This should no longer be the case, so this test makes sure that the
+    # publication process doesn't update the public solr any more.
 
     product_config = {'zeit.content.article': {}}
 
@@ -166,23 +169,16 @@ class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):
         zope.component.getSiteManager().unregisterUtility(self.public, name='public')
         super(UpdatePublicTest, self).tearDown()
 
-    def test_update_after_publish(self):
+    def test_publish_should_not_update_public_solr(self):
         zope.event.notify(
             zeit.cms.workflow.interfaces.PublishedEvent(
                 self.article, self.article))
-        self.assert_(not self.solr.update_raw.called)
-        self.assert_(self.public.update_raw.called)
-        xml = self.public.update_raw.call_args[0][0]
-        self.assertEqual('http://xml.zeit.de/online/2007/01/Somalia',
-                         xml.xpath('//field[@name="uniqueId"]/text()')[0])
+        self.assertFalse(self.solr.update_raw.called)
+        self.assertFalse(self.public.update_raw.called)
 
-    def test_delete_after_retract(self):
+    def test_retract_should_not_delete_from_public_solr(self):
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(
                 self.article, self.article))
-        self.assert_(not self.solr.delete.called)
-        self.assert_(self.public.delete.called)
-        query = self.public.delete.call_args[1]
-        self.assertEquals({'commit': False,
-                           'q': 'uniqueId:(http\\://xml.zeit.de/online/2007/01/Somalia)'},
-                          query)
+        self.assertFalse(self.solr.delete.called)
+        self.assertFalse(self.public.delete.called)
