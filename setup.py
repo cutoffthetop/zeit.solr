@@ -14,15 +14,16 @@ setup(
     install_requires = [
         'gocept.async>=0.3.1',
         'grokcore.component',
+        'httplib2',
         'mock',
         'pysolr > 2.0.5',
         'setuptools',
         'simplejson', # for pysolr
         'zeit.cms>1.39.3',
         'zeit.connector',
+        'zeit.connector',
         'zeit.content.article>=2.8.1',
         'zeit.content.portraitbox',
-        'zeit.connector',
         'zope.index',
     ],
     entry_points = """

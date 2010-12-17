@@ -17,14 +17,18 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
     response_body = ''
     reason = None
     posts_received = []
+    sleep = 0
 
     def do_POST(self):
+        import socket
+        import time
         length = int(self.headers['content-length'])
         self.posts_received.append(dict(
             path=self.path,
             data=self.rfile.read(length),
             headers=self.headers,
         ))
+        time.sleep(self.sleep)
         self.send_response(self.response_code)
         if self.reason:
             self.send_header('Reason', self.reason)
@@ -50,6 +54,7 @@ class TestSolrConnection(unittest.TestCase):
         RequestHandler.response_code = 200
         RequestHandler.response_body = ''
         RequestHandler.reason = None
+        RequestHandler.sleep = 0
         super(TestSolrConnection, self).tearDown()
 
     def test_update_raw(self):
@@ -98,3 +103,12 @@ class TestSolrConnection(unittest.TestCase):
         self.assertEquals(
             '<delete><query>foo:a\\&amp;b</query></delete>',
             post[0]['data'])
+
+    def test_timeout_should_not_block_indefinately(self):
+        import time
+        self.assertTrue(pysolr.TIMEOUTS_AVAILABLE)
+        RequestHandler.sleep = 1
+        self.solr.timeout = 0.5
+        import socket
+        self.assertRaises(socket.timeout,
+                          lambda: self.solr.update_raw(self.data))

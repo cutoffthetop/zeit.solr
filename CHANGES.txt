@@ -6,6 +6,8 @@ zeit.solr changes
 
 - Don't update public solr on publish/retract (#8339).
 
+- Include httplib2 as requirement to allow solr requests to timeout (#8085).
+
 
 0.25.0 (2010-08-30)
 -------------------
