@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.26.1 (unreleased)
+0.26.1 (2010-12-20)
 -------------------
 
 - Fix brown bag release 0.26.0
