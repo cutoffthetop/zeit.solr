@@ -7,7 +7,7 @@ zeit.solr changes
 - Change the indexing of last-semantic-change to fall back to
   date-last-modified. This change also makes sure that one solr field is ever
   only added once to the solr XML unless a single index adds it multiple times
-  (#8564).
+  (#8559).
 
 
 0.26.1 (2010-12-20)
