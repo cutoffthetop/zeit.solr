@@ -41,5 +41,7 @@ class IIndex(zope.interface.Interface):
     attribute = zope.interface.Attribute(
         'The attribute we are interested in.')
 
+    solr = zope.interface.Attribute('The field name in solr.')
+
     def process(value, node):
         """converts the ``value`` to XML and appends it to ``node``."""

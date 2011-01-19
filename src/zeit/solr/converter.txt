@@ -2,8 +2,6 @@
 Convert to Solr XML
 ===================
 
-
-
 We need to set the site since we're a functional test:
 
 >>> import zeit.cms.testing       
@@ -67,6 +65,7 @@ Convert an article and check resultset:
     <field name="date-last-modified">20...Z</field>
     <field name="keywords"></field>
     <field name="last_modified_by">zope.user</field>
+    <field name="last-semantic-change">20...Z</field>
     <field name="main_text">Kriegsherr...</field>
     <field name="published">not-published</field>
     <field name="image-reference">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
@@ -120,6 +119,7 @@ Check out the article for further field tests.
     <field name="keywords_list">Staatsanwaltschaft</field>
     ...
     <field name="last_modified_by">zope.user</field>
+    <field name="last-semantic-change">20...Z</field>
     <field name="main_text">Kriegsherr...</field>
     <field name="published">not-published</field>
     <field name="ressort">International</field>
@@ -162,6 +162,7 @@ Convert an image and check resultset:
     <field name="caption">caption text</field>
     <field name="date-last-modified">...</field>
     <field name="last_modified_by">zope.user</field>
+    <field name="last-semantic-change">20...Z</field>
     <field name="published">not-published</field>
     <field name="title">image title</field>
     <field name="type">image</field>
