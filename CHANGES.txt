@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.26.2 (unreleased)
+0.27.0 (2011-02-06)
 -------------------
 
 - Change the indexing of last-semantic-change to fall back to
