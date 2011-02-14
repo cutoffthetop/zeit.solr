@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.27.1 (unreleased)
+0.28.0 (2011-02-14)
 -------------------
 
 - Converter does no longer set a boost for newer documents (#8662).
