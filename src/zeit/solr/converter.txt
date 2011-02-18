@@ -7,12 +7,9 @@ We need to set the site since we're a functional test:
 >>> import zeit.cms.testing       
 >>> zeit.cms.testing.set_site()
 
-
 Get article for adapter tests:
 
->>> import zeit.cms.content.keyword
 >>> import zope.component
->>> keywords = zope.component.getUtility(zeit.cms.content.interfaces.IKeywords)
 
 >>> import zeit.cms.interfaces
 >>> import zeit.cms.testing
@@ -23,8 +20,6 @@ Get article for adapter tests:
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
 ...     zeit.cms.content.interfaces.ICommonMetadata(
 ...         checked_out).breaking_news = True
-...     zeit.cms.content.interfaces.ICommonMetadata(
-...         checked_out).keywords = keywords.find_keywords('staat')
 ...     zeit.cms.content.interfaces.ICommonMetadata(
 ...         checked_out).title = "Strip <em>the</em> &amp; please"
 
@@ -40,6 +35,18 @@ Get article for adapter tests:
 ...     checked_out).checkin()
 >>> images.images = (checked_in, )
 
+>>> import mock
+>>> patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
+>>> tagger = patcher.start()
+>>> t1 = mock.Mock()
+>>> t2 = mock.Mock()
+>>> t1.disabled = False
+>>> t2.disabled = False
+>>> t1.code = "Code1"
+>>> t1.label= "Label 1"
+>>> t2.code = "Code 2"
+>>> t2.label= "Label 2"
+>>> tagger().values.return_value = [t1, t2]
 
 Build a converter:
 
@@ -63,7 +70,9 @@ Convert an article and check resultset:
     ...
     <field name="byline">Von Jochen Stahnke</field>
     <field name="date-last-modified">20...Z</field>
-    <field name="keywords"></field>
+    <field name="keywords">Label 1 Label 2</field>
+    <field name="keywords_list">Label 1</field>
+    <field name="keywords_list">Label 2</field>
     <field name="last_modified_by">zope.user</field>
     <field name="last-semantic-change">20...Z</field>
     <field name="main_text">Kriegsherr...</field>
@@ -109,15 +118,9 @@ Check out the article for further field tests.
     ...
     <field name="byline">Von Jochen Stahnke</field>
     ...
-    <field name="keywords">Staatliche Sozialleistung ...</field>
-    <field name="keywords_list">Staatliche Sozialleistung</field>
-    <field name="keywords_list">Sozialstaat</field>
-    <field name="keywords_list">Staatsoberhaupt</field>
-    <field name="keywords_list">Staatsdefizit</field>
-    <field name="keywords_list">Staatsquote</field>
-    <field name="keywords_list">Staatsfinanzen</field>
-    <field name="keywords_list">Staatsanwaltschaft</field>
-    ...
+    <field name="keywords">Label 1 Label 2</field>
+    <field name="keywords_list">Label 1</field>
+    <field name="keywords_list">Label 2</field>
     <field name="last_modified_by">zope.user</field>
     <field name="last-semantic-change">20...Z</field>
     <field name="main_text">Kriegsherr...</field>
@@ -176,3 +179,7 @@ Convert an image and check resultset:
     </doc>
 </add>
 <BLANKLINE>
+
+Clean up:
+
+>>> patcher.stop()
