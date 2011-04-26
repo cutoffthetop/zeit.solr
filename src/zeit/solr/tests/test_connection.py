@@ -1,11 +1,10 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import BaseHTTPServer
 import lxml.objectify
 import pysolr
-import random
-import threading
+import socket
+import time
 import unittest
 import zeit.cms.testing
 import zeit.solr.connection
@@ -20,8 +19,6 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
     sleep = 0
 
     def do_POST(self):
-        import socket
-        import time
         length = int(self.headers['content-length'])
         self.posts_received.append(dict(
             path=self.path,
@@ -104,11 +101,9 @@ class TestSolrConnection(unittest.TestCase):
             '<delete><query>foo:a\\&amp;b</query></delete>',
             post[0]['data'])
 
-    def test_timeout_should_not_block_indefinately(self):
-        import time
+    def test_timeout_should_not_block_indefinitely(self):
         self.assertTrue(pysolr.TIMEOUTS_AVAILABLE)
         RequestHandler.sleep = 1
         self.solr.timeout = 0.5
-        import socket
         self.assertRaises(socket.timeout,
                           lambda: self.solr.update_raw(self.data))
