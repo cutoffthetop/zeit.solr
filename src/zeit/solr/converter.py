@@ -65,8 +65,43 @@ class Index(object):
 
 class TextIndex(Index):
 
+    def __init__(self, interface, attribute, solr=None, filter=lambda x: x,
+                 stackup=1):
+        self.interface = interface
+        self.attribute = attribute
+        if solr is None:
+            solr = attribute
+        self.solr = solr
+        self.filter = filter
+        solr_mapping = inspect.stack()[stackup][0].f_locals.setdefault(
+            'solr_mapping', [])
+        solr_mapping.append(self)
+
     def process(self, value, doc_node):
         super(TextIndex, self).process(' '.join(value()), doc_node)
+
+
+class RawIndex(Index):
+
+    interface = zope.interface.Interface
+    attribute = None
+
+    def __init__(self, interface, tag_name, solr):
+        super(RawIndex, self).__init__(
+            self.interface, self.attribute, solr, stackup=2)
+        self.tag_name = tag_name
+
+    def process(self, value, doc_node):
+        try:
+            xml = value.xml
+        except AttributeError:
+            return
+        expr = '//' + self.tag_name
+        raw  = xml.xpath(expr)
+        if raw:
+            self.append_to_node(
+                ''.join(unicode(lxml.etree.tostring(r)) for r in raw),
+                doc_node)
 
 
 class JoinTuple(Index):
@@ -345,6 +380,9 @@ class SolrConverter(object):
     ImageIndex(
         zeit.content.image.interfaces.IImages,
         'images', solr='image-reference')
+    RawIndex(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        'raw', solr='raw-tags')
     Index(
         zeit.workflow.interfaces.IContentWorkflow,
         'refined')

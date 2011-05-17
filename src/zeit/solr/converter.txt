@@ -211,6 +211,57 @@ Checkout article, change last semantic change to date, checkin
 >>> print (doc_node.tag)
 doc
 
+
+Create a new article containing some raw fields.
+
+>>> import StringIO
+>>> from zeit.content.article.article import Article
+>>> article_string = StringIO.StringIO("""\
+... <?xml version="1.0" encoding="UTF-8"?>
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+...   <body>
+...     <title>my_article</title>
+...     <supertitle>moep</supertitle>
+...     <p>testp</p>
+...     <division type="page">
+...       <p>testp2</p>
+...       <raw expires="">
+...         <p>hello<foo id="bar"/></p>
+...       </raw>
+...       <p>testp3</p>
+...       <raw expires="">
+...         <p>another <strong>raw</strong> box</p>
+...       </raw>
+...     </division>
+...   </body>
+... </article>
+... """)
+>>> article_raw = Article(article_string)
+>>> article_raw_converter = zeit.solr.interfaces.ISolrConverter(article_raw)
+>>> article_raw_converter
+<zeit.solr.converter.SolrConverter object at ...>
+>>> root_node = article_raw_converter.convert()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doc>
+    <field name="authors"></field>
+    <field name="authors_fulltext"></field>
+    <field name="keywords"></field>
+    <field name="main_text">testp testp2 hello testp3 another raw box</field>
+    <field name="published">not-published</field>
+    <field name="raw-tags">&lt;raw xmlns:py="http://codespeak.net/lxml/objectify/pytype" expires=""&gt;&lt;p&gt;hello&lt;foo id="bar"/&gt;&lt;/p&gt;&lt;/raw&gt;&lt;raw xmlns:py="http://codespeak.net/lxml/objectify/pytype" expires=""&gt;&lt;p&gt;another &lt;strong&gt;raw&lt;/strong&gt; box&lt;/p&gt;&lt;/raw&gt;</field>
+    <field name="supertitle">moep</field>
+    <field name="title">my_article</field>
+    <field name="type">article</field>
+    <field name="volume" xsi:nil="true"/>
+    <field name="year" xsi:nil="true"/>
+    <field name="icon">/++noop++7b96ef8299459c6372971b040141db4d/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png</field>
+  </doc>
+</add>
+
+
+
+
 Now we are doing some boosting. For today:  
 
 >>> date = datetime.datetime.now(tz=pytz.UTC)
