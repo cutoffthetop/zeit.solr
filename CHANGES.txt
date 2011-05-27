@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-0.28.1 (unreleased)
+0.29.0 (unreleased)
 -------------------
 
 - Solr-Field ``raw-tags``, containing article raw-tags as escaped xml data (#9096).
