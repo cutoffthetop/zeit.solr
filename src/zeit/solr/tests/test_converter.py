@@ -54,3 +54,54 @@ class TestAccessCounter(unittest.TestCase):
         indexes = [index for index in SolrConverter.solr_mapping
                    if isinstance(index, AccessCounterIndex)]
         self.assertEquals(1, len(indexes))
+
+
+class TestConverter(zeit.solr.testing.FunctionalTestCase):
+
+    def get_content(self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        return TestContentType()
+
+    def convert(self, content):
+        import zeit.solr.interfaces
+        converter = zeit.solr.interfaces.ISolrConverter(content)
+        return converter.convert()
+
+    def test_lsc_should_fall_back_to_modified(self):
+        from zope.dublincore.interfaces import IDCTimes
+        import datetime
+        import pytz
+        content = self.get_content()
+        now = datetime.datetime(2011, 1, 2, 3, 4, tzinfo=pytz.UTC)
+        IDCTimes(content).modified = now
+        xml = self.convert(content)
+        self.assertEqual(
+            ['2011-01-02T03:04:00Z'],
+            xml.findall('//field[@name="last-semantic-change"]'))
+
+    def test_lsc_should_be_used_if_set(self):
+        from zeit.cms.content.interfaces import ISemanticChange
+        import datetime
+        import pytz
+        content = self.get_content()
+        now = datetime.datetime(2011, 1, 2, 3, 4, tzinfo=pytz.UTC)
+        ISemanticChange(content).last_semantic_change = now
+        xml = self.convert(content)
+        self.assertEqual(
+            ['2011-01-02T03:04:00Z'],
+            xml.findall('//field[@name="last-semantic-change"]'))
+
+    def test_lsc_should_not_be_duplicate_if_both_lsc_and_modified_set(self):
+        from zeit.cms.content.interfaces import ISemanticChange
+        from zope.dublincore.interfaces import IDCTimes
+        import datetime
+        import pytz
+        content = self.get_content()
+        modified = datetime.datetime(2011, 1, 2, 3, 4, tzinfo=pytz.UTC)
+        IDCTimes(content).modified = modified
+        lsc = datetime.datetime(2010, 12, 13, 14, 15, tzinfo=pytz.UTC)
+        ISemanticChange(content).last_semantic_change = lsc
+        xml = self.convert(content)
+        self.assertEqual(
+            ['2010-12-13T14:15:00Z'],
+            xml.findall('//field[@name="last-semantic-change"]'))

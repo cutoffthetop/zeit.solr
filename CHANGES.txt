@@ -1,11 +1,25 @@
 zeit.solr changes
 =================
 
-0.27.0 (unreleased)
+0.28.1 (unreleased)
 -------------------
 
-- Solr-Field ``raw-tags``, containing article raw-tags as escaped xml data
-  (#9096).
+- Solr-Field ``raw-tags``, containing article raw-tags as escaped xml data (#9096).
+
+
+0.28.0 (2011-02-14)
+-------------------
+
+- Converter does no longer set a boost for newer documents (#8662).
+
+
+0.27.0 (2011-02-06)
+-------------------
+
+- Change the indexing of last-semantic-change to fall back to
+  date-last-modified. This change also makes sure that one solr field is ever
+  only added once to the solr XML unless a single index adds it multiple times
+  (#8559).
 
 
 0.26.1 (2010-12-20)

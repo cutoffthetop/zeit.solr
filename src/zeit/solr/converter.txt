@@ -2,8 +2,6 @@
 Convert to Solr XML
 ===================
 
-
-
 We need to set the site since we're a functional test:
 
 >>> import zeit.cms.testing       
@@ -67,6 +65,7 @@ Convert an article and check resultset:
     <field name="date-last-modified">20...Z</field>
     <field name="keywords"></field>
     <field name="last_modified_by">zope.user</field>
+    <field name="last-semantic-change">20...Z</field>
     <field name="main_text">Kriegsherr...</field>
     <field name="published">not-published</field>
     <field name="image-reference">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
@@ -120,6 +119,7 @@ Check out the article for further field tests.
     <field name="keywords_list">Staatsanwaltschaft</field>
     ...
     <field name="last_modified_by">zope.user</field>
+    <field name="last-semantic-change">20...Z</field>
     <field name="main_text">Kriegsherr...</field>
     <field name="published">not-published</field>
     <field name="ressort">International</field>
@@ -162,6 +162,7 @@ Convert an image and check resultset:
     <field name="caption">caption text</field>
     <field name="date-last-modified">...</field>
     <field name="last_modified_by">zope.user</field>
+    <field name="last-semantic-change">20...Z</field>
     <field name="published">not-published</field>
     <field name="title">image title</field>
     <field name="type">image</field>
@@ -175,7 +176,6 @@ Convert an image and check resultset:
     </doc>
 </add>
 <BLANKLINE>
-
 
 
 Convert a centerpage and check resultset:
@@ -258,78 +258,4 @@ Create a new article containing some raw fields.
     <field name="icon">/++noop++7b96ef8299459c6372971b040141db4d/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png</field>
   </doc>
 </add>
-
-
-
-
-Now we are doing some boosting. For today:  
-
->>> date = datetime.datetime.now(tz=pytz.UTC)
->>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
-...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.convert()
->>> print lxml.etree.tostring(root_node, pretty_print=True)
-<add...<doc boost="7">...
-...<field name="boost">7</field>...
-<BLANKLINE>
-
-For day 1
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=1)
->>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
-...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.convert()
->>> print lxml.etree.tostring(root_node, pretty_print=True)
-<add...<doc boost="6">...
-...<field name="boost">6</field>...
-<BLANKLINE>
-
-For day 6
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=6)
->>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
-...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.convert()
->>> print lxml.etree.tostring(root_node, pretty_print=True)
-<add...<doc boost="4">...
-...<field name="boost">4</field>...
-<BLANKLINE>
-
-For day 7
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=7)
->>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
-...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.convert()
->>> print lxml.etree.tostring(root_node, pretty_print=True)
-<add...<doc boost="3">...
-...<field name="boost">3</field>...
-<BLANKLINE>
-
-For day 20
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=20)
->>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
-...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.convert()
->>> print lxml.etree.tostring(root_node, pretty_print=True)
-<add...<doc boost="3">...
-...<field name="boost">3</field>...
-<BLANKLINE>
-
-For day 30
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=30)
->>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
-...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.convert()
->>> print lxml.etree.tostring(root_node, pretty_print=True)
-<add...<doc boost="2">...
-...<field name="boost">2</field>...
-<BLANKLINE>
-
-For day 70
->>> date = datetime.datetime.now(tz=pytz.UTC) - datetime.timedelta(days=70)
->>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
-...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
->>> root_node = article_converter.convert()
->>> print lxml.etree.tostring(root_node, pretty_print=True)
-<add...<doc boost="1">...
-...<field name="boost">1</field>...
-<BLANKLINE>
 

@@ -258,35 +258,6 @@ class ImageIndex(Index):
         self.append_to_node(unicode(type), doc_node)
 
 
-class Boost (Index):
-
-    @property
-    def conf(self):
-        date = datetime.datetime.now(tz=pytz.UTC)
-        return (
-            (date - datetime.timedelta(days=60), 1),
-            (date - datetime.timedelta(days=30), 2),
-            (date - datetime.timedelta(days=7), 3),
-            (date - datetime.timedelta(days=2), 4),
-            (date - datetime.timedelta(days=1), 6),
-            (date, 7),
-        )
-
-    def set_boost(self, boost, doc_node):
-        doc_node.set('boost', str(boost))
-
-    def process(self, value, doc_node):
-        boost = self.calc_boost(value)
-        self.set_boost(boost, doc_node)
-        self.append_to_node(boost, doc_node)
-
-    def calc_boost(self,last_semantic_change):
-        for date, boost in self.conf:
-            if last_semantic_change < date:
-                return boost
-        return 1
-
-
 class SolrConverter(object):
     """Convert content objects to XML data using a Solr schema to feed the Solr
     server.
@@ -296,9 +267,6 @@ class SolrConverter(object):
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(zeit.solr.interfaces.ISolrConverter)
 
-    Boost(
-        zeit.cms.content.interfaces.ISemanticChange,
-        'last_semantic_change', solr='boost')
     Index(
         zeit.content.image.interfaces.IImageMetadata,
         'alt')
@@ -359,9 +327,14 @@ class SolrConverter(object):
     Index(
         zeit.cms.workflow.interfaces.IModified,
         'last_modified_by')
+    # first of:
     Date(
         zeit.cms.content.interfaces.ISemanticChange,
-        'last_semantic_change', solr='last-semantic-change')
+        'last_semantic_change', solr='last-semantic-change'),
+    Date(
+        zope.dublincore.interfaces.IDCTimes,
+        'modified', solr='last-semantic-change')
+    # /first of
     TextIndex(
         zope.index.text.interfaces.ISearchableText,
         'getSearchableText', solr='main_text')
@@ -436,6 +409,7 @@ class SolrConverter(object):
         self.adapters = {}
 
     def convert(self):
+        self.solr_fields_seen = set()
         root_node = lxml.objectify.E.add()
         doc_node = lxml.objectify.E.doc()
         root_node.append(doc_node)
@@ -444,12 +418,15 @@ class SolrConverter(object):
                 zeit.solr.interfaces.IIndex))
         for index in indexes:
             __traceback_info__ = (self.context, index)
+            if index.solr in self.solr_fields_seen:
+                continue
             value = self.get_adapter(index.interface)
             if index.attribute is not None:
                 value = getattr(value, index.attribute, None)
             if value is None:
                 continue
             index.process(value, doc_node)
+            self.solr_fields_seen.add(index.solr)
 
         return root_node
 
