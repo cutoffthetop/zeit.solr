@@ -5,6 +5,7 @@ zeit.solr changes
 -------------------
 
 - Solr-Field ``raw-tags``, containing article raw-tags as escaped xml data (#9096).
+- Solr-Field ``master_image`` added (#9114).
 
 
 0.28.0 (2011-02-14)

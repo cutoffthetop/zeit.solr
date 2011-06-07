@@ -327,6 +327,9 @@ class SolrConverter(object):
     Index(
         zeit.cms.workflow.interfaces.IModified,
         'last_modified_by')
+    Index(
+        zeit.content.image.interfaces.IImageGroup,
+        'master_image')
     # first of:
     Date(
         zeit.cms.content.interfaces.ISemanticChange,
