@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import StringIO
@@ -7,9 +7,9 @@ import pkg_resources
 import sys
 import unittest
 import xmlrpclib
-import zeit.cms.testing
 import zeit.solr.connection
 import zeit.solr.reindex
+import zeit.solr.testing
 
 
 # The figures are quite strange as the json we provide is quite strange ;)
@@ -39,29 +39,9 @@ Updating 100-110 of 112 documents:
 """
 
 
-class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
-
-    serve = []
-
-    def do_GET(self):
-        if self.serve:
-            serve = self.serve.pop(0)
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(serve)
-        else:
-            self.send_response(500)
-            self.send_header('Reason', 'Nothing to serve for %s' % self.path)
-            self.end_headers()
-
-
-HTTPLayer, port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
-SOLR_URL = 'http://localhost:%s/solr/' % port
-
-
 class TestReindex(unittest.TestCase):
 
-    layer = HTTPLayer
+    layer = zeit.solr.testing.HTTPLayer
 
     def setUp(self):
         super(TestReindex, self).setUp()
@@ -75,23 +55,23 @@ class TestReindex(unittest.TestCase):
         self.cms_url = 'http://localhost/'
         self.argv = sys.argv
         sys.argv = [sys.argv[0]]
+        self.serve = self.layer.REQUEST_HANDLER.serve
+        self.solr_url = self.layer.SOLR_URL
 
     def tearDown(self):
         xmlrpclib.ServerProxy = self.orig_xmlrpc_proxy
         zeit.solr.reindex.log = self.old_log
-        output = self.log.getvalue()
         sys.argv = self.argv
-        RequestHandler.serve[:] = []
         super(TestReindex, self).tearDown()
 
     def test_query(self):
         self.expected = query_result
         xmlrpc = mock.Mock()
         query = 'boost:[2 TO *]'
-        solr = zeit.solr.connection.SolrConnection(SOLR_URL)
-        RequestHandler.serve.append(pkg_resources.resource_string(
+        solr = zeit.solr.connection.SolrConnection(self.solr_url)
+        self.serve.append(pkg_resources.resource_string(
                 __name__, 'data/test_reindex.test_query.boost-test.json'))
-        RequestHandler.serve.append(pkg_resources.resource_string(
+        self.serve.append(pkg_resources.resource_string(
                 __name__, 'data/test_reindex.test_query.boost-test.2.json'))
         reindex = zeit.solr.reindex.Reindex(solr, 'public', query, xmlrpc)
         reindex()
@@ -100,15 +80,15 @@ class TestReindex(unittest.TestCase):
         self.assertEquals(query_result, self.log.getvalue())
 
     def test_entrypoint_without_query(self):
-        zeit.solr.reindex.reindex(SOLR_URL, 'public', self.cms_url)
+        zeit.solr.reindex.reindex(self.solr_url, 'public', self.cms_url)
         self.assertEquals('Usage: solr-reindex-query <solr-query>\n',
                           self.log.getvalue())
 
     def test_entrypoint_with_query(self):
         sys.argv.extend(['merkel', 'steinmeier', 'obama'])
-        RequestHandler.serve.append(pkg_resources.resource_string(
+        self.serve.append(pkg_resources.resource_string(
             __name__, 'data/test_reindex.test_entrypoint_with_query.json'))
-        zeit.solr.reindex.reindex(SOLR_URL, 'public', self.cms_url)
+        zeit.solr.reindex.reindex(self.solr_url, 'public', self.cms_url)
         self.assertTrue(xmlrpclib.ServerProxy.called)
         self.assertTrue(self.xmlrpc_instance.update_solr.called)
         self.assertEquals(
@@ -124,10 +104,10 @@ class TestReindex(unittest.TestCase):
             raise xmlrpclib.Fault(100, 'error')
         xmlrpc.update_solr.side_effect = raiser
         query = 'boost:[2 TO *]'
-        solr = zeit.solr.connection.SolrConnection(SOLR_URL)
-        RequestHandler.serve.append(pkg_resources.resource_string(
+        solr = zeit.solr.connection.SolrConnection(self.solr_url)
+        self.serve.append(pkg_resources.resource_string(
                 __name__, 'data/test_reindex.test_query.boost-test.json'))
-        RequestHandler.serve.append(pkg_resources.resource_string(
+        self.serve.append(pkg_resources.resource_string(
                 __name__, 'data/test_reindex.test_query.boost-test.2.json'))
         reindex = zeit.solr.reindex.Reindex(solr, 'public', query, xmlrpc)
         reindex()

@@ -1,8 +1,7 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import mock
-import pkg_resources
 import zeit.cms.testing
 import zeit.solr.interfaces
 import zope.app.testing.functional
@@ -10,17 +9,77 @@ import zope.component
 import zope.interface
 
 
+class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
+
+    serve = []
+
+    def do_GET(self):
+        if self.serve:
+            serve = self.serve.pop(0)
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(serve)
+        else:
+            self.send_response(500)
+            self.send_header('Reason', 'Nothing to serve for %s' % self.path)
+            self.end_headers()
+
+
+BaseHTTPLayer, port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
+SOLR_URL = 'http://localhost:%s/solr/' % port
+
 product_config = """\
 <product-config zeit.solr>
-    solr-url file://%s
+    solr-url %s
     public-solr-url http://dummy
 </product-config>
-""" % pkg_resources.resource_filename(__name__, 'tests/data')
+""" % SOLR_URL
 
 
-SolrLayer = zeit.cms.testing.ZCMLLayer(
+class HTTPLayer(BaseHTTPLayer):
+
+    SOLR_URL = SOLR_URL
+    REQUEST_HANDLER = RequestHandler
+
+    @classmethod
+    def testTearDown(cls):
+        cls.REQUEST_HANDLER.serve[:] = []
+
+    @classmethod
+    def testSetUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+
+BaseSolrLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
+
+
+class SolrLayer(HTTPLayer, BaseSolrLayer):
+
+    @classmethod
+    def testTearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def setUp(cls):
+        pass
 
 
 class SolrMockLayerBase(object):
