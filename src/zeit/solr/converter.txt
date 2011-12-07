@@ -4,7 +4,7 @@ Convert to Solr XML
 
 We need to set the site since we're a functional test:
 
->>> import zeit.cms.testing       
+>>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
 
 Get article for adapter tests:
@@ -14,7 +14,7 @@ Get article for adapter tests:
 >>> import zeit.cms.interfaces
 >>> import zeit.cms.testing
 >>> import datetime
->>> principal = zeit.cms.testing.create_interaction() 
+>>> principal = zeit.cms.testing.create_interaction()
 >>> article = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
