@@ -36,17 +36,15 @@ Get article for adapter tests:
 >>> images.images = (checked_in, )
 
 >>> import mock
+>>> import stabledict
+>>> import zeit.cms.tagging.testing
+>>> helper = zeit.cms.tagging.testing.TaggingHelper()
 >>> patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
 >>> tagger = patcher.start()
->>> t1 = mock.Mock()
->>> t2 = mock.Mock()
->>> t1.disabled = False
->>> t2.disabled = False
->>> t1.code = "Code1"
->>> t1.label= "Label 1"
->>> t2.code = "Code 2"
->>> t2.label= "Label 2"
->>> tagger().values.return_value = [t1, t2]
+>>> tags = stabledict.StableDict()
+>>> tags['Code1'] = helper.get_tag('Code1')
+>>> tags['Code2'] = helper.get_tag('Code2')
+>>> tagger.return_value = tags
 
 Build a converter:
 
@@ -70,9 +68,9 @@ Convert an article and check resultset:
     ...
     <field name="byline">Von Jochen Stahnke</field>
     <field name="date-last-modified">20...Z</field>
-    <field name="keywords">Label 1 Label 2</field>
-    <field name="keywords_list">Label 1</field>
-    <field name="keywords_list">Label 2</field>
+    <field name="keywords">Code1 Code2</field>
+    <field name="keywords_list">Code1</field>
+    <field name="keywords_list">Code2</field>
     <field name="last_modified_by">zope.user</field>
     <field name="last-semantic-change">20...Z</field>
     <field name="main_text">Kriegsherr...</field>
