@@ -18,6 +18,10 @@ Get article for adapter tests:
 >>> article = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
 >>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     # XXX mock data in zeit.connector should be updated to contain
+...     # stuff that is required nowadays (#10056)
+...     zeit.cms.browser.form.apply_default_values(
+...         checked_out, zeit.content.article.interfaces.IArticle)
 ...     zeit.cms.content.interfaces.ICommonMetadata(
 ...         checked_out).breaking_news = True
 ...     zeit.cms.content.interfaces.ICommonMetadata(
