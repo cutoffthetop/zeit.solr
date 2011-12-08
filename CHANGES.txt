@@ -4,7 +4,9 @@ zeit.solr changes
 0.28.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Test infrastructure now always uses a fake HTTP server instead of
+  special-casing file:// URLs. You need to include zeit.solr.testing.HTTPLayer
+  in your bases to access it.
 
 
 0.28.0 (2011-02-14)
