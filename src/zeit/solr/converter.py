@@ -346,7 +346,7 @@ class SolrConverter(object):
         'page')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
-        'product_id')
+        'product', solr='product_id', filter=lambda p: p.id)
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'product_text')
