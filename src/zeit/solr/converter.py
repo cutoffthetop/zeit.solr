@@ -1,9 +1,7 @@
-import datetime
 import grokcore.component
 import inspect
 import lxml.etree
 import lxml.objectify
-import pytz
 import re
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
@@ -30,6 +28,8 @@ class GenericXMLContentTextIndex(grokcore.component.Adapter):
 
 
 remove_tags_pattern = re.compile(r'<.*?>')
+
+
 def remove_tags_if_possible(value):
     if isinstance(value, basestring):
         value = remove_tags_pattern.sub('', value)
@@ -97,7 +97,7 @@ class RawIndex(Index):
         except AttributeError:
             return
         expr = '//' + self.tag_name
-        raw  = xml.xpath(expr)
+        raw = xml.xpath(expr)
         if raw:
             self.append_to_node(
                 ''.join(unicode(lxml.etree.tostring(r)) for r in raw),
@@ -120,7 +120,7 @@ class SplitTuple(Index):
 class Date(Index):
 
     def process(self, value, doc_node):
-        solr_date = str(value).replace(' ','T', 1)
+        solr_date = str(value).replace(' ', 'T', 1)
         solr_date = solr_date.replace('+00:00', 'Z')
         self.append_to_node(unicode(solr_date), doc_node)
 
@@ -144,6 +144,7 @@ class SplitReferences(Index):
     def process(self, value, doc_node):
         for arg in value:
             self.append_to_node(arg.uniqueId, doc_node)
+
 
 class Icon(Index):
 
@@ -274,7 +275,7 @@ class SolrConverter(object):
         zeit.cms.content.interfaces.ICommonMetadata,
         'authors')
     SplitReferences(
-        zeit.cms.relation.interfaces.IReferences,None,
+        zeit.cms.relation.interfaces.IReferences, None,
         solr='referenced')
     JoinTuple(
         zeit.cms.content.interfaces.ICommonMetadata,
