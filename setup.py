@@ -18,7 +18,6 @@ setup(
         'mock',
         'pysolr > 2.0.5',
         'setuptools',
-        'simplejson', # for pysolr
         'zeit.cms>1.39.3',
         'zeit.connector',
         'zeit.connector',
