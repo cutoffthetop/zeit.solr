@@ -120,9 +120,9 @@ Check out the article for further field tests.
     ...
     <field name="byline">Von Jochen Stahnke</field>
     ...
-    <field name="keywords">Label 1 Label 2</field>
-    <field name="keywords_list">Label 1</field>
-    <field name="keywords_list">Label 2</field>
+    <field name="keywords">Code1 Code2</field>
+    <field name="keywords_list">Code1</field>
+    <field name="keywords_list">Code2</field>
     <field name="last_modified_by">zope.user</field>
     <field name="last-semantic-change">20...Z</field>
     <field name="main_text">Kriegsherr...</field>
