@@ -71,7 +71,9 @@ Convert an article and check resultset:
     <field name="breaking_news">true</field>
     ...
     <field name="byline">Von Jochen Stahnke</field>
+    <field name="countings">true</field>
     <field name="date-last-modified">20...Z</field>
+    <field name="DailyNL">true</field>
     <field name="keywords">Code1 Code2</field>
     <field name="keywords_list">Code1</field>
     <field name="keywords_list">Code2</field>
