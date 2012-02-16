@@ -26,6 +26,8 @@ Get article for adapter tests:
 ...         checked_out).breaking_news = True
 ...     zeit.cms.content.interfaces.ICommonMetadata(
 ...         checked_out).title = "Strip <em>the</em> &amp; please"
+...     zeit.cms.content.interfaces.ICommonMetadata(
+...         checked_out).product = zeit.cms.content.sources.Product(u'KINZ')
 
 
 >>> images = zeit.content.image.interfaces.IImages(article)
@@ -73,13 +75,14 @@ Convert an article and check resultset:
     <field name="byline">Von Jochen Stahnke</field>
     <field name="countings">true</field>
     <field name="date-last-modified">20...Z</field>
-    <field name="DailyNL">true</field>
+    <field name="DailyNL">false</field>
     <field name="keywords">Code1 Code2</field>
     <field name="keywords_list">Code1</field>
     <field name="keywords_list">Code2</field>
     <field name="last_modified_by">zope.user</field>
     <field name="last-semantic-change">20...Z</field>
-    <field name="main_text">Kriegsherr...</field>
+    <field name="main_text">Kriegsherr...Macht erobert &#187;</field>
+    <field name="product_id">KINZ</field>
     <field name="published">not-published</field>
     <field name="image-reference">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
     <field name="image-reference"></field>
@@ -127,7 +130,8 @@ Check out the article for further field tests.
     <field name="keywords_list">Code2</field>
     <field name="last_modified_by">zope.user</field>
     <field name="last-semantic-change">20...Z</field>
-    <field name="main_text">Kriegsherr...</field>
+    <field name="main_text">Kriegsherr...Macht erobert &#187;</field>
+    <field name="product_id">KINZ</field>
     <field name="published">not-published</field>
     <field name="ressort">International</field>
     <field name="serie">-</field>
@@ -183,6 +187,90 @@ Convert an image and check resultset:
     </doc>
 </add>
 <BLANKLINE>
+
+Convert a centerpage and check resultset:
+(TODO: Use centerpage with dav properties!)
+
+>>> cp = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/index')
+>>> cp_converter = zeit.solr.interfaces.ISolrConverter(cp)
+>>> root_node = cp_converter.convert()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doc>
+    <field ...
+  </doc>
+</add>
+<BLANKLINE>
+
+
+
+Get a date
+>>> import pytz
+>>> date = datetime.datetime.now(tz=pytz.UTC)
+>>> date
+datetime.datetime...
+
+Checkout article, change last semantic change to date, checkin
+>>> dummy = with_statement
+>>> with zeit.cms.checkout.helper.checked_out(article) as checked_out:
+...     zeit.cms.content.interfaces.ISemanticChange(checked_out).last_semantic_change = date
+
+>>> root_node = article_converter.convert()
+>>> doc_node = root_node.doc
+>>> print (doc_node.tag)
+doc
+
+
+Create a new article containing some raw fields.
+
+>>> import StringIO
+>>> from zeit.content.article.article import Article
+>>> article_string = StringIO.StringIO("""\
+... <?xml version="1.0" encoding="UTF-8"?>
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+...   <body>
+...     <title>my_article</title>
+...     <supertitle>moep</supertitle>
+...     <p>testp</p>
+...     <division type="page">
+...       <p>testp2</p>
+...       <raw expires="">
+...         <p>hello<foo id="bar"/></p>
+...       </raw>
+...       <p>testp3</p>
+...       <raw expires="">
+...         <p>another <strong>raw</strong> box</p>
+...       </raw>
+...     </division>
+...   </body>
+... </article>
+... """)
+>>> article_raw = Article(article_string)
+>>> article_raw_converter = zeit.solr.interfaces.ISolrConverter(article_raw)
+>>> article_raw_converter
+<zeit.solr.converter.SolrConverter object at ...>
+>>> root_node = article_raw_converter.convert()
+>>> print lxml.etree.tostring(root_node, pretty_print=True)
+<add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <doc>
+    <field name="authors"></field>
+    <field name="authors_fulltext"></field>
+    <field name="keywords">Code1 Code2</field>
+    <field name="keywords_list">Code1</field>
+    <field name="keywords_list">Code2</field>
+    <field name="main_text">testp testp2 hello testp3 another raw box</field>
+    <field name="published">not-published</field>
+    <field name="raw-tags">&lt;raw xmlns:py="http://codespeak.net/lxml/objectify/pytype" expires=""&gt;&lt;p&gt;hello&lt;foo id="bar"/&gt;&lt;/p&gt;&lt;/raw&gt;&lt;raw xmlns:py="http://codespeak.net/lxml/objectify/pytype" expires=""&gt;&lt;p&gt;another &lt;strong&gt;raw&lt;/strong&gt; box&lt;/p&gt;&lt;/raw&gt;</field>
+    <field name="supertitle">moep</field>
+    <field name="title">my_article</field>
+    <field name="type">article</field>
+    <field name="volume" xsi:nil="true"/>
+    <field name="year" xsi:nil="true"/>
+    <field name="icon">/++noop++7b96ef8299459c6372971b040141db4d/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png</field>
+  </doc>
+</add>
+
 
 Clean up:
 

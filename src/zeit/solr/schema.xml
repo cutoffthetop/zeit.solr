@@ -299,12 +299,14 @@
    <field name="last-semantic-change" type="date" indexed="true" stored="true" />
    <field name="last_modified_by" type="string" indexed="true" stored="true" />
    <field name="main_text" type="text" indexed="true" stored="true" />
+   <field name="master_image" type="text" indexed="true" stored="true" />
    <field name="mostread" type="boolean" indexed="true" stored="true" />
    <field name="page" type="integer" indexed="true" stored="true" />
    <field name="product_id" type="string_nt" indexed="true" stored="true" />
    <field name="product_text" type="text" indexed="true" stored="true" />
    <field name="published" type="string_nt" indexed="true" stored="true" />
    <field name="refined" type="string_nt" indexed="true" stored="true" />
+   <field name="raw-tags" type="text" indexed="true" stored="true" />
    <field name="referenced" type="string_nt" indexed="true" stored="true" multiValued="true" />
    <field name="ressort" type="string_nt" indexed="true" stored="true" />
    <field name="serie" type="text" indexed="true" stored="true" />
@@ -374,6 +376,7 @@
    <copyField source="indexteaser_text" dest="text" />
    <copyField source="keywords" dest="text" />
    <copyField source="main_text" dest="text" />
+   <copyField source="master_image" dest="text" />
    <copyField source="ressort" dest="text" />
    <copyField source="serie" dest="text" />
    <copyField source="sub_ressort" dest="text" />

@@ -1,12 +1,19 @@
 zeit.solr changes
 =================
 
-0.28.1 (unreleased)
+0.30.1 (unreleased)
 -------------------
 
 - Test infrastructure now always uses a fake HTTP server instead of
   special-casing file:// URLs. You need to include zeit.solr.testing.HTTPLayer
   in your bases to access it.
+
+
+0.30.0 (2011-06-20)
+-------------------
+
+- Solr-Field ``raw-tags``, containing article raw-tags as escaped xml data (#9096).
+- Solr-Field ``master_image`` added (#9114).
 
 
 0.28.0 (2011-02-14)

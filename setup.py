@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'zeit.solr',
-    version='0.28.1dev',
+    version='0.30.1dev',
     author = 'Dominik Hoppe',
     author_email = 'dominik.hoppe@zeit.de',
     description = 'Get articles from the repository and prepare them for solr.',
@@ -18,10 +18,8 @@ setup(
         'mock',
         'pysolr > 2.0.5',
         'setuptools',
-        'simplejson', # for pysolr
         'zeit.cms>1.39.3',
-        'zeit.connector',
-        'zeit.connector',
+        'zeit.connector>=1.24.0dev',
         'zeit.content.article>=2.8.1',
         'zeit.content.portraitbox',
         'zope.index',
