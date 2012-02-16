@@ -13,7 +13,6 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
     serve = []
 
     def do_GET(self):
-        print 'serve'
         if self.serve:
             serve = self.serve.pop(0)
             self.send_response(200)
