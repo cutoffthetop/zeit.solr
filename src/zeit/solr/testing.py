@@ -5,7 +5,6 @@ import mock
 import pkg_resources
 import zeit.cms.testing
 import zeit.solr.interfaces
-import zope.app.testing.functional
 import zope.component
 import zope.interface
 
