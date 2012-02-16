@@ -65,6 +65,7 @@ Convert an article and check resultset:
     ...
     <field name="byline">Von Jochen Stahnke</field>
     <field name="date-last-modified">20...Z</field>
+    <field name="DailyNL">false</field>
     <field name="keywords"></field>
     <field name="last_modified_by">zope.user</field>
     <field name="last-semantic-change">20...Z</field>
