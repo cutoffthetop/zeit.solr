@@ -63,7 +63,7 @@ Convert an article and check resultset:
     <field name="authors_fulltext">Hans Meiser</field>
     <field name="breaking_news">true</field>
     ...
-    <field name="byline">Von Jochen Stahnke</field>
+    <field name="byline">Von Jochen Stahnke</field>...
     <field name="date-last-modified">20...Z</field>
     <field name="DailyNL">false</field>
     <field name="keywords"></field>
