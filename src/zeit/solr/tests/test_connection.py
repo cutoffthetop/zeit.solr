@@ -107,3 +107,14 @@ class TestSolrConnection(unittest.TestCase):
         self.solr.timeout = 0.5
         self.assertRaises(socket.timeout,
                           lambda: self.solr.update_raw(self.data))
+        # httplib2 immediately retries a request upon a socket.error (while the
+        # RequestHandler still sleeps). There is a race condition (which we
+        # need a complicated diagram to explain) whether the second request is
+        # handled by the server thread before or after the client raises
+        # timeout. If the server handles the request *after* the client raises,
+        # the test's tearDown might clear post_received and only then the
+        # second POST is appended to the list, breaking test isolation. To
+        # prevent this, wait for the second POST here before going into
+        # tearDown.
+        while len(RequestHandler.posts_received) < 2:
+            time.sleep(0.01)
