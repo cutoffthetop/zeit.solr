@@ -3,7 +3,6 @@
 
 import hashlib
 import lxml.etree
-import lxml.html
 import os.path
 import pysolr
 import xml.sax.saxutils
