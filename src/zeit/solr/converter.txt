@@ -34,7 +34,7 @@ Get article for adapter tests:
 >>> image_metadata.expires = datetime.datetime(2007, 4, 1)
 >>> checked_in = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
->>> images.images = (checked_in, )
+>>> images.image = checked_in
 
 >>> import mock
 >>> import stabledict

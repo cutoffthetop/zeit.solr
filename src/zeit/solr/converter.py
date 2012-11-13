@@ -239,23 +239,22 @@ class AccessCounterIndex(Index):
 
 class ImageIndex(Index):
 
-    def process(self, values, doc_node):
+    def process(self, value, doc_node):
 
-        if len(values) == 0:
+        if value is None:
             return
-        image = zeit.content.image.interfaces.IImageMetadata(values[0], None)
+        image = zeit.content.image.interfaces.IImageMetadata(value, None)
         if image is None:
             return
-        self.append_to_node(unicode(values[0].uniqueId), doc_node)
-        pub = zeit.workflow.interfaces.ITimeBasedPublishing(values[0], None)
+        self.append_to_node(unicode(value.uniqueId), doc_node)
+        pub = zeit.workflow.interfaces.ITimeBasedPublishing(value, None)
         if pub is not None:
             expires = pub.released_to
         if expires is None:
             expires = ''
         self.append_to_node(unicode(expires), doc_node)
         ref = zope.component.getAdapter(
-            values[0],
-            zeit.cms.content.interfaces.IXMLReference, name='image')
+            value, zeit.cms.content.interfaces.IXMLReference, name='image')
         type = ref.get('type')
         if type is None:
             type = ''
@@ -359,7 +358,7 @@ class SolrConverter(object):
         'published')
     ImageIndex(
         zeit.content.image.interfaces.IImages,
-        'images', solr='image-reference')
+        'image', solr='image-reference')
     RawIndex(
         zeit.cms.content.interfaces.ICommonMetadata,
         'raw', solr='raw-tags')
