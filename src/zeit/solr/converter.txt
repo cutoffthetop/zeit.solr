@@ -77,7 +77,7 @@ Convert an article and check resultset:
     <field name="keywords_list">Code2</field>
     <field name="last_modified_by">zope.user</field>
     <field name="last-semantic-change">20...Z</field>
-    <field name="main_text">Kriegsherr...Macht erobert &#187;</field>
+    <field name="main_text">Kriegsherr...Macht erobert...</field>
     <field name="product_id">KINZ</field>
     <field name="published">not-published</field>
     <field name="image-reference">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
@@ -126,7 +126,7 @@ Check out the article for further field tests.
     <field name="keywords_list">Code2</field>
     <field name="last_modified_by">zope.user</field>
     <field name="last-semantic-change">20...Z</field>
-    <field name="main_text">Kriegsherr...Macht erobert &#187;</field>
+    <field name="main_text">Kriegsherr...Macht erobert...</field>
     <field name="product_id">KINZ</field>
     <field name="published">not-published</field>
     <field name="ressort">International</field>
