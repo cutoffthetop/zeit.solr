@@ -258,6 +258,7 @@ Create a new article containing some raw fields.
     <field name="main_text">testp testp2 hello testp3 another raw box</field>
     <field name="published">not-published</field>
     <field name="raw-tags">&lt;raw xmlns:py="http://codespeak.net/lxml/objectify/pytype" expires=""&gt;&lt;p&gt;hello&lt;foo id="bar"/&gt;&lt;/p&gt;&lt;/raw&gt;&lt;raw xmlns:py="http://codespeak.net/lxml/objectify/pytype" expires=""&gt;&lt;p&gt;another &lt;strong&gt;raw&lt;/strong&gt; box&lt;/p&gt;&lt;/raw&gt;</field>
+    <field name="subtitle"></field>
     <field name="supertitle">moep</field>
     <field name="title">my_article</field>
     <field name="type">article</field>
