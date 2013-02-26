@@ -71,6 +71,7 @@ Convert an article and check resultset:
     <field name="countings">true</field>
     <field name="date-last-modified">20...Z</field>
     <field name="DailyNL">false</field>
+    <field name="has_recensions">false</field>
     <field name="keywords">Code1 Code2</field>
     <field name="keywords_list">Code1</field>
     <field name="keywords_list">Code2</field>
