@@ -1,10 +1,11 @@
 zeit.solr changes
 =================
 
-2.0.1 (unreleased)
+2.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Prepare converter for upgrade to Solr 3.6:
+  Don't try to index empty fields but omit them completely instead.
 
 
 2.0 (2013-04-23)

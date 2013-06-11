@@ -105,3 +105,10 @@ class TestConverter(zeit.solr.testing.FunctionalTestCase):
         self.assertEqual(
             ['2010-12-13T14:15:00Z'],
             xml.findall('//field[@name="last-semantic-change"]'))
+
+    def test_converter_should_not_index_empty_tags(self):
+        content = self.get_content()
+        xml = self.convert(content)
+        self.assertEqual(
+            [],
+            xml.findall('//field[@name="year"]'))
