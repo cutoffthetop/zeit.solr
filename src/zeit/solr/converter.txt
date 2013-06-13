@@ -81,7 +81,6 @@ Convert an article and check resultset:
     <field name="product_id">KINZ</field>
     <field name="published">not-published</field>
     <field name="image-reference">http://xml.zeit.de/2006/DSC00109_2.JPG</field>
-    <field name="image-reference"></field>
     <field name="image-reference">JPG</field>
     <field name="ressort">International</field>
     <field name="serie">-</field>
@@ -250,20 +249,15 @@ Create a new article containing some raw fields.
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doc>
-    <field name="authors"></field>
-    <field name="authors_fulltext"></field>
     <field name="keywords">Code1 Code2</field>
     <field name="keywords_list">Code1</field>
     <field name="keywords_list">Code2</field>
     <field name="main_text">testp testp2 hello testp3 another raw box</field>
     <field name="published">not-published</field>
     <field name="raw-tags">&lt;raw xmlns:py="http://codespeak.net/lxml/objectify/pytype" expires=""&gt;&lt;p&gt;hello&lt;foo id="bar"/&gt;&lt;/p&gt;&lt;/raw&gt;&lt;raw xmlns:py="http://codespeak.net/lxml/objectify/pytype" expires=""&gt;&lt;p&gt;another &lt;strong&gt;raw&lt;/strong&gt; box&lt;/p&gt;&lt;/raw&gt;</field>
-    <field name="subtitle"></field>
     <field name="supertitle">moep</field>
     <field name="title">my_article</field>
     <field name="type">article</field>
-    <field name="volume" xsi:nil="true"/>
-    <field name="year" xsi:nil="true"/>
     <field name="icon">/++noop++7b96ef8299459c6372971b040141db4d/@@/zeit-content-article-interfaces-IArticle-zmi_icon.png</field>
   </doc>
 </add>
