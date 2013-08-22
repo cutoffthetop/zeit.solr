@@ -249,6 +249,10 @@ Create a new article containing some raw fields.
 >>> print lxml.etree.tostring(root_node, pretty_print=True)
 <add xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <doc>
+    <field name="breaking_news">false</field>
+    <field name="allow_comments">true</field>
+    <field name="countings">true</field>
+    <field name="DailyNL">false</field>
     <field name="keywords">Code1 Code2</field>
     <field name="keywords_list">Code1</field>
     <field name="keywords_list">Code2</field>
