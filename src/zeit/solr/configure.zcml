@@ -11,6 +11,10 @@
     factory=".connection.public_solr_connection_factory"
     name="public"
     />
+  <utility
+    factory=".connection.second_solr_connection_factory"
+    name="second"
+    />
 
   <adapter factory=".converter.SolrConverter" />
 

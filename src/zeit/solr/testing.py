@@ -31,6 +31,7 @@ product_config = """\
 <product-config zeit.solr>
     solr-url %s
     public-solr-url http://dummy
+    second-solr-url http://dummy
 </product-config>
 """ % SOLR_URL
 

@@ -174,6 +174,7 @@ def do_index_object(unique_id):
                     unique_id)
     else:
         zeit.solr.interfaces.IUpdater(context).update()
+        zeit.solr.interfaces.IUpdater(context).update(solr='second')
 
 
 @grokcore.component.subscribe(
@@ -188,5 +189,8 @@ def unindex_on_remove(context, event):
 
 @gocept.async.function(u'events')
 def do_unindex_unique_id(uniqueId):
-    updater = zope.component.getAdapter(
+    zope.component.getAdapter(
         uniqueId, zeit.solr.interfaces.IUpdater, name='delete').update()
+    zope.component.getAdapter(
+        uniqueId, zeit.solr.interfaces.IUpdater, name='delete').update(
+        solr='second')

@@ -4,7 +4,7 @@ zeit.solr changes
 2.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Temporarily wire up second solr server (#12665).
 
 
 2.0.1 (2013-07-01)
