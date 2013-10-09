@@ -6,6 +6,8 @@ zeit.solr changes
 
 - Temporarily wire up second solr server (#12665).
 
+- Update to lxml-3.x (#11611).
+
 
 2.0.1 (2013-07-01)
 ------------------

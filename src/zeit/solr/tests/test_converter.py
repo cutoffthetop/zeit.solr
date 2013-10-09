@@ -77,7 +77,7 @@ class TestConverter(zeit.solr.testing.FunctionalTestCase):
         xml = self.convert(content)
         self.assertEqual(
             ['2011-01-02T03:04:00Z'],
-            xml.findall('//field[@name="last-semantic-change"]'))
+            xml.xpath('//field[@name="last-semantic-change"]'))
 
     def test_lsc_should_be_used_if_set(self):
         from zeit.cms.content.interfaces import ISemanticChange
@@ -89,7 +89,7 @@ class TestConverter(zeit.solr.testing.FunctionalTestCase):
         xml = self.convert(content)
         self.assertEqual(
             ['2011-01-02T03:04:00Z'],
-            xml.findall('//field[@name="last-semantic-change"]'))
+            xml.xpath('//field[@name="last-semantic-change"]'))
 
     def test_lsc_should_not_be_duplicate_if_both_lsc_and_modified_set(self):
         from zeit.cms.content.interfaces import ISemanticChange
@@ -104,11 +104,11 @@ class TestConverter(zeit.solr.testing.FunctionalTestCase):
         xml = self.convert(content)
         self.assertEqual(
             ['2010-12-13T14:15:00Z'],
-            xml.findall('//field[@name="last-semantic-change"]'))
+            xml.xpath('//field[@name="last-semantic-change"]'))
 
     def test_converter_should_not_index_empty_tags(self):
         content = self.get_content()
         xml = self.convert(content)
         self.assertEqual(
             [],
-            xml.findall('//field[@name="year"]'))
+            xml.xpath('//field[@name="year"]'))
