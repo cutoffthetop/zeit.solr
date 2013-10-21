@@ -64,6 +64,14 @@ def update_container(container_id, needs_publish):
     conn.commit()
 
 
+def get_all_solrs():
+    result = []
+    for name, solr in zope.component.getUtilitiesFor(
+            zeit.solr.interfaces.ISolr):
+        result.append(solr)
+    return result
+
+
 class IdUpdater(object):
 
     zope.component.adapts(basestring)
@@ -92,21 +100,25 @@ class ContentUpdater(object):
         self.context = context
 
     def update(self, solr=u''):
-        solr_name = solr
-        solr = zope.component.getUtility(zeit.solr.interfaces.ISolr,
-                                         name=solr)
+        # Multiple solrs had a different meaning initially (internal/public).
+        # Now there is one primary and (currently) one secondary which are all
+        # indexed.
+        assert not solr
+        solrs = get_all_solrs()
         stack = [self.context]
         while stack:
             content = stack.pop(0)
 
-            log.info("Updating %s: '%s'" % (solr_name, content.uniqueId))
+            log.info("Updating: '%s'", content.uniqueId)
             converter = zeit.solr.interfaces.ISolrConverter(content)
             try:
                 # NOTE: It would be nicer to use add(), but then the converter
                 # would have to be rewritten not to produce XML anymore (and
                 # pysolr would have to learn how to set the boost), so we just
                 # push the raw XML here and bypass all the pysolr niceties.
-                solr.update_raw(converter.convert())
+                converted_document = converter.convert()
+                for solr in solrs:
+                    solr.update_raw(converted_document)
             except zeit.solr.interfaces.SolrError, e:
                 log.warning("Solr server returned '%s' while updating %s" %
                             (e, content.uniqueId))
@@ -136,10 +148,10 @@ class Deleter(object):
         # Note that we cannot use the UUID to delete because we just don't know
         # it. All we have is the uniqueId.
         log.info('Removing %s: %s' % (solr, self.context))
-        conn = zope.component.getUtility(zeit.solr.interfaces.ISolr,
-                                         name=solr)
+        solrs = get_all_solrs()
         query = lq.field('uniqueId', self.context).encode('UTF-8')
-        conn.delete(q=query, commit=False)
+        for solr in solrs:
+            solr.delete(q=query, commit=False)
 
 
 @grokcore.component.subscribe(zope.lifecycleevent.IObjectAddedEvent)
@@ -174,8 +186,6 @@ def do_index_object(unique_id):
                     unique_id)
     else:
         zeit.solr.interfaces.IUpdater(context).update()
-        zeit.solr.interfaces.IUpdater(context).update(solr='second')
-
 
 @grokcore.component.subscribe(
     zeit.cms.interfaces.ICMSContent,
@@ -191,6 +201,3 @@ def unindex_on_remove(context, event):
 def do_unindex_unique_id(uniqueId):
     zope.component.getAdapter(
         uniqueId, zeit.solr.interfaces.IUpdater, name='delete').update()
-    zope.component.getAdapter(
-        uniqueId, zeit.solr.interfaces.IUpdater, name='delete').update(
-        solr='second')
