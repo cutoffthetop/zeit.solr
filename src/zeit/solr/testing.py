@@ -30,7 +30,6 @@ SOLR_URL = 'http://localhost:%s/solr/' % port
 product_config = """\
 <product-config zeit.solr>
     solr-url %s
-    second-solr-url http://dummy
 </product-config>
 """ % SOLR_URL
 

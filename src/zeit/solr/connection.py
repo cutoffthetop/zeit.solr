@@ -39,4 +39,5 @@ def solr_connection_factory():
 def second_solr_connection_factory():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.solr')
     url = config.get('second-solr-url')
-    return SolrConnection(url)
+    if url:
+        return SolrConnection(url)
