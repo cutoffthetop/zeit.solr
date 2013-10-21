@@ -1,8 +1,10 @@
 # coding: utf8
 
 from __future__ import with_statement
+import StringIO
 import gocept.async
 import gocept.async.tests
+import logging
 import mock
 import unittest
 import zeit.cms.checkout.helper
@@ -23,6 +25,20 @@ def checkout_and_checkin():
         zeit.cms.repository.interfaces.IRepository)
     with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
         pass
+
+
+def process():
+    log_output = StringIO.StringIO()
+    log_handler = logging.StreamHandler(log_output)
+    logging.root.addHandler(log_handler)
+    old_log_level = logging.root.level
+    logging.root.setLevel(logging.ERROR)
+    try:
+        gocept.async.tests.process()
+    finally:
+        logging.root.removeHandler(log_handler)
+        logging.root.setLevel(old_log_level)
+    assert not log_output.getvalue(), log_output.getvalue()
 
 
 class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
@@ -65,7 +81,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
             zeit.cms.repository.interfaces.IRepository)
         repository['t1'] = (
             zeit.cms.testcontenttype.testcontenttype.TestContentType())
-        gocept.async.tests.process()
+        process()
         self.assertTrue(self.solr.update_raw.called)
         self.assert_unique_id('http://xml.zeit.de/t1')
 
@@ -74,13 +90,13 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
             zeit.cms.repository.interfaces.IRepository)
         with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
             pass
-        gocept.async.tests.process()
+        process()
         self.assertTrue(self.solr.update_raw.called)
         self.assert_unique_id('http://xml.zeit.de/testcontent')
 
     def test_update_should_be_called_in_async(self):
         checkout_and_checkin()
-        gocept.async.tests.process()
+        process()
         self.assertTrue(self.solr.update_raw.called)
 
     def test_recursive(self):
@@ -99,7 +115,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         for ignored in zope.component.subscribers((content_sub, event), None):
             pass
         try:
-            gocept.async.tests.process()
+            process()
         except IndexError:
             pass
         self.assertFalse(self.solr.update_raw.called)
@@ -108,7 +124,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
         content.uniqueId = 'xzy://bla/fasel'
         zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(content))
-        gocept.async.tests.process()
+        process()
         query = self.solr.delete.call_args[1]
         self.assertEquals(
             {'q': 'uniqueId:(xzy\\://bla/fasel)', 'commit': False},
@@ -121,7 +137,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         event.oldParent = zeit.cms.workingcopy.workingcopy.Workingcopy()
         zope.event.notify(event)
         try:
-            gocept.async.tests.process()
+            process()
         except IndexError:
             pass
         self.assertFalse(self.solr.delete.called)
@@ -135,9 +151,11 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
             self.assertRaises(TypeError, updater.update)
 
     def test_do_index_object_should_load_object_from_repository(self):
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
         with mock.patch('zeit.cms.interfaces.ICMSContent') as icc:
+            icc.return_value = content
             zeit.solr.update.do_index_object('http://xml.zeit.de/testcontent')
-            gocept.async.tests.process()
+            process()
             icc.assert_called_with('http://xml.zeit.de/testcontent', None)
 
     def test_do_index_object_should_not_raise_when_object_vanished(self):
@@ -146,5 +164,5 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
                 icc.return_value = None
                 zeit.solr.update.do_index_object(
                     'http://xml.zeit.de/testcontent')
-                gocept.async.tests.process()
+                process()
                 self.assertFalse(iu.called)

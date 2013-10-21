@@ -87,7 +87,7 @@ class SolrMockLayerBase(object):
     def setUp(cls):
         cls.solr = mock.Mock()
         zope.interface.alsoProvides(cls.solr, zeit.solr.interfaces.ISolr)
-        zope.component.provideUtility(cls.solr)
+        zope.component.getSiteManager().registerUtility(cls.solr)
 
     @classmethod
     def tearDown(cls):
