@@ -48,6 +48,6 @@ class XMLRPCTest(zeit.solr.testing.MockedFunctionalTestCase):
                 '<type \'int\'>">',
                 str(e))
 
-    def test_invalid_solr_name_fails(self):
-        self.assertRaises(xmlrpclib.Fault,
-                          self.update_solr, 'asdf', 'non-exsisting-solr')
+    def test_non_empty_solr_name_should_not_index(self):
+        self.update_solr('asdf', 'non-exsisting-solr')
+        self.assertFalse(self.solr.update_raw.called)
