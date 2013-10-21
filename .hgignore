@@ -5,3 +5,6 @@ syntax: glob
 bin
 develop-eggs
 parts
+lib
+include
+.Python
