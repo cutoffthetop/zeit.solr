@@ -30,11 +30,11 @@ class XMLRPCTest(zeit.solr.testing.MockedFunctionalTestCase):
 
     def test_update_via_xmlrpc(self):
         self.update_solr('http://xml.zeit.de/online/2007/01/Somalia')
-        self.assert_(self.solr.update_raw.called)
+        self.assertTrue(self.solr.update_raw.called)
         xml = self.solr.update_raw.call_args[0][0]
         self.assertEqual('http://xml.zeit.de/online/2007/01/Somalia',
                          xml.xpath('//field[@name="uniqueId"]/text()')[0])
-        self.assert_(
+        self.assertTrue(
             "zope.solr triggered solr index update for "
             "'http://xml.zeit.de/online/2007/01/Somalia'"
             in self.log.getvalue())
@@ -51,7 +51,3 @@ class XMLRPCTest(zeit.solr.testing.MockedFunctionalTestCase):
     def test_invalid_solr_name_fails(self):
         self.assertRaises(xmlrpclib.Fault,
                           self.update_solr, 'asdf', 'non-exsisting-solr')
-
-
-def test_suite():
-    return unittest.makeSuite(XMLRPCTest)
