@@ -280,7 +280,7 @@ zeit.solr changes
 
 - Added publish/retract event handlers to update/delete the public solr server
   (#5992).
-- added more metadata to content objects (such as images)  
+- added more metadata to content objects (such as images)
 
 - Fix unicode handling for select and delete (#6028).
 
