@@ -30,7 +30,6 @@ SOLR_URL = 'http://localhost:%s/solr/' % port
 product_config = """\
 <product-config zeit.solr>
     solr-url %s
-    public-solr-url http://dummy
     second-solr-url http://dummy
 </product-config>
 """ % SOLR_URL
@@ -89,21 +88,14 @@ class SolrMockLayerBase(object):
         cls.solr = mock.Mock()
         zope.interface.alsoProvides(cls.solr, zeit.solr.interfaces.ISolr)
         zope.component.provideUtility(cls.solr)
-        cls.public_solr = mock.Mock()
-        zope.interface.alsoProvides(
-            cls.public_solr, zeit.solr.interfaces.ISolr)
-        zope.component.provideUtility(cls.public_solr, name='public')
 
     @classmethod
     def tearDown(cls):
         zope.component.getSiteManager().unregisterUtility(cls.solr)
-        zope.component.getSiteManager().unregisterUtility(cls.public_solr,
-                                                          name='public')
 
     @classmethod
     def testTearDown(cls):
         cls.solr.reset_mock()
-        cls.public_solr.reset_mock()
 
 
 class SolrMockLayer(SolrLayer, SolrMockLayerBase):

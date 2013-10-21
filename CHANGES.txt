@@ -4,6 +4,9 @@ zeit.solr changes
 2.0.2 (unreleased)
 ------------------
 
+- Remove left-overs of the public solr indexing. Public solr is indexed by the
+  publication script since quite a while now (for #VIV-148).
+
 - Temporarily wire up second solr server (#12665).
 
 - Update to lxml-3.x (#11611).

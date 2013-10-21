@@ -8,10 +8,6 @@
 
   <utility factory=".connection.solr_connection_factory" />
   <utility
-    factory=".connection.public_solr_connection_factory"
-    name="public"
-    />
-  <utility
     factory=".connection.second_solr_connection_factory"
     name="second"
     />

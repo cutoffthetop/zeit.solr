@@ -148,37 +148,3 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
                     'http://xml.zeit.de/testcontent')
                 gocept.async.tests.process()
                 self.assertFalse(iu.called)
-
-
-class UpdatePublicTest(zeit.solr.testing.MockedFunctionalTestCase):
-    # The publication process used to trigger update/delete on public solr.
-    # This should no longer be the case, so this test makes sure that the
-    # publication process doesn't update the public solr any more.
-
-    product_config = {'zeit.content.article': {}}
-
-    def setUp(self):
-        super(UpdatePublicTest, self).setUp()
-        self.public = mock.Mock()
-        zope.interface.alsoProvides(self.public, zeit.solr.interfaces.ISolr)
-        zope.component.provideUtility(self.public, name='public')
-        self.article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/online/2007/01/Somalia')
-
-    def tearDown(self):
-        zope.component.getSiteManager().unregisterUtility(self.public, name='public')
-        super(UpdatePublicTest, self).tearDown()
-
-    def test_publish_should_not_update_public_solr(self):
-        zope.event.notify(
-            zeit.cms.workflow.interfaces.PublishedEvent(
-                self.article, self.article))
-        self.assertFalse(self.solr.update_raw.called)
-        self.assertFalse(self.public.update_raw.called)
-
-    def test_retract_should_not_delete_from_public_solr(self):
-        zope.event.notify(
-            zeit.cms.workflow.interfaces.BeforeRetractEvent(
-                self.article, self.article))
-        self.assertFalse(self.solr.delete.called)
-        self.assertFalse(self.public.delete.called)

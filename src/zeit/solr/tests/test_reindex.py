@@ -73,14 +73,14 @@ class TestReindex(unittest.TestCase):
                 __name__, 'data/test_reindex.test_query.boost-test.json'))
         self.serve.append(pkg_resources.resource_string(
                 __name__, 'data/test_reindex.test_query.boost-test.2.json'))
-        reindex = zeit.solr.reindex.Reindex(solr, 'public', query, xmlrpc)
+        reindex = zeit.solr.reindex.Reindex(solr, '', query, xmlrpc)
         reindex()
         self.assertTrue(xmlrpc.update_solr.called)
         self.assertEquals(20, len(xmlrpc.update_solr.call_args_list))
         self.assertEquals(query_result, self.log.getvalue())
 
     def test_entrypoint_without_query(self):
-        zeit.solr.reindex.reindex(self.solr_url, 'public', self.cms_url)
+        zeit.solr.reindex.reindex(self.solr_url, '', self.cms_url)
         self.assertEquals('Usage: solr-reindex-query <solr-query>\n',
                           self.log.getvalue())
 
@@ -88,14 +88,14 @@ class TestReindex(unittest.TestCase):
         sys.argv.extend(['merkel', 'steinmeier', 'obama'])
         self.serve.append(pkg_resources.resource_string(
             __name__, 'data/test_reindex.test_entrypoint_with_query.json'))
-        zeit.solr.reindex.reindex(self.solr_url, 'public', self.cms_url)
+        zeit.solr.reindex.reindex(self.solr_url, '', self.cms_url)
         self.assertTrue(xmlrpclib.ServerProxy.called)
         self.assertTrue(self.xmlrpc_instance.update_solr.called)
         self.assertEquals(
             'http://xml.zeit.de/online/2009/04/obama-merkel-amtseinfuehrung',
             self.xmlrpc_instance.update_solr.call_args_list[0][0][0])
         self.assertEquals(
-            'public',
+            '',
             self.xmlrpc_instance.update_solr.call_args_list[0][0][1])
 
     def test_xmlrpc_fault_continues_reindexing_remaining_objects(self):
@@ -109,7 +109,7 @@ class TestReindex(unittest.TestCase):
                 __name__, 'data/test_reindex.test_query.boost-test.json'))
         self.serve.append(pkg_resources.resource_string(
                 __name__, 'data/test_reindex.test_query.boost-test.2.json'))
-        reindex = zeit.solr.reindex.Reindex(solr, 'public', query, xmlrpc)
+        reindex = zeit.solr.reindex.Reindex(solr, '', query, xmlrpc)
         reindex()
         self.assertTrue(xmlrpc.update_solr.called)
         self.assertEquals(20, len(xmlrpc.update_solr.call_args_list))
