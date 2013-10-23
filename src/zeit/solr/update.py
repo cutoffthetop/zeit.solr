@@ -4,8 +4,6 @@ import gocept.async
 import gocept.runner
 import grokcore.component
 import logging
-import lxml.etree
-import sys
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
