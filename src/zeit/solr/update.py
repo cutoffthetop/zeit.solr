@@ -1,5 +1,5 @@
-from optparse import OptionParser
 from zeit.solr import query as lq
+import argparse
 import gocept.async
 import gocept.runner
 import grokcore.component
@@ -21,25 +21,18 @@ log = logging.getLogger(__name__)
 @gocept.runner.once(principal=gocept.runner.from_config(
     'zeit.solr', 'index-principal'))
 def update_main():
-    usage = "usage: %prog [options] arg"
-    parser = OptionParser(usage)
-    parser.add_option("-s", "--solr", dest="solr",
-                      help="solr server uri")
-    parser.add_option("-w", "--webdav", dest="webdav",
-                      help="webdav server uri")
-    parser.add_option("-p", "--published", action="store_true", dest="published",
-                        help="only work on published resources")
+    parser = argparse.ArgumentParser(description='Reindex container in solr')
+    parser.add_argument('paths', type=unicode, nargs='+',
+                       help='path to reindex')
+    parser.add_argument(
+        "-p", "--published",
+        action="store_true",
+        help="only work on published resources")
 
-    (options, args) = parser.parse_args()
-
-    if not options.solr:
-        parser.error("missing solr url")
-    if not options.webdav:
-        parser.error("missing webdav uri")
-    if options.solr and options.webdav:
-        zope.component.provideUtility(
-            zeit.solr.connection.SolrConnection(options.solr))
-        update_container(options.webdav, options.published)
+    args = parser.parse_args()
+    for path in args.paths:
+        container_id = 'http://xml.zeit.de' + path
+        update_container(container_id, args.published)
 
 
 def update_container(container_id, needs_publish):
