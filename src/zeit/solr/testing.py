@@ -3,6 +3,7 @@
 
 import mock
 import zeit.cms.testing
+import zeit.content.article.testing
 import zeit.solr.interfaces
 import zope.component
 import zope.interface
@@ -58,7 +59,9 @@ class HTTPLayer(BaseHTTPLayer):
 
 BaseSolrLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config)
+    product_config=zeit.cms.testing.cms_product_config
+    + zeit.content.article.testing.product_config
+    + product_config)
 
 
 class SolrLayer(HTTPLayer, BaseSolrLayer):
