@@ -37,12 +37,12 @@ Get article for adapter tests:
 >>> images.image = checked_in
 
 >>> import mock
->>> import stabledict
+>>> import collections
 >>> import zeit.cms.tagging.testing
 >>> helper = zeit.cms.tagging.testing.TaggingHelper()
 >>> patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
 >>> tagger = patcher.start()
->>> tags = stabledict.StableDict()
+>>> tags = collections.OrderedDict()
 >>> tags['Code1'] = helper.get_tag('Code1')
 >>> tags['Code2'] = helper.get_tag('Code2')
 >>> tagger.return_value = tags
