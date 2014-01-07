@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'zeit.solr',
-    version='2.1.1',
+    version='2.1.2.dev0',
     author = 'Dominik Hoppe',
     author_email = 'dominik.hoppe@zeit.de',
     description = 'Get articles from the repository and prepare them for solr.',
