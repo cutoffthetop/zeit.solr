@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-2.1.2 (unreleased)
+2.1.2 (2014-03-10)
 ------------------
 
 - zeit.content.image has its own egg now.
