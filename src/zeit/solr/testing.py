@@ -44,7 +44,7 @@ class HTTPLayer(gocept.httpserverlayer.custom.Layer):
 HTTP_LAYER = HTTPLayer(RequestHandler, module=__name__)
 
 
-class ZCMLLayer(zeit.cms.testing.ZCML_Layer):
+class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 
     defaultBases = (HTTP_LAYER,)
 
