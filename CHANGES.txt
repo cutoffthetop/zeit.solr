@@ -1,10 +1,10 @@
 zeit.solr changes
 =================
 
-2.1.3 (unreleased)
+2.2.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use gocept.httpserverlayer.custom to avoid port collisions in tests.
 
 
 2.1.2 (2014-03-10)

@@ -1,7 +1,9 @@
 # Copyright (c) 2009-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.httpserverlayer.custom
 import mock
+import plone.testing
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.solr.interfaces
@@ -9,7 +11,7 @@ import zope.component
 import zope.interface
 
 
-class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
+class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     serve = []
 
@@ -25,97 +27,72 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
             self.end_headers()
 
 
-BaseHTTPLayer, port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
-SOLR_URL = 'http://localhost:%s/solr/' % port
-
 product_config = """\
 <product-config zeit.solr>
-    solr-url %s
+    solr-url http://localhost:{port}/solr/
 </product-config>
-""" % SOLR_URL
+"""
 
 
-class HTTPLayer(BaseHTTPLayer):
+class HTTPLayer(gocept.httpserverlayer.custom.Layer):
 
-    SOLR_URL = SOLR_URL
-    REQUEST_HANDLER = RequestHandler
-
-    @classmethod
-    def testTearDown(cls):
-        cls.REQUEST_HANDLER.serve[:] = []
-
-    @classmethod
-    def testSetUp(cls):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def setUp(cls):
-        pass
+    def testTearDown(self):
+        super(HTTPLayer, self).testTearDown()
+        self['request_handler'].serve[:] = []
 
 
-BaseSolrLayer = zeit.cms.testing.ZCMLLayer(
+HTTP_LAYER = HTTPLayer(RequestHandler, module=__name__)
+
+
+class ZCMLLayer(zeit.cms.testing.ZCML_Layer):
+
+    defaultBases = (HTTP_LAYER,)
+
+    def setUp(self):
+        self.product_config = self.product_config.format(
+            port=self['http_port'])
+        super(ZCMLLayer, self).setUp()
+
+
+ZCML_LAYER = ZCMLLayer(
     'ftesting.zcml',
     product_config=zeit.cms.testing.cms_product_config
     + zeit.content.article.testing.product_config
     + product_config)
 
 
-class SolrLayer(HTTPLayer, BaseSolrLayer):
+class SolrMockLayer(plone.testing.Layer):
 
-    @classmethod
-    def testTearDown(cls):
-        pass
+    def setUp(self):
+        self['solr'] = mock.Mock()
+        zope.interface.alsoProvides(self['solr'], zeit.solr.interfaces.ISolr)
+        zope.component.getSiteManager().registerUtility(self['solr'])
 
-    @classmethod
-    def testSetUp(cls):
-        pass
+    def tearDown(self):
+        zope.component.getSiteManager().unregisterUtility(self['solr'])
 
-    @classmethod
-    def tearDown(cls):
-        pass
+    def testTearDown(self):
+        self['solr'].reset_mock()
 
-    @classmethod
-    def setUp(cls):
-        pass
+SOLR_MOCK_LAYER = SolrMockLayer()
 
 
-class SolrMockLayerBase(object):
-
-    @classmethod
-    def setUp(cls):
-        cls.solr = mock.Mock()
-        zope.interface.alsoProvides(cls.solr, zeit.solr.interfaces.ISolr)
-        zope.component.getSiteManager().registerUtility(cls.solr)
-
-    @classmethod
-    def tearDown(cls):
-        zope.component.getSiteManager().unregisterUtility(cls.solr)
-
-    @classmethod
-    def testTearDown(cls):
-        cls.solr.reset_mock()
-
-
-class SolrMockLayer(SolrLayer, SolrMockLayerBase):
-    """Mocked solr."""
+MOCK_ZCML_LAYER = plone.testing.Layer(
+    bases=(ZCML_LAYER, SOLR_MOCK_LAYER), name='MockZCMLLayer', module=__name__)
 
 
 class MockedFunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = SolrMockLayer
+    layer = MOCK_ZCML_LAYER
 
     def setUp(self):
         super(MockedFunctionalTestCase, self).setUp()
-        self.solr = self.layer.solr
+        self.solr = self.layer['solr']
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = SolrLayer
+    layer = ZCML_LAYER
 
     def setUp(self):
         super(FunctionalTestCase, self).setUp()

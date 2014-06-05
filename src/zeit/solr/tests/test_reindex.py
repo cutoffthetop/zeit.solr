@@ -41,7 +41,7 @@ Updating 100-110 of 112 documents:
 
 class TestReindex(unittest.TestCase):
 
-    layer = zeit.solr.testing.HTTPLayer
+    layer = zeit.solr.testing.HTTP_LAYER
 
     def setUp(self):
         super(TestReindex, self).setUp()
@@ -55,8 +55,8 @@ class TestReindex(unittest.TestCase):
         self.cms_url = 'http://localhost/'
         self.argv = sys.argv
         sys.argv = [sys.argv[0]]
-        self.serve = self.layer.REQUEST_HANDLER.serve
-        self.solr_url = self.layer.SOLR_URL
+        self.serve = self.layer['request_handler'].serve
+        self.solr_url = 'http://%s/solr/' % self.layer['http_address']
 
     def tearDown(self):
         xmlrpclib.ServerProxy = self.orig_xmlrpc_proxy

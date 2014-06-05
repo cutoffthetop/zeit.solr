@@ -9,8 +9,8 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'converter.txt',
         package='zeit.solr',
-        layer=zeit.solr.testing.SolrLayer,
-        ))
+        layer=zeit.solr.testing.ZCML_LAYER,
+    ))
     suite.addTest(doctest.DocFileSuite(
         'query.txt',
         package='zeit.solr',

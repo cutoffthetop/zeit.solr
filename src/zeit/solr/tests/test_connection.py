@@ -1,16 +1,16 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.httpserverlayer.custom
 import lxml.objectify
 import pysolr
 import socket
 import time
 import unittest
-import zeit.cms.testing
 import zeit.solr.connection
 
 
-class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
+class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     response_code = 200
     response_body = ''
@@ -33,17 +33,18 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
         self.wfile.write(self.response_body)
 
 
-HTTPLayer, port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
+HTTP_LAYER = gocept.httpserverlayer.custom.Layer(
+    RequestHandler, name='HTTPLayer', module=__name__)
 
 
 class TestSolrConnection(unittest.TestCase):
 
-    layer = HTTPLayer
+    layer = HTTP_LAYER
 
     def setUp(self):
         super(TestSolrConnection, self).setUp()
         self.solr = zeit.solr.connection.SolrConnection(
-            'http://localhost:%s/solr/' % port)
+            'http://%s/solr/' % self.layer['http_address'])
         self.data = lxml.objectify.XML('<foo/>')
 
     def tearDown(self):
