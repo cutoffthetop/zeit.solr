@@ -24,7 +24,7 @@ class Reindex(object):
             result = self.solr.search(
                 self.query, fl='id uniqueId', rows=rows_per_batch, start=start)
             print >>log, "Updating %s-%s of %s documents:" % (
-                start, start+len(result), result.hits)
+                start, start + len(result), result.hits)
             start += rows_per_batch
             for doc in result:
                 unique_id = doc['uniqueId']
@@ -32,8 +32,8 @@ class Reindex(object):
                 try:
                     self.cms.update_solr(unique_id, self.solr_name)
                 except xmlrpclib.Fault, e:
-                    print >>log, 'Server returned fault while reindexing %s: %s' % (
-                        unique_id, str(e))
+                    print >>log, 'Server returned fault while ' \
+                        'reindexing %s: %s' % (unique_id, str(e))
             if start >= result.hits or not result:
                 break
 

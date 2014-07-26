@@ -18,5 +18,5 @@ class UpdateIndex(zope.app.publisher.xmlrpc.XMLRPCView):
                 100, "`uniqueId` must be string type, got %s" % (
                     type(uniqueId)))
         log.info("%s triggered solr index update for '%s'" %
-                    (self.request.principal.id, uniqueId))
+                 (self.request.principal.id, uniqueId))
         zeit.solr.interfaces.IUpdater(uniqueId).update()

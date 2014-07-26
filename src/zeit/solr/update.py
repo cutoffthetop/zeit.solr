@@ -9,7 +9,6 @@ import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.cms.workingcopy.interfaces
-import zeit.solr.connection
 import zeit.solr.interfaces
 import zope.component
 import zope.lifecycleevent
@@ -23,7 +22,7 @@ log = logging.getLogger(__name__)
 def update_main():
     parser = argparse.ArgumentParser(description='Reindex container in solr')
     parser.add_argument('paths', type=unicode, nargs='+',
-                       help='path to reindex')
+                        help='path to reindex')
     parser.add_argument(
         "-p", "--published",
         action="store_true",
@@ -45,11 +44,11 @@ def update_container(container_id, needs_publish):
         content = stack.pop(0)
         if zeit.cms.repository.interfaces.ICollection.providedBy(content):
             stack.extend(content.values())
-        if needs_publish == True:
+        if needs_publish is True:
             pubinfo = zeit.cms.workflow.interfaces.IPublishInfo(content)
             published = pubinfo.published
             status = zeit.workflow.interfaces.IOldCMSStatus(content).status
-            if (published == False) and (status not in valid_status):
+            if (published is False) and (status not in valid_status):
                 continue
         zeit.solr.interfaces.IUpdater(content).update()
     conn.commit()
@@ -177,6 +176,7 @@ def do_index_object(unique_id):
                     unique_id)
     else:
         zeit.solr.interfaces.IUpdater(context).update()
+
 
 @grokcore.component.subscribe(
     zeit.cms.interfaces.ICMSContent,

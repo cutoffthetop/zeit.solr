@@ -70,9 +70,9 @@ class TestReindex(unittest.TestCase):
         query = 'boost:[2 TO *]'
         solr = zeit.solr.connection.SolrConnection(self.solr_url)
         self.serve.append(pkg_resources.resource_string(
-                __name__, 'data/test_reindex.test_query.boost-test.json'))
+            __name__, 'data/test_reindex.test_query.boost-test.json'))
         self.serve.append(pkg_resources.resource_string(
-                __name__, 'data/test_reindex.test_query.boost-test.2.json'))
+            __name__, 'data/test_reindex.test_query.boost-test.2.json'))
         reindex = zeit.solr.reindex.Reindex(solr, '', query, xmlrpc)
         reindex()
         self.assertTrue(xmlrpc.update_solr.called)
@@ -100,15 +100,16 @@ class TestReindex(unittest.TestCase):
 
     def test_xmlrpc_fault_continues_reindexing_remaining_objects(self):
         xmlrpc = mock.Mock()
+
         def raiser(*args, **kw):
             raise xmlrpclib.Fault(100, 'error')
         xmlrpc.update_solr.side_effect = raiser
         query = 'boost:[2 TO *]'
         solr = zeit.solr.connection.SolrConnection(self.solr_url)
         self.serve.append(pkg_resources.resource_string(
-                __name__, 'data/test_reindex.test_query.boost-test.json'))
+            __name__, 'data/test_reindex.test_query.boost-test.json'))
         self.serve.append(pkg_resources.resource_string(
-                __name__, 'data/test_reindex.test_query.boost-test.2.json'))
+            __name__, 'data/test_reindex.test_query.boost-test.2.json'))
         reindex = zeit.solr.reindex.Reindex(solr, '', query, xmlrpc)
         reindex()
         self.assertTrue(xmlrpc.update_solr.called)

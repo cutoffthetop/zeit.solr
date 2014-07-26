@@ -1,21 +1,18 @@
 # coding: utf8
 
 from __future__ import with_statement
+from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import StringIO
 import gocept.async
 import gocept.async.tests
 import logging
 import mock
-import unittest
 import zeit.cms.checkout.helper
-import zeit.cms.interfaces
 import zeit.cms.repository
-import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.workingcopy.workingcopy
 import zeit.solr.testing
 import zope.component
 import zope.event
-import zope.interface
 import zope.lifecycleevent
 
 
@@ -79,8 +76,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
     def test_update_on_create(self):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        repository['t1'] = (
-            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+        repository['t1'] = TestContentType()
         process()
         self.assertTrue(self.solr.update_raw.called)
         self.assert_unique_id('http://xml.zeit.de/t1')
@@ -107,9 +103,9 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         self.assertEquals(41, len(self.solr.update_raw.call_args_list))
 
     def test_added_event_only_for_events_object(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = TestContentType()
         content.uniqueId = 'xzy://bla/fasel'
-        content_sub = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content_sub = TestContentType()
         content_sub.uniqueId = 'xzy://bla/fasel/sub'
         event = zope.lifecycleevent.ObjectAddedEvent(content)
         for ignored in zope.component.subscribers((content_sub, event), None):
@@ -121,7 +117,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
         self.assertFalse(self.solr.update_raw.called)
 
     def test_removed_event_calls_delete(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = TestContentType()
         content.uniqueId = 'xzy://bla/fasel'
         zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(content))
         process()
@@ -131,7 +127,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
             query)
 
     def test_remove_event_does_not_call_delete_if_parent_is_workingcopy(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = TestContentType()
         content.uniqueId = 'xzy://bla/fasel'
         event = zope.lifecycleevent.ObjectRemovedEvent(content)
         event.oldParent = zeit.cms.workingcopy.workingcopy.Workingcopy()
@@ -151,7 +147,7 @@ class UpdateTest(zeit.solr.testing.MockedFunctionalTestCase):
             self.assertRaises(TypeError, updater.update)
 
     def test_do_index_object_should_load_object_from_repository(self):
-        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content = TestContentType()
         with mock.patch('zeit.cms.interfaces.ICMSContent') as icc:
             icc.return_value = content
             zeit.solr.update.do_index_object('http://xml.zeit.de/testcontent')
