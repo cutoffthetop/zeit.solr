@@ -296,6 +296,7 @@
    <field name="indexteaser_title" type="text" indexed="true" stored="true" />
    <field name="keywords" type="text" indexed="true" stored="true" />
    <field name="keywords_list" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="lead_candidate" type="boolean" indexed="true" stored="true" />
    <field name="last-semantic-change" type="date" indexed="true" stored="true" />
    <field name="last_modified_by" type="string" indexed="true" stored="true" />
    <field name="main_text" type="text" indexed="true" stored="true" />

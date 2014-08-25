@@ -22,6 +22,7 @@ setup(
         'zeit.cms>=2.20.0.dev0',
         'zeit.connector>=1.24.0dev',
         'zeit.content.article>=2.8.1',
+        'zeit.content.cp >= 2.6.0.dev0',
         'zeit.content.image',
         'zeit.content.portraitbox',
         'zope.index',

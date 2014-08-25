@@ -4,7 +4,7 @@ zeit.solr changes
 2.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add Solr-Field ``lead_candidate`` (VIV-436).
 
 
 2.2.0 (2014-06-05)
