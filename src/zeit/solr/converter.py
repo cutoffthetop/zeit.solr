@@ -122,6 +122,13 @@ class SplitTuple(Index):
             self.append_to_node(unicode(arg), doc_node)
 
 
+class Channels(Index):
+
+    def process(self, value, doc_node):
+        for arg in value:
+            self.append_to_node(u' '.join(arg), doc_node)
+
+
 class Date(Index):
 
     def process(self, value, doc_node):
@@ -414,6 +421,9 @@ class SolrConverter(object):
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'lead_candidate')
+    Channels(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        'channels')
 
     def __init__(self, context):
         self.context = context

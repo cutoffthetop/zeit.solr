@@ -278,6 +278,7 @@
    <field name="allow_comments" type="boolean" indexed="true" stored="true" />
    <field name="byline" type="text" indexed="true" stored="true" />
    <field name="caption" type="text" indexed="true" stored="true" />
+   <field name="channels" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="corrected" type="string_nt" indexed="true" stored="true" />
    <field name="countings" type="string_nt" indexed="true" stored="true" />
    <field name="date-first-released" type="date" indexed="true" stored="true" />
