@@ -412,7 +412,7 @@ class SolrConverter(object):
         zeit.cms.content.interfaces.IAccessCounter, 'detail_url',
         solr='range_details')
     Index(
-        zeit.content.cp.interfaces.IAutomaticConfig,
+        zeit.cms.content.interfaces.ICommonMetadata,
         'lead_candidate')
 
     def __init__(self, context):
