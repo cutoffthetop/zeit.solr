@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-2.2.1 (unreleased)
+2.3.0 (2014-08-29)
 ------------------
 
 - Add Solr-Fields ``channels`` and ``lead_candidate`` (VIV-446, VIV-436).
