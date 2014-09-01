@@ -126,7 +126,7 @@ class Channels(Index):
 
     def process(self, value, doc_node):
         for arg in value:
-            self.append_to_node(u' '.join(arg), doc_node)
+            self.append_to_node(u' '.join([x for x in arg if x]), doc_node)
 
 
 class Date(Index):
