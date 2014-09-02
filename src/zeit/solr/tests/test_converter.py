@@ -112,3 +112,19 @@ class TestConverter(zeit.solr.testing.FunctionalTestCase):
         self.assertEqual(
             [],
             xml.xpath('//field[@name="year"]'))
+
+    def test_channels_are_indexed_multivalued(self):
+        content = self.get_content()
+        content.channels = [('International', 'Nahost'),
+                            ('Deutschland', 'Meinung')]
+        xml = self.convert(content)
+        self.assertEqual(
+            ['International Nahost', 'Deutschland Meinung'],
+            [x.text for x in xml.xpath('//field[@name="channels"]')])
+
+    def test_channel_with_no_subchannel_indexes_just_the_channel(self):
+        content = self.get_content()
+        content.channels = [('International', None)]
+        xml = self.convert(content)
+        self.assertEqual(
+            'International', xml.xpath('//field[@name="channels"]')[0].text)
