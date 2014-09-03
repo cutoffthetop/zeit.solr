@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-2.3.1 (unreleased)
+2.3.1 (2014-09-03)
 ------------------
 
 - Fix indexing ``channels`` when there is no subchannel.
