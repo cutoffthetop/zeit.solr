@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-2.3.2 (unreleased)
+2.4.0 (2014-10-21)
 ------------------
 
 - Add Solr-Field ``push_news`` (VIV-527).
