@@ -1,15 +1,18 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='zeit.solr',
     version='2.4.1.dev0',
-    author='Dominik Hoppe',
-    author_email='dominik.hoppe@zeit.de',
-    description='Get articles from the repository and prepare them for solr.',
+    author='gocept, Zeit Online',
+    author_email='zon-backend@zeit.de',
+    url='http://www.zeit.de',
+    description='Solr interface',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
+    license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
         'gocept.async>=0.3.1',
