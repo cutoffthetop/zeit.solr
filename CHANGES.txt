@@ -4,7 +4,7 @@ zeit.solr changes
 2.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Adapt to zeit.cms series source API changes. (ZON-1464)
 
 
 2.4.0 (2014-10-21)
