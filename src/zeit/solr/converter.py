@@ -8,6 +8,7 @@ import zeit.cms.relation.interfaces
 import zeit.connector.interfaces
 import zeit.content.article.interfaces
 import zeit.content.image.interfaces
+import zeit.push.interfaces
 import zeit.solr.interfaces
 import zeit.workflow.interfaces
 import zope.component
@@ -294,6 +295,12 @@ class SolrConverter(object):
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'push_news')
+    Index(
+        zeit.push.interfaces.IPushMessages,
+        'short_text', solr='push_short_text')
+    Index(
+        zeit.push.interfaces.IPushMessages,
+        'long_text', solr='push_long_text')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'commentsAllowed', solr='allow_comments')

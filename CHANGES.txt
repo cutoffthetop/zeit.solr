@@ -4,6 +4,8 @@ zeit.solr changes
 2.4.1 (unreleased)
 ------------------
 
+- Add Solr-Fields ``push_short_text`` and ``push_long_text`` (DEV-621).
+
 - Adapt to zeit.cms series source API changes. (ZON-1464)
 
 
