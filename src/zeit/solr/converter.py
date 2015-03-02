@@ -386,7 +386,7 @@ class SolrConverter(object):
         'ressort')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
-        'serie')
+        'serie', filter=lambda s: s.serienname)
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'sub_ressort')
