@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-2.4.1 (unreleased)
+2.4.1 (2015-03-03)
 ------------------
 
 - Add Solr-Fields ``push_short_text`` and ``push_long_text`` (DEV-621).
