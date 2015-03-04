@@ -28,7 +28,6 @@ setup(
         'zeit.content.cp >= 2.6.0.dev0',
         'zeit.content.image',
         'zeit.content.portraitbox',
-        'zeit.push',
         'zope.index',
     ],
     entry_points="""
