@@ -427,6 +427,9 @@ class SolrConverter(object):
     SplitTuple(
         zeit.cms.content.interfaces.ICommonMetadata,
         'storystreams')
+    Date(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        'tldr_date')
 
     def __init__(self, context):
         self.context = context
