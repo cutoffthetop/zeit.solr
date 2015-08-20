@@ -424,6 +424,9 @@ class SolrConverter(object):
     Channels(
         zeit.cms.content.interfaces.ICommonMetadata,
         'channels')
+    SplitTuple(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        'storystreams')
 
     def __init__(self, context):
         self.context = context

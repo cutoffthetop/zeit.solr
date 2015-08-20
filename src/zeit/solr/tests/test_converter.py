@@ -125,3 +125,11 @@ class TestConverter(zeit.solr.testing.FunctionalTestCase):
         xml = self.convert(content)
         self.assertEqual(
             'International', xml.xpath('//field[@name="channels"]')[0].text)
+
+    def test_storystreams_are_indexed_multivalued(self):
+        content = self.get_content()
+        content.storystreams = ('Eins', 'Zwei')
+        xml = self.convert(content)
+        self.assertEqual(
+            ['Eins', 'Zwei'],
+            [x.text for x in xml.xpath('//field[@name="storystreams"]')])
