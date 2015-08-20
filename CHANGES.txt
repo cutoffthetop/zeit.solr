@@ -6,6 +6,8 @@ zeit.solr changes
 
 - Add Solr-Fields ``storystreams`` and ``tldr_date`` (DEV-885).
 
+- Add Solr-Field ``is_breaking``.
+
 
 2.4.3 (2015-06-30)
 ------------------

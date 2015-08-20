@@ -292,6 +292,9 @@ class SolrConverter(object):
         zeit.cms.content.interfaces.ICommonMetadata,
         'breaking_news')
     Index(
+        zeit.content.article.interfaces.IBreakingNews,
+        'is_breaking')
+    Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'push_news')
     Index(
