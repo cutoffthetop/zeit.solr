@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-2.4.4 (unreleased)
+2.5.0 (2015-08-24)
 ------------------
 
 - Add Solr-Fields ``storystreams`` and ``tldr_date`` (DEV-885).
