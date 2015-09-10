@@ -321,6 +321,9 @@ class SolrConverter(object):
     Date(
         zeit.cms.workflow.interfaces.IPublishInfo,
         'date_last_published', solr='date-last-published')
+    Date(
+        zeit.cms.workflow.interfaces.IPublishInfo,
+        'date_last_published_semantic', solr='date-last-published-semantic')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
         'dailyNewsletter', solr='DailyNL')

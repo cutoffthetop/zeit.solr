@@ -4,7 +4,7 @@ zeit.solr changes
 2.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add Solr-Field ``date-last-published-semantic`` (DEV-944).
 
 
 2.5.0 (2015-08-24)
