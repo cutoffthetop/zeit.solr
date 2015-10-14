@@ -169,7 +169,7 @@ def index_after_checkin(context, event):
     do_index_object(context.uniqueId)
 
 
-@zeit.cms.async.function()
+@zeit.cms.async.function(queue='solr')
 def do_index_object(unique_id):
     context = zeit.cms.interfaces.ICMSContent(unique_id, None)
     if context is None:

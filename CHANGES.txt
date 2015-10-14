@@ -4,7 +4,7 @@ zeit.solr changes
 2.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use separate task queue for solr indexing.
 
 
 2.6.0 (2015-09-11)
