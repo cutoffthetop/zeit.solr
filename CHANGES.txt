@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-2.7.0 (unreleased)
+2.7.0 (2015-12-02)
 ------------------
 
 - Add Solr-Fields ``is_instant_article`` and ``is_amp`` (ZON-2467).
