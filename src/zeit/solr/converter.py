@@ -336,6 +336,12 @@ class SolrConverter(object):
     Index(
         zeit.content.article.interfaces.IArticleMetadata,
         'has_recensions')
+    Index(
+        zeit.content.article.interfaces.IArticleMetadata,
+        'is_instant_article')
+    Index(
+        zeit.content.article.interfaces.IArticleMetadata,
+        'is_amp')
     Keywords(
         zeit.cms.content.interfaces.ICommonMetadata,
         'keywords')

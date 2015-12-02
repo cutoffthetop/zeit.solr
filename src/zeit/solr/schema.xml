@@ -297,6 +297,8 @@
    <field name="indexteaser_text" type="text" indexed="true" stored="true" />
    <field name="indexteaser_title" type="text" indexed="true" stored="true" />
    <field name="is_breaking" type="boolean" indexed="true" stored="true" />
+   <field name="is_instant_article" type="boolean" indexed="true" stored="true" />
+   <field name="is_amp" type="boolean" indexed="true" stored="true" />
    <field name="keywords" type="text" indexed="true" stored="true" />
    <field name="keywords_list" type="text" indexed="true" stored="true" multiValued="true"/>
    <field name="lead_candidate" type="boolean" indexed="true" stored="true" />
