@@ -101,3 +101,12 @@ class TestSolrConnection(unittest.TestCase):
         self.solr.timeout = 0.5
         self.assertRaises(pysolr.SolrError,
                           lambda: self.solr.update_raw(self.data))
+
+    def test_search_timeout_should_not_raise(self):
+        RequestHandler.sleep = 1
+        self.solr.timeout = 0.5
+        # A long query value causes pysolr to POST the query, which matches
+        # what our test RequestHandler implements.
+        result = self.solr.search('a' * 1024)
+        self.assertEqual(0, len(result))
+        self.assertEqual([], list(result))
