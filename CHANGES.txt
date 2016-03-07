@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-2.7.1 (unreleased)
+2.8.0 (2016-03-07)
 ------------------
 
 - Silently return "no results" when ``search()`` gets an HTTP timeout.
