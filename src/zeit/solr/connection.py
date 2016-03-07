@@ -12,9 +12,8 @@ class SolrConnection(pysolr.Solr):
 
     def update_raw(self, xml):
         data = lxml.etree.tostring(xml, encoding='UTF-8', xml_declaration=True)
-        path = '%s/update/' % self.path
         result = self._send_request(
-            'POST', path, data, {'Content-type': 'text/xml'})
+            'POST', 'update/', data, {'Content-type': 'text/xml'})
         return result
 
     def delete(self, id=None, q=None, commit=True, fromPending=True,

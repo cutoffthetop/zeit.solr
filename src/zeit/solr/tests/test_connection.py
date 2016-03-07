@@ -70,10 +70,7 @@ class TestSolrConnection(unittest.TestCase):
         try:
             self.solr.update_raw(self.data)
         except pysolr.SolrError, e:
-            self.assertEquals(
-                '[Reason: Failed for a reason]\n<html><body><h1>'
-                'Failed for some reason</h1> bla<hr></body></html>',
-                e.args[0])
+            self.assertEquals('[Reason: Failed for a reason]', e.args[0])
         else:
             self.fail("Exception not raised")
         self.assertEquals(1, len(RequestHandler.posts_received))
@@ -100,19 +97,7 @@ class TestSolrConnection(unittest.TestCase):
             post[0]['data'])
 
     def test_timeout_should_not_block_indefinitely(self):
-        self.assertTrue(pysolr.TIMEOUTS_AVAILABLE)
         RequestHandler.sleep = 1
         self.solr.timeout = 0.5
-        self.assertRaises(socket.timeout,
+        self.assertRaises(pysolr.SolrError,
                           lambda: self.solr.update_raw(self.data))
-        # httplib2 immediately retries a request upon a socket.error (while the
-        # RequestHandler still sleeps). There is a race condition (which we
-        # need a complicated diagram to explain) whether the second request is
-        # handled by the server thread before or after the client raises
-        # timeout. If the server handles the request *after* the client raises,
-        # the test's tearDown might clear post_received and only then the
-        # second POST is appended to the list, breaking test isolation. To
-        # prevent this, wait for the second POST here before going into
-        # tearDown.
-        while len(RequestHandler.posts_received) < 2:
-            time.sleep(0.01)

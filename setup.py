@@ -20,7 +20,7 @@ setup(
         'httplib2',
         'mock',
         'plone.testing',
-        'pysolr > 2.0.5',
+        'pysolr >= 3.0.0',
         'setuptools',
         'zeit.cms>=2.60.0.dev0',
         'zeit.connector>=1.24.0dev',
