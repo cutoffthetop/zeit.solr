@@ -73,7 +73,7 @@ Convert an article and check resultset:
     <field name="date-last-modified">20...Z</field>
     <field name="DailyNL">false</field>
     <field name="has_recensions">false</field>
-    <field name="is_instant_article">true</field>
+    <field name="is_instant_article">false</field>
     <field name="is_amp">false</field>
     <field name="keywords">Code1 Code2</field>
     <field name="keywords_list">Code1</field>
