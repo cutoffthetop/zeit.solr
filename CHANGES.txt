@@ -4,7 +4,8 @@ zeit.solr changes
 2.8.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make configurable whether we silently return "no results" when
+  ``search()`` gets any error.
 
 
 2.8.0 (2016-03-07)
