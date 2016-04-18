@@ -8,6 +8,7 @@
   <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
 
   <include package="zeit.solr" />
+  <include package="zeit.solr.xmlrpc" />
 
   <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />
