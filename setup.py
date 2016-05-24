@@ -22,7 +22,7 @@ setup(
         'plone.testing',
         'pysolr >= 3.0.0',
         'setuptools',
-        'zeit.cms>=2.60.0.dev0',
+        'zeit.cms>=2.81.0.dev0',
         'zeit.connector>=1.24.0dev',
         'zeit.content.article>=3.14.1.dev0',
         'zeit.content.cp >= 2.6.0.dev0',
