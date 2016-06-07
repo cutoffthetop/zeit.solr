@@ -126,6 +126,13 @@ class Channels(Index):
             self.append_to_node(u' '.join([x for x in arg if x]), doc_node)
 
 
+class Storystreams(Index):
+
+    def process(self, value, doc_node):
+        for arg in value:
+            self.append_to_node(arg.id, doc_node)
+
+
 class Date(Index):
 
     def process(self, value, doc_node):
@@ -436,7 +443,7 @@ class SolrConverter(object):
     Channels(
         zeit.cms.content.interfaces.ICommonMetadata,
         'channels')
-    SplitTuple(
+    Storystreams(
         zeit.cms.content.interfaces.ICommonMetadata,
         'storystreams')
     Date(
