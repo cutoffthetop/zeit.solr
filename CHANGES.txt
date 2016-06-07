@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-2.8.3 (unreleased)
+2.8.3 (2016-06-07)
 ------------------
 
 - Update to object-based ``ICommonMetadata.storystreams`` (ZON-2769).
