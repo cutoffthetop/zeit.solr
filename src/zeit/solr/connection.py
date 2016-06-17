@@ -32,12 +32,21 @@ class SolrConnection(pysolr.Solr):
             'POST', 'update/', data, {'Content-type': 'text/xml'})
         return result
 
-    def delete(self, id=None, q=None, commit=True, fromPending=True,
-               fromCommitted=True):
+    def delete(self, id=None, q=None, **kw):
         if q:
+            # patched
             q = xml.sax.saxutils.escape(q)
-        return super(SolrConnection, self).delete(id, q, commit, fromPending,
-                                                  fromCommitted)
+        if id is None and q is None:
+            raise ValueError('You must specify "id" or "q".')
+        elif id is not None and q is not None:
+            raise ValueError('You many only specify "id" OR "q", not both.')
+        elif id is not None:
+            m = '<delete><id>%s</id></delete>' % id
+        elif q is not None:
+            # patched to use unicode
+            m = u'<delete><query>%s</query></delete>' % q
+
+        return self._update(m, **kw)
 
 
 @zope.interface.implementer(zeit.solr.interfaces.ISolr)

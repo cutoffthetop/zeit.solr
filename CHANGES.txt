@@ -4,7 +4,7 @@ zeit.solr changes
 2.8.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Handle non-ascii URLs in delete.
 
 
 2.8.3 (2016-06-07)
