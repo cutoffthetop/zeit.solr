@@ -4,7 +4,7 @@ zeit.solr changes
 2.8.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Map print ressort to dynamic field (ZON-3181).
 
 
 2.8.4 (2016-06-27)
