@@ -404,6 +404,9 @@ class SolrConverter(object):
         'sub_ressort')
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,
+        'printRessort', solr='ns-print-ressort')
+    Index(
+        zeit.cms.content.interfaces.ICommonMetadata,
         'subtitle', filter=remove_tags_if_possible)
     Index(
         zeit.cms.content.interfaces.ICommonMetadata,

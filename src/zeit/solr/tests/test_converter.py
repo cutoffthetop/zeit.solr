@@ -134,3 +134,11 @@ class TestConverter(zeit.solr.testing.FunctionalTestCase):
         self.assertEqual(
             ['test', 'other'],
             [x.text for x in xml.xpath('//field[@name="storystreams"]')])
+
+    def test_print_ressort_is_indexed(self):
+        content = self.get_content()
+        content.printRessort = 'Feuilleton'
+        xml = self.convert(content)
+        self.assertEqual(
+            'Feuilleton',
+            xml.xpath('//field[@name="ns-print-ressort"]')[0].text)

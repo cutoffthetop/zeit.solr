@@ -319,6 +319,7 @@
    <field name="serie" type="text" indexed="true" stored="true" />
    <field name="storystreams" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="sub_ressort" type="string_nt" indexed="true" stored="true" />
+   <field name="ns-print-ressort" type="string_nt" indexed="true" stored="true" />
    <field name="subtitle" type="text" indexed="true" stored="true" />
    <field name="supertitle" type="text" indexed="true" stored="true" />
    <field name="teaser_text" type="text" indexed="true" stored="true" />
