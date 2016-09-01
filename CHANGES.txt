@@ -1,7 +1,7 @@
 zeit.solr changes
 =================
 
-2.8.5 (unreleased)
+2.9.0 (2016-09-01)
 ------------------
 
 - Add Solr-Field `ns-print-ressort` (ZON-3181).
