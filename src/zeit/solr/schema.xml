@@ -326,6 +326,7 @@
    <field name="teaser_title" type="text" indexed="true" stored="true" />
    <field name="title" type="text" indexed="true" stored="true" />
    <field name="tldr_date" type="date" indexed="true" stored="true" />
+   <field name="tldr_milestone" type="boolean" indexed="false" stored="true" />
    <field name="type" type="string_nt" indexed="true" stored="true" />
    <field name="uniqueId" type="string_nt" indexed="true" stored="true" />
    <field name="urgent" type="boolean" indexed="true" stored="true" />

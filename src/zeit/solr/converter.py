@@ -452,6 +452,9 @@ class SolrConverter(object):
     Date(
         zeit.cms.content.interfaces.ICommonMetadata,
         'tldr_date')
+    Index(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        'tldr_milestone')
 
     def __init__(self, context):
         self.context = context
